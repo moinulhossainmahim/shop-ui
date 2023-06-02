@@ -1,3 +1,5 @@
+@use '../../../utils/variables';
+
 .ProductImg__container {
   position: relative;
   overflow: hidden;
@@ -39,5 +41,12 @@
   transition: .2s ease-in transform;
   &:hover {
     transform: scale(1.08);
+  }
+}
+
+.Add__btn {
+  background-color: variables.$color-accent !important;
+  &:focus {
+    outline: none;
   }
 }

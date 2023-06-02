@@ -11,10 +11,10 @@ export default function Hero() {
     <Box className={styles.Hero__section}>
       <Box className={styles.Container}>
         <Box className={styles.Content}>
-          <Typography className={styles.Heading} variant='h2' component="h1">
+          <Typography className={styles.Heading} component='h2'>
             Groceries Delivered in 90 Minute
           </Typography>
-          <Typography className={styles.Paragraph} variant='body1' component="p">
+          <Typography className={styles.Paragraph} component='p'>
             Get your healthy foods & snacks delivered at your doorsteps all day everyday
           </Typography>
           <Box className={styles.Search__box}>

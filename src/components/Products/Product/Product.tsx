@@ -23,7 +23,7 @@ export default function Product({ product } : { product: IProduct }) {
           ) : <span className={styles.Price}></span> }
         </div>
         <Typography variant="body2" color='rgb(107,114,128)'>{product.name}</Typography>
-        <Button variant="contained" color="success">Add</Button>
+        <Button variant="contained" className={styles.Add__btn}>Add</Button>
       </div>
     </article>
   )
