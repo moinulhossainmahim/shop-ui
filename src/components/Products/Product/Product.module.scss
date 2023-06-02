@@ -1,0 +1,43 @@
+.ProductImg__container {
+  position: relative;
+  overflow: hidden;
+}
+
+.Offer__badge {
+  position: absolute !important;
+  top: 10px;
+  right: 25px;
+}
+
+.Product {
+  background-color: white;
+  padding: 15px 10px;
+}
+
+.Price {
+  &:first-child {
+    margin-right: 10px;
+  }
+  &:last-child {
+    color: rgb(156, 163, 175);
+    text-decoration: line-through;
+  }
+}
+
+.Product__details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0px 10px 10px 10px;
+  color: black;
+}
+
+.Product__img {
+  height: 231px !important;
+  cursor: pointer;
+  transform: scale(1);
+  transition: .2s ease-in transform;
+  &:hover {
+    transform: scale(1.08);
+  }
+}

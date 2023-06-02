@@ -1,0 +1,39 @@
+.ListItem {
+  padding-bottom: 0px !important;
+}
+
+.Accordian__summary {
+  padding: 0px !important;
+  min-height: auto !important;
+}
+
+.ListItem__button {
+  padding: 0px !important;
+}
+
+.ListItem__text {
+  padding: 0px 0px 0px 8px !important;
+  font-size: 15px !important;
+}
+
+.ListItem__icon {
+  min-width: auto !important;
+}
+
+.Accordian__details {
+  padding: 0px 0px 0px 30px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.Sidebar__child {
+  margin-bottom: 10px !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  color: #141a26 !important;
+  padding: 2px 5px !important;
+  text-align: left !important;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
