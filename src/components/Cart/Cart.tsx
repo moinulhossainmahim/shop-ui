@@ -20,7 +20,7 @@ export default function CartButton() {
           <span>
             <BsFillBagCheckFill size={20} color="white"/>
           </span>
-          <span>0 Item</span>
+          <span>2 Items</span>
         </div>
         <span>
           $0.00
@@ -37,7 +37,7 @@ export default function CartButton() {
               <span>
                 <BsFillBagCheckFill color='green' size={30} />
               </span>
-              <span className={styles.Item__text}>0 Items</span>
+              <span className={styles.Item__text}>2 Items</span>
             </Box>
             <Button className={styles.CartTop__cancelBtn} onClick={() => setIsOpen(false)}>
               <RxCross2 size={15}/>

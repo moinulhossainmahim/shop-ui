@@ -1,3 +1,5 @@
+@use '../../utils/variables';
+
 .Logo {
   height: 30px;
 }
@@ -12,8 +14,21 @@
 
 .Search__input {
   width: 276px;
+  background-color: variables.$color-dark-gray;
 }
 
 .Clear__searchValue, .SearchIcon {
   cursor: pointer;
+}
+
+.AppBar {
+  background-color: #fafafa !important;
+}
+
+.NavItems {
+  text-transform: capitalize !important;
+  color: variables.$color-text-heading !important;
+  &:focus {
+    outline: none;
+  }
 }

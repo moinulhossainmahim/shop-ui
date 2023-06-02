@@ -42,7 +42,7 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar className={styles.AppBar} position="static">
         <Toolbar>
           <Stack direction="row" width="33.3333%" alignItems="center">
             <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
@@ -72,24 +72,24 @@ function Header() {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
-                    borderColor: '#ffffff !important',
+                    borderColor: 'transparent!important',
                   },
                   '&:hover fieldset': {
-                    borderColor: '#fff',
+                    borderColor: 'rgb(31,41,55);',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: '#fff',
+                    borderColor: 'rgb(31,41,55);',
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: '#fff',
+                  color: 'rgb(31,41,55);',
                   fontSize: '16px',
                 },
                 '& label, label.Mui-focused': {
-                  color: '#fff',
+                  color: 'rgb(31,41,55);',
                 },
                 '& .MuiInput-underline:after': {
-                  borderBottomColor: '#fff',
+                  borderBottomColor: 'rgb(31,41,55);',
                 },
               }}
               InputProps={{
@@ -99,7 +99,7 @@ function Header() {
                       <MdClose
                         className={styles.Clear__searchValue}
                         size={25}
-                        color="white"
+                        color="rgb(31,41,55)"
                         onClick={() => {
                           setSearchValue('');
                         }}
@@ -108,7 +108,7 @@ function Header() {
                     )}
                     <IoMdSearch
                       className={styles.SearchIcon}
-                      color="white"
+                      color="rgb(31,41,55)"
                       size={30}
                     />
                   </InputAdornment>
@@ -119,7 +119,7 @@ function Header() {
           <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
+                <Button key={item} className={styles.NavItems}>
                   {item}
                 </Button>
               ))}

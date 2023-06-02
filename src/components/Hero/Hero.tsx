@@ -11,7 +11,7 @@ export default function Hero() {
     <Box className={styles.Hero__section}>
       <Box className={styles.Container}>
         <Box className={styles.Content}>
-          <Typography className={styles.Heading} component='h2'>
+          <Typography className={styles.Heading} component='h1' fontWeight='bold'>
             Groceries Delivered in 90 Minute
           </Typography>
           <Typography className={styles.Paragraph} component='p'>
@@ -25,6 +25,7 @@ export default function Hero() {
                     borderTopRightRadius: '0px',
                     borderBottomRightRadius: '0px',
                     borderRight: 'none',
+                    border: 'none',
                   },
                   '&.Mui-focused fieldset': {
                     border: '1px solid green',
