@@ -20,11 +20,12 @@ import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
 import InputAdornment from '@mui/material/InputAdornment';
+import classNames from 'classnames';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
-function Header() {
+function Header({ scrolled } : { scrolled: boolean }) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [page, setPage] = React.useState('Grocery');
   const [searchValue, setSearchValue] = React.useState('');
@@ -42,8 +43,14 @@ function Header() {
   };
 
   return (
-    <AppBar className={styles.AppBar} position="static">
-        <Toolbar>
+    <AppBar
+      className={
+        classNames(styles.AppBar,{
+          [styles.AppBar__scrolled]: scrolled
+      })}
+      position="fixed"
+    >
+        <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
             <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
             <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
@@ -59,7 +66,7 @@ function Header() {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center">
+          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"

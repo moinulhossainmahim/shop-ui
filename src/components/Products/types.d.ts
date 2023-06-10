@@ -5,4 +5,5 @@ export interface IProduct {
   discountPrice: string;
   regularPrice: string;
   offerPercent: string;
+  amount: number;
 }

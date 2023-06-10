@@ -15,7 +15,7 @@ import 'swiper/css';
 import 'swiper/scss/navigation';
 import styles from './ProductDetailsPopup.module.scss';
 import Product from '../Products/Product/Product';
-import { products } from './test-data';
+import { products } from '../Products/test-data';
 
 interface Props {
   isOpenProductDetails: boolean;

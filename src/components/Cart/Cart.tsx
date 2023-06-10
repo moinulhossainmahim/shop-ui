@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -10,8 +12,16 @@ import { HiPlusSm, HiMinusSm } from 'react-icons/hi'
 
 import styles from './Cart.module.scss';
 
+import { ReduxStore } from "../../redux/store";
+import { ProductToggleType } from "./types.d";
+import { removeProduct, toggleQuantity } from "../../redux/reducers/cart";
+import useGetCartTotal from "../../hooks/useGetCartTotal";
+
 export default function CartButton() {
+  const dispatch = useDispatch();
+  const { totalPrice } = useGetCartTotal();
   const [isOpen, setIsOpen] = useState(false)
+  const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
 
   return (
     <>
@@ -20,10 +30,10 @@ export default function CartButton() {
           <span>
             <BsFillBagCheckFill size={20} color="white"/>
           </span>
-          <span>2 Items</span>
+          <span>{cartItems.length} Items</span>
         </div>
         <span>
-          $0.00
+          ${totalPrice.toFixed(2)}
         </span>
       </Button>
       <Drawer
@@ -37,64 +47,60 @@ export default function CartButton() {
               <span>
                 <BsFillBagCheckFill color='green' size={30} />
               </span>
-              <span className={styles.Item__text}>2 Items</span>
+              <span className={styles.Item__text}>{cartItems.length} Items</span>
             </Box>
             <Button className={styles.CartTop__cancelBtn} onClick={() => setIsOpen(false)}>
               <RxCross2 size={15}/>
             </Button>
           </Stack>
           <div className={styles.Product__container}>
-            <Stack direction="row" className={styles.Product}>
-              <div className={styles.Product__left}>
-                <div className={styles.Product__amount}>
-                  <button className={styles.ProductAmount__btn}><HiPlusSm /></button>
-                  <span>1</span>
-                  <button className={styles.ProductAmount__btn}><HiMinusSm /></button>
+            {!cartItems.length && (
+              <Stack>
+                <Typography variant="h5">Empty cart</Typography>
+              </Stack>
+            )}
+            {cartItems.map((cartItem) => (
+              <Stack direction="row" className={styles.Product} key={cartItem.id}>
+                <div className={styles.Product__left}>
+                  <div className={styles.Product__amount}>
+                    <button
+                      className={styles.ProductAmount__btn}
+                      onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: cartItem.id }))}
+                    >
+                      <HiPlusSm />
+                    </button>
+                    <span>{cartItem.amount}</span>
+                    <button
+                      className={styles.ProductAmount__btn}
+                      onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.DECREMENT, id: cartItem.id }))}
+                    >
+                      <HiMinusSm />
+                    </button>
+                  </div>
+                  <div>
+                    <img className={styles.Product__img} src={cartItem.img} alt="cart-img1" />
+                  </div>
+                  <div className={styles.Product__details}>
+                    <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
+                    <span>{cartItem.discountPrice}</span>
+                  </div>
                 </div>
-                <div>
-                  <img className={styles.Product__img} src="https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F13%2Fconversions%2FGreenLimes-thumbnail.jpg&w=3840&q=75" alt="cart-img1" />
+                <div className={styles.Product__right}>
+                  <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.discountPrice.slice(1)) * cartItem.amount).toFixed(2)}</Typography>
+                  <Button
+                    className={styles.Product__cancel}
+                    onClick={() => dispatch(removeProduct({ id: cartItem.id }))}
+                  >
+                    <RxCross2 size={15}/>
+                  </Button>
                 </div>
-                <div className={styles.Product__details}>
-                  <Typography variant="subtitle1" fontWeight='bold'>Lime</Typography>
-                  <span>$1.50</span>
-                  <span>1 x 4pc(s)</span>
-                </div>
-              </div>
-              <div className={styles.Product__right}>
-                <Typography variant="subtitle1" fontWeight='bold'>$1.50</Typography>
-                <Button className={styles.Product__cancel}>
-                  <RxCross2 size={15}/>
-                </Button>
-              </div>
-            </Stack>
-            <Stack direction="row" className={styles.Product}>
-              <div className={styles.Product__left}>
-                <div className={styles.Product__amount}>
-                  <button className={styles.ProductAmount__btn}><HiPlusSm /></button>
-                  <span>1</span>
-                  <button className={styles.ProductAmount__btn}><HiMinusSm /></button>
-                </div>
-                <div>
-                  <img className={styles.Product__img} src="https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F19%2Fstrawberry.jpg&w=3840&q=75" alt="cart-img1" />
-                </div>
-                <div className={styles.Product__details}>
-                  <Typography variant="subtitle1" fontWeight='bold'>Strawberry</Typography>
-                  <span>$1.50</span>
-                  <span>1 x 4pc(s)</span>
-                </div>
-              </div>
-              <div className={styles.Product__right}>
-                <Typography variant="subtitle1" fontWeight='bold'>$1.50</Typography>
-                <Button className={styles.Product__cancel}>
-                  <RxCross2 size={15}/>
-                </Button>
-              </div>
-            </Stack>
+              </Stack>
+            ))}
           </div>
           <footer className={styles.Cart__footer}>
-            <Button  className={styles.Checkout__btn} variant="contained">
+            <Button  className={styles.Checkout__btn} variant="contained" disabled={totalPrice ? false : true}>
               <span>Checkout</span>
-              <Typography className={styles.CheckoutBtn__amount} variant="subtitle1" fontWeight='bold'>$3.00</Typography>
+              <Typography className={styles.CheckoutBtn__amount} variant="subtitle1" fontWeight='bold'>${totalPrice.toFixed(2)}</Typography>
             </Button>
           </footer>
         </section>

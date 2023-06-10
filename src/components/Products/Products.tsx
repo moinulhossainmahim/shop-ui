@@ -33,11 +33,13 @@ export default function Products() {
       <Main open={true}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            {products.map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
-                <Product product={product} />
-              </Grid>
-            ))}
+            {products.map((product) => {
+              return (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
+                  <Product product={product} />
+                </Grid>
+              )
+            })}
           </Grid>
         </Box>
       </Main>

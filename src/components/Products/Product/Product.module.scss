@@ -52,3 +52,35 @@
     outline: none;
   }
 }
+
+.Product__button {
+  all: unset;
+  cursor: pointer;
+  padding: 0em 0.9em;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  transition: .2s ease-in-out background-color;
+  &__left {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  &__right {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+}
+
+.Product__buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: variables.$color-accent;
+  color: white;
+  border-radius: 4px;
+  height: 38px;
+}
+
+.Product__button:hover {
+  background-color: variables.$color-accent-dark;
+}

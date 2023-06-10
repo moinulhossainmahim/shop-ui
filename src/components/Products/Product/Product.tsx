@@ -1,15 +1,34 @@
-import { useState } from "react";
-import Badge from "@mui/material/Badge";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
+import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
+import { MdDelete } from 'react-icons/md';
+import { IoMdAdd } from 'react-icons/io'
 
 import styles from './Product.module.scss'
 
 import { IProduct } from "../types.d";
 import ProductDetails from "../../ProductDetailsPopup";
+import { addProduct, removeProduct } from "../../../redux/reducers/cart";
+import { useSelector } from "react-redux";
+import { ReduxStore } from "../../../redux/store";
 
-export default function Product({ product } : { product: IProduct }) {
+interface Props {
+  product: IProduct;
+}
+
+export default function Product({ product } : Props) {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const [isOpenProductDetails, setIsOpenProductDetails] = useState(false);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+  useEffect(() => {
+    const isFound = cartItems.some(cartProduct => cartProduct.id === product.id);
+    setIsAddedToCart(isFound);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems.length])
 
   return (
     <>
@@ -28,7 +47,27 @@ export default function Product({ product } : { product: IProduct }) {
             ) : <span className={styles.Price}></span> }
           </div>
           <Typography variant="body2" color='rgb(107,114,128)'>{product.name}</Typography>
-          <Button variant="contained" className={styles.Add__btn}>Add</Button>
+          {isAddedToCart ? (
+            <Button
+              variant="contained"
+              color="warning"
+              startIcon={<MdDelete />}
+              onClick={() => {
+                dispatch(removeProduct({ id: product.id }))
+              }}
+            >Remove</Button>
+          ) : (
+            <Button
+              variant="contained"
+              className={styles.Add__btn}
+              startIcon={<IoMdAdd />}
+              onClick={() => {
+                dispatch(addProduct(product))
+              }}
+            >
+              Add
+            </Button>
+          )}
         </div>
       </article>
       <ProductDetails isOpenProductDetails={isOpenProductDetails} setIsOpenProductDetails={setIsOpenProductDetails} />
