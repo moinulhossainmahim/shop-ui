@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -6,6 +8,8 @@ import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack';
+import { MdDelete } from 'react-icons/md';
+import { IoMdAdd } from 'react-icons/io';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
@@ -14,21 +18,36 @@ import { AiOutlineHeart, AiTwotoneStar, AiTwotoneHeart } from 'react-icons/ai';
 import 'swiper/css';
 import 'swiper/scss/navigation';
 import styles from './ProductDetailsPopup.module.scss';
+
 import Product from '../Products/Product/Product';
 import { products } from '../Products/test-data';
+import { IProduct } from '../Products/types.d';
+import { ReduxStore } from '../../redux/store';
+import { addProduct, removeProduct } from '../../redux/reducers/cart';
+import { ModalKey, setModal } from '../../redux/reducers/modal';
 
 interface Props {
-  isOpenProductDetails: boolean;
-  setIsOpenProductDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  product: IProduct | null;
+  setActiveProduct: React.Dispatch<React.SetStateAction<IProduct | null>>;
 }
 
-export default function ProductDetails({ isOpenProductDetails, setIsOpenProductDetails } : Props) {
-  const [activeSwiper, setActiveSwiper] = useState<SwiperType>()
+export default function ProductDetailsPopup({ product, setActiveProduct } : Props) {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+  const open = useSelector((state: ReduxStore) => state.modal.ProductDetails);
+  const [activeSwiper, setActiveSwiper] = useState<SwiperType>();
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiperSlideStatus, setSwiperSlideStatus] = useState({ isBeginning: true, isEnd: false });
   const [isStared, setIsStared] = useState(false);
-  const [isShowSubstring, setIsShowSubtring] = useState(true)
+  const [isShowSubstring, setIsShowSubtring] = useState(true);
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
   const productDetails = 'clementine is a tangor, a citrus fruit hybrid between a willowleaf mandarin orange and a sweet orange, named for its late 19th-century discoverer. The exterior is a deep orange colour with a smooth, glossy appearance.'
+
+  useEffect(() => {
+    const isFound = cartItems.some(cartProduct => cartProduct.id === product?.id);
+    setIsAddedToCart(isFound);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems.length, product])
 
   const handlePreviewClick = (index: number) => {
     setActiveIndex(index);
@@ -39,8 +58,8 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
     <Dialog
       fullWidth={true}
       maxWidth='lg'
-      open={isOpenProductDetails}
-      onClose={() => setIsOpenProductDetails(false)}
+      open={open}
+      onClose={() => dispatch(setModal({ key: ModalKey.ProductDetails, value: false }))}
     >
       <Box>
         <Box className={styles.ProductDetailsTop__container}>
@@ -68,7 +87,7 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
                 }}
               >
                 <SwiperSlide>
-                  <img src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F742%2Fclementines_h74qrp.jpg&w=1080&q=75' alt="details-one" />
+                  <img src={product?.img} alt="details-one" />
                 </SwiperSlide>
                 <SwiperSlide>
                   <img src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F591%2FClementines-2.png&w=1080&q=75' alt="details-two" />
@@ -95,7 +114,7 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
               >
                 <SwiperSlide>
                   <img
-                    src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F742%2Fclementines_h74qrp.jpg&w=1080&q=75'
+                    src={product?.img}
                     className={classNames(styles.SlidePreview__image, {
                       [styles.Active__slide]: activeIndex === 0,
                     })}
@@ -138,7 +157,7 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
           </Box>
           <Box className={styles.ProductDetails__content}>
             <Box className={classNames(styles.ProductName, styles.Row)}>
-              <Typography variant='h5'>Clementines</Typography>
+              <Typography variant='h5'>{product?.name}</Typography>
               {isStared ? (
                 <AiTwotoneHeart size={30} className={
                   classNames(styles.Heart__icon, {
@@ -170,11 +189,35 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
               </Button>
             </Box>
             <Box className={styles.Product__amount}>
-              <span className={styles.Discount__price}>$2.50</span>
-              <span className={styles.Regular__price}>$3.00</span>
+              <span className={styles.Discount__price}>{product?.discountPrice}</span>
+              {product?.regularPrice ? (
+                <span className={styles.Regular__price}>{product.regularPrice}</span>
+              ) : null}
             </Box>
             <Box className={styles.Product__add}>
-              <Button variant='contained' className={styles.ProductDetails__btn}>Add To Shopping Cart</Button>
+            {isAddedToCart ? (
+              <Button
+                variant="contained"
+                color="warning"
+                startIcon={<MdDelete />}
+                onClick={() => {
+                  dispatch(removeProduct({ id: product?.id || ''}))
+                }}
+              >Remove</Button>
+            ) : (
+              <Button
+                variant="contained"
+                className={styles.ProductDetails__btn}
+                startIcon={<IoMdAdd />}
+                onClick={() => {
+                  if(product) {
+                    dispatch(addProduct(product))
+                  }
+                }}
+              >
+                Add To Shopping Cart
+              </Button>
+            )}
               <Typography variant='subtitle1' className={styles.TextBase}>50 pieces available</Typography>
             </Box>
             <Box className={styles.Categories}>
@@ -189,7 +232,8 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
         <Box className={styles.Details}>
           <Typography variant='h5' className={styles.Details__title}>Details</Typography>
           <Typography variant='subtitle1' className={styles.Details__description}>
-            clementine is a tangor, a citrus fruit hybrid between a willowleaf mandarin orange and a sweet orange, named for its late 19th-century discoverer. The exterior is a deep orange colour with a smooth, glossy appearance.
+            clementine is a tangor, a citrus fruit hybrid between a willowleaf mandarin orange and a sweet orange, named for its late 19th-century discoverer.
+            The exterior is a deep orange colour with a smooth, glossy appearance.
           </Typography>
         </Box>
         <Box className={styles.Related__products}>
@@ -198,7 +242,7 @@ export default function ProductDetails({ isOpenProductDetails, setIsOpenProductD
             <Grid container spacing={2}>
               {products.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                  <Product product={product} />
+                  <Product product={product}  setActiveProduct={setActiveProduct} />
                 </Grid>
               ))}
             </Grid>

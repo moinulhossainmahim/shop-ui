@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Badge from "@mui/material/Badge";
 import Typography from "@mui/material/Typography";
@@ -9,19 +10,18 @@ import { IoMdAdd } from 'react-icons/io'
 import styles from './Product.module.scss'
 
 import { IProduct } from "../types.d";
-import ProductDetails from "../../ProductDetailsPopup";
 import { addProduct, removeProduct } from "../../../redux/reducers/cart";
-import { useSelector } from "react-redux";
 import { ReduxStore } from "../../../redux/store";
+import { ModalKey, setModal } from "../../../redux/reducers/modal";
 
 interface Props {
   product: IProduct;
+  setActiveProduct: React.Dispatch<React.SetStateAction<IProduct | null>>;
 }
 
-export default function Product({ product } : Props) {
+export default function Product({ product, setActiveProduct } : Props) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
-  const [isOpenProductDetails, setIsOpenProductDetails] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,15 @@ export default function Product({ product } : Props) {
           { product.offerPercent ? (
             <Badge color="info" badgeContent={product.offerPercent} className={styles.Offer__badge} />
           ) : null}
-          <img onClick={() => setIsOpenProductDetails(true)} className={styles.Product__img} src={product.img} alt={product.name} loading="lazy" />
+          <img
+            onClick={() => {
+              dispatch(setModal({ key: ModalKey.ProductDetails, value: true }))
+              setActiveProduct(product);
+            }}
+            className={styles.Product__img}
+            src={product.img} alt={product.name}
+            loading="lazy"
+          />
         </div>
         <div className={styles.Product__details}>
           <div>
@@ -70,7 +78,6 @@ export default function Product({ product } : Props) {
           )}
         </div>
       </article>
-      <ProductDetails isOpenProductDetails={isOpenProductDetails} setIsOpenProductDetails={setIsOpenProductDetails} />
     </>
   )
 }

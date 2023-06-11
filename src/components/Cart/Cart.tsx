@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
@@ -19,6 +20,7 @@ import useGetCartTotal from "../../hooks/useGetCartTotal";
 
 export default function CartButton() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { totalPrice } = useGetCartTotal();
   const [isOpen, setIsOpen] = useState(false)
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
@@ -98,7 +100,7 @@ export default function CartButton() {
             ))}
           </div>
           <footer className={styles.Cart__footer}>
-            <Button  className={styles.Checkout__btn} variant="contained" disabled={totalPrice ? false : true}>
+            <Button  className={styles.Checkout__btn} variant="contained" disabled={totalPrice ? false : true} onClick={() => navigate('/checkout')}>
               <span>Checkout</span>
               <Typography className={styles.CheckoutBtn__amount} variant="subtitle1" fontWeight='bold'>${totalPrice.toFixed(2)}</Typography>
             </Button>

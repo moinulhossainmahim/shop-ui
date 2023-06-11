@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 
 import Product from './Product/Product';
 import { products } from './test-data';
+import { IProduct } from './types.d';
+import ProductDetailsPopup from '../ProductDetailsPopup/ProductDetailsPopup';
 
 const drawerWidth = 240;
 
@@ -28,6 +31,8 @@ const Main = styled('div', { shouldForwardProp: (prop) => prop !== 'open' })<{
 }));
 
 export default function Products() {
+  const [activeProduct, setActiveProduct] = useState<IProduct | null>(null);
+
   return (
     <>
       <Main open={true}>
@@ -36,13 +41,14 @@ export default function Products() {
             {products.map((product) => {
               return (
                 <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
-                  <Product product={product} />
+                  <Product product={product} setActiveProduct={setActiveProduct} />
                 </Grid>
               )
             })}
           </Grid>
         </Box>
       </Main>
+      <ProductDetailsPopup product={activeProduct} setActiveProduct={setActiveProduct} />
     </>
   )
 }

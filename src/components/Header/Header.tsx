@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,8 +22,6 @@ import { IoMdSearch } from 'react-icons/io';
 import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
-import InputAdornment from '@mui/material/InputAdornment';
-import classNames from 'classnames';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
@@ -52,7 +53,9 @@ function Header({ scrolled } : { scrolled: boolean }) {
     >
         <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
-            <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
+            <Link to='/'>
+              <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
+            </Link>
             <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
               <Select
                 labelId="demo-select-small-label"
