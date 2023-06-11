@@ -18,7 +18,7 @@ import { ProductToggleType } from "./types.d";
 import { removeProduct, toggleQuantity } from "../../redux/reducers/cart";
 import useGetCartTotal from "../../hooks/useGetCartTotal";
 
-export default function CartButton() {
+export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { totalPrice } = useGetCartTotal();

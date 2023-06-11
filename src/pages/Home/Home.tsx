@@ -1,5 +1,5 @@
 import CouponSlider from "../../components/CouponSlider";
-import CartButton from "../../components/Cart";
+import Cart from "../../components/Cart";
 import Hero from "../../components/Hero";
 import ProductsWithSidebar from "../../components/ProductsWithSidebar";
 
@@ -9,7 +9,7 @@ function App() {
       <Hero />
       <CouponSlider />
       <ProductsWithSidebar />
-      <CartButton />
+      <Cart />
     </>
   )
 }

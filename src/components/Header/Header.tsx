@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
@@ -27,6 +27,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
 function Header({ scrolled } : { scrolled: boolean }) {
+  const location = useLocation();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [page, setPage] = React.useState('Grocery');
   const [searchValue, setSearchValue] = React.useState('');
@@ -49,7 +50,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
         classNames(styles.AppBar,{
           [styles.AppBar__scrolled]: scrolled
       })}
-      position="fixed"
+      position={location.pathname === '/checkout' ? 'static' : 'fixed'}
     >
         <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
