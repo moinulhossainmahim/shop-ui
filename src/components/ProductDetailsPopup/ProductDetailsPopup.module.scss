@@ -1,0 +1,146 @@
+@use '../../utils/variables';
+
+.Button {
+  min-width: 35px !important;
+  height: 35px;
+  border-radius: 5555555px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.Button:hover {
+  background-color: rgb(203, 207, 206) !important;
+}
+
+img {
+  max-width: 100%;
+}
+
+.CouponSlider {
+  background-color: white;
+  width: 100%;
+}
+
+.SlidePreview__image {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid variables.$color-border-white;
+  width: 110px;
+}
+
+.Active__slide {
+  border-color: variables.$color-accent;
+}
+
+.ProductDetailsTop__container {
+  display: flex;
+  padding: 20px 0px;
+  border-bottom: 1px solid variables.$color-border-white;
+}
+
+.ProductSlide__wrapper {
+  width: 50%;
+}
+
+.Heart__icon {
+  color: variables.$color-accent;
+  border: 1px solid variables.$color-border-white;
+  border-radius: 2222222px;
+  cursor: pointer;
+  padding: 2px;
+  &__active {
+    border-color: variables.$color-accent;
+  }
+}
+
+.ProductDetails__content {
+  padding: 20px 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.Row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProductDetails__btn {
+  background-color: variables.$color-accent !important;
+}
+
+.TextBase {
+  color: variables.$color-text-base;
+  line-height: 1.75rem !important;
+}
+
+.Btn__less {
+  color: variables.$color-accent !important;
+  border: 1px solid variables.$color-accent !important;
+  margin-top: 10px !important;
+}
+
+.Product__amount {
+  display: flex;
+  align-items: center;
+}
+
+.Discount__price {
+  font-size: 25px;
+  font-weight: bold;
+  margin-right: 10px;
+  color: variables.$color-accent !important;
+}
+
+.Regular__price {
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.Product__add {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid variables.$color-border-white;
+}
+
+.Categories {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  Button {
+    color: variables.$color-accent !important;
+    border: 1px solid variables.$color-accent !important;
+    margin-top: 10px;
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
+Button {
+  text-transform: none !important;
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.Details {
+  padding: 40px;
+  border-bottom: 1px solid variables.$color-border-white;
+  &__title {
+    margin-bottom: 20px !important;
+  }
+  &__description {
+    color: rgb(107, 114, 128);
+    line-height: 1.75rem !important;
+  }
+}
+
+.Related__products {
+  padding: 40px;
+  &__text {
+    margin-bottom: 20px !important;
+  }
+}

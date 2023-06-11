@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,12 +22,11 @@ import { IoMdSearch } from 'react-icons/io';
 import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
-import InputAdornment from '@mui/material/InputAdornment';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
-function Header() {
+function Header({ scrolled } : { scrolled: boolean }) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [page, setPage] = React.useState('Grocery');
   const [searchValue, setSearchValue] = React.useState('');
@@ -42,10 +44,18 @@ function Header() {
   };
 
   return (
-    <AppBar position="static">
-        <Toolbar>
+    <AppBar
+      className={
+        classNames(styles.AppBar,{
+          [styles.AppBar__scrolled]: scrolled
+      })}
+      position="fixed"
+    >
+        <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
-            <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
+            <Link to='/'>
+              <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
+            </Link>
             <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
               <Select
                 labelId="demo-select-small-label"
@@ -59,7 +69,7 @@ function Header() {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center">
+          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"
@@ -72,24 +82,24 @@ function Header() {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
-                    borderColor: '#ffffff !important',
+                    borderColor: 'transparent!important',
                   },
                   '&:hover fieldset': {
-                    borderColor: '#fff',
+                    borderColor: 'rgb(31,41,55);',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: '#fff',
+                    borderColor: 'rgb(31,41,55);',
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: '#fff',
+                  color: 'rgb(31,41,55);',
                   fontSize: '16px',
                 },
                 '& label, label.Mui-focused': {
-                  color: '#fff',
+                  color: 'rgb(31,41,55);',
                 },
                 '& .MuiInput-underline:after': {
-                  borderBottomColor: '#fff',
+                  borderBottomColor: 'rgb(31,41,55);',
                 },
               }}
               InputProps={{
@@ -99,7 +109,7 @@ function Header() {
                       <MdClose
                         className={styles.Clear__searchValue}
                         size={25}
-                        color="white"
+                        color="rgb(31,41,55)"
                         onClick={() => {
                           setSearchValue('');
                         }}
@@ -108,7 +118,7 @@ function Header() {
                     )}
                     <IoMdSearch
                       className={styles.SearchIcon}
-                      color="white"
+                      color="rgb(31,41,55)"
                       size={30}
                     />
                   </InputAdornment>
@@ -119,7 +129,7 @@ function Header() {
           <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
+                <Button key={item} className={styles.NavItems}>
                   {item}
                 </Button>
               ))}

@@ -1,3 +1,5 @@
+@use '../../utils/variables';
+
 .Hero__section {
   background: url('/grocery.webp');
   background-size: cover;
@@ -31,6 +33,7 @@
 
 .Search__input {
   flex: 1;
+  background-color: white !important;
 }
 
 .Search__button {
@@ -38,4 +41,8 @@
   border-bottom-left-radius: 0px !important;
   padding: 10px 22px !important;
   text-transform: none !important;
+  background-color: variables.$color-accent !important;
+  &:focus {
+    outline: none;
+  }
 }
