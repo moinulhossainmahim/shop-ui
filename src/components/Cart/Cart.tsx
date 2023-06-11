@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Drawer from '@mui/material/Drawer';
 import Typography from "@mui/material/Typography";
-import { BsFillBagCheckFill } from 'react-icons/bs'
+import { BsFillBagCheckFill, BsBagXFill } from 'react-icons/bs'
 import { RxCross2 } from 'react-icons/rx'
 import { HiPlusSm, HiMinusSm } from 'react-icons/hi'
 
@@ -57,8 +57,9 @@ export default function CartButton() {
           </Stack>
           <div className={styles.Product__container}>
             {!cartItems.length && (
-              <Stack>
-                <Typography variant="h5">Empty cart</Typography>
+              <Stack className={styles.Empty__cart}>
+                <BsBagXFill className={styles.Empty__bag} />
+                <Typography variant="h5">No products found</Typography>
               </Stack>
             )}
             {cartItems.map((cartItem) => (

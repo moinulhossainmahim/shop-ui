@@ -151,3 +151,15 @@
 .Item__text {
   font-weight: bold;
 }
+
+.Empty__cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Empty__bag {
+  font-size: 50px;
+  color: variables.$color-accent;
+  margin-bottom: 20px;
+}
