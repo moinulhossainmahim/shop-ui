@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
@@ -6,10 +7,12 @@ import styles from './Profile.module.scss';
 
 import UpdateProfilePopup from "../../components/UpdateProfilePopup/UpdateProfilePopup";
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
-import ProfilePicture from '../../assets/profile1.jpg';
+import { ModalKey, setModal } from "../../redux/reducers/modal";
+import { IProfileFormData, initialFormData } from "./types.d";
 
 export default function Profile() {
-  const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
+  const [profileFormData, setProfileFormData] = useState<IProfileFormData>(initialFormData);
 
   return (
     <>
@@ -22,23 +25,23 @@ export default function Profile() {
             </div>
             <div className={styles.Profile__details}>
               <div>
-                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>First name:</b> Moinul</Typography>
-                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Last name:</b> Hossain</Typography>
-                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Email:</b> moinuhossain@example.com</Typography>
-                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Phone Number:</b> +8801732748262</Typography>
+                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>First name:</b> {profileFormData.firstName}</Typography>
+                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Last name:</b> {profileFormData.lastName}</Typography>
+                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Email:</b> {profileFormData.email}</Typography>
+                <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Phone Number:</b> {profileFormData.phoneNumber}</Typography>
               </div>
               <div>
                 <Typography variant="subtitle1" fontWeight='bold'>Profile Image</Typography>
-                <img className={styles.Profile__img} src={ProfilePicture} alt="profile-img" />
+                <img className={styles.Profile__img} src={typeof profileFormData.image === 'string' ? profileFormData.image : URL.createObjectURL(profileFormData.image)} alt="profile-img" />
               </div>
             </div>
             <div className={styles.EditButton__box}>
-              <Button className={styles.Profile__btn} size="large" variant="contained" onClick={() => setIsEditing(true)}>Edit Profile</Button>
+              <Button className={styles.Profile__btn} size="large" variant="contained" onClick={() => dispatch(setModal({ key: ModalKey.ProfileEditPopup, value: true }))}>Edit Profile</Button>
             </div>
           </div>
         </div>
       </div>
-      <UpdateProfilePopup isEditing={isEditing} setIsEditing={setIsEditing} />
+      <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
     </>
   )
 }
