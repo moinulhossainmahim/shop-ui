@@ -1,0 +1,114 @@
+@use '../../utils/variables';
+
+.Product__img {
+  width: 80px;
+}
+
+.Product {
+  align-items: center;
+  padding: 12px 15px
+}
+
+.Product__left {
+  display: flex;
+  flex: 1;
+  gap: 30px;
+  align-items: center;
+}
+
+.Product__details {
+  display: flex;
+  flex-direction: column;
+  span {
+    font-size: 14px;
+  }
+}
+
+.Product__right {
+  display: flex;
+  gap: 10px;
+  span {
+    font-size: 14px;
+  }
+}
+
+.Order {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.Checkout__container {
+  height: calc(100vh - 64px);
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(243,244,246);
+}
+
+.Checkout__content {
+  display: flex;
+  width: 80%;
+  height: 70%;
+  justify-content: center;
+  gap: 50px;
+}
+
+.Checkout__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.Checkout__form, .Order {
+  background-color: white;
+  height: 100%;
+}
+
+.CheckoutForm__container, .CheckoutOrder__container {
+  width: 510px;
+}
+
+.CheckoutOrder__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.Order__btn {
+  background-color: variables.$color-accent !important;
+}
+
+.Product__container {
+  flex: 1;
+  max-height: 462px;
+  overflow-y: auto;
+  border-bottom: 1px solid rgb(224, 213, 213);
+}
+
+.InpputIn__row {
+  display: flex;
+  gap: 10px;
+  &__textfield {
+    width: 50%;
+  }
+}
+
+.Notes {
+  background-color: white !important;
+  color: black !important;
+  font-size: 12px;
+  border-radius: 5px;
+  border: 1px solid variables.$color-border-white !important;
+}
+
+.Price {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold !important;
+}
