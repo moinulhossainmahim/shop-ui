@@ -80,6 +80,10 @@ export default function Checkout() {
                 <span>${totalPrice.toFixed(2)}</span>
               </Typography>
               <Typography variant="subtitle1" className={styles.Price}>
+                <span>Discout</span>
+                <span>$0.00</span>
+              </Typography>
+              <Typography variant="subtitle1" className={styles.Price}>
                 <span>Total</span>
                 <span>${totalPrice.toFixed(2)}</span>
               </Typography>

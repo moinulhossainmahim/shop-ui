@@ -1,0 +1,57 @@
+@use '../../utils/variables';
+
+.ProfilePage {
+  width: 100vw;
+  height: calc(100vh - 64px);
+  display: flex;
+  padding: 5% 10% 5% 10%;
+  gap: 30px;
+  background-color: variables.$color-dark-bg;
+  justify-content: center;
+}
+
+.Profile {
+  padding: 2%;
+  width: 65%;
+  height: 80%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: variables.$white-card-shadow;
+}
+
+.Profile__img {
+  width: 200px;
+  height: 230px;
+  object-fit: cover;
+}
+
+.Profile__btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+  width: 20%;
+}
+
+.Details__text {
+  border-bottom: 1px solid variables.$color-border-white;
+  padding: 20px 0px;
+}
+
+.Profile__details {
+  padding: 20px 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ProfileDetials__text {
+  padding: 2px 0px !important;
+}
+
+.EditButton__box {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.ProfileEdit {
+  margin-top: 10px;
+}
