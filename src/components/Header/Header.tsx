@@ -86,21 +86,21 @@ function Header({ scrolled } : { scrolled: boolean }) {
                     borderColor: 'transparent!important',
                   },
                   '&:hover fieldset': {
-                    borderColor: 'rgb(31,41,55);',
+                    borderColor: 'rgb(31,41,55)',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: 'rgb(31,41,55);',
+                    borderColor: 'rgb(31,41,55)',
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: 'rgb(31,41,55);',
+                  color: 'rgb(31,41,55)',
                   fontSize: '16px',
                 },
                 '& label, label.Mui-focused': {
                   color: 'rgb(31,41,55);',
                 },
                 '& .MuiInput-underline:after': {
-                  borderBottomColor: 'rgb(31,41,55);',
+                  borderBottomColor: 'rgb(31,41,55)',
                 },
               }}
               InputProps={{
