@@ -1,4 +1,4 @@
-import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
+import { StatusType } from "../../components/OrderStatusChipButton/OrderStatusChipButton";
 
 interface IOrder {
   id: string;

@@ -76,3 +76,41 @@
     margin-left: auto;
   }
 }
+
+.Order__status {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 15px;
+  background-color: variables.$color-dark-gray;
+  border-radius: 5px;
+  &__title {
+    margin-right: 10px;
+  }
+}
+
+.Address__payment {
+  display: flex;
+  padding: 27px 0px 0px 0px;
+}
+
+.Address {
+  width: 60%;
+  border-right: 1px solid variables.$color-border-white;
+}
+
+.Payment {
+  width: 40%;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  &__item {
+    font-size: 14px !important;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.Address__title {
+  font-size: 14px !important;
+}
