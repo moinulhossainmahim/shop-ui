@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 
 import styles from './OrderStatusChip.module.scss';
+import { renderStatusName } from '../OrderStatusChipButton/OrderStatusChipButton';
 
 export enum StatusType {
   Processing = 'Processing',
@@ -10,7 +11,7 @@ export enum StatusType {
 
 interface Props {
   type: StatusType;
-  content: string;
+  content?: string;
 }
 
 export default function OrderStatusChip({ type, content } : Props) {
@@ -22,7 +23,7 @@ export default function OrderStatusChip({ type, content } : Props) {
         [styles.OrderStatusBtn__canceled]: type === StatusType.Canceled,
       })}
     >
-      {content}
+      {content ? content : renderStatusName(type)}
     </span>
   )
 }

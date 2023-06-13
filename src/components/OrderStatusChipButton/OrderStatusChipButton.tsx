@@ -25,7 +25,8 @@ export default function OrderStatusChipButton({ type } : Props) {
   )
 }
 
-function renderStatusName(type: StatusType) {
+// eslint-disable-next-line react-refresh/only-export-components
+export function renderStatusName(type: StatusType) {
   switch(type) {
     case StatusType.Processing:
       return 'Order Processing';

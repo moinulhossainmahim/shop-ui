@@ -114,3 +114,39 @@
 .Address__title {
   font-size: 14px !important;
 }
+
+.TableBody__row {
+  &:hover {
+    background-color: variables.$color-dark-gray;
+  }
+}
+
+.TableContainer {
+  margin-top: 20px;
+}
+
+.TableHead {
+  background-color: variables.$color-dark-gray;
+}
+
+.TableCell__product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  &__img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+  }
+  &__details {
+    display: flex;
+    flex-direction: column;
+    &__price {
+      font-weight: bold;
+    }
+  }
+}
+
+.TableCell {
+  padding: 10px !important;
+}

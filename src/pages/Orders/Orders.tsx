@@ -4,6 +4,13 @@ import { orders } from './test-data';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import styles from './Orders.module.scss';
 
@@ -65,11 +72,12 @@ export default function Orders() {
         </Stack>
       </div>
       <div className={styles.OrderDetails}>
+        <div>
           <Typography variant='h6' py={2}>Order Details - 202306131822</Typography>
           <div className={styles.Order__status}>
             <Typography variant='subtitle1' fontWeight="bold">
               <span className={styles.Order__status__title}>Order Status: </span>
-              <OrderStatusChip type={activeOrder.status} content='Order Processing' />
+              <OrderStatusChip type={activeOrder.status} />
             </Typography>
             <Typography variant='subtitle1' fontWeight="bold">
               <span className={styles.Order__status__title}>Payment Status: </span>
@@ -105,6 +113,65 @@ export default function Orders() {
             </div>
           </div>
           <Divider />
+        </div>
+        <TableContainer sx={{ maxHeight: 450 }} className={styles.TableContainer} component={Paper}>
+          <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead className={styles.TableHead}>
+              <TableRow>
+                <TableCell>Item</TableCell>
+                <TableCell align='center'>Quantity</TableCell>
+                <TableCell align='center'>Price</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow className={styles.TableBody__row}>
+                <TableCell className={styles.TableCell}>
+                  <div className={styles.TableCell__product}>
+                    <div>
+                      <img  className={styles.TableCell__product__img} src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F462%2Fconversions%2FSafari-thumbnail.jpg&w=3840&q=75' alt="img" />
+                    </div>
+                    <div className={styles.TableCell__product__details}>
+                      <span>Safari Ash Single Sofa</span>
+                      <span className={styles.TableCell__product__details__price}>$280.00</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell align='center'>10</TableCell>
+                <TableCell align='center'>$100.20</TableCell>
+              </TableRow>
+              <TableRow className={styles.TableBody__row}>
+                <TableCell className={styles.TableCell}>
+                  <div className={styles.TableCell__product}>
+                    <div>
+                      <img  className={styles.TableCell__product__img} src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F103%2Fconversions%2FArmani_leather_purse-thumbnail.jpg&w=3840&q=75' alt="img" />
+                    </div>
+                    <div className={styles.TableCell__product__details}>
+                      <span>Armani Leather purse</span>
+                      <span className={styles.TableCell__product__details__price}>$40.00</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell align='center'>10</TableCell>
+                <TableCell align='center'>$100.20</TableCell>
+              </TableRow>
+              <TableRow className={styles.TableBody__row}>
+                <TableCell className={styles.TableCell}>
+                  <div className={styles.TableCell__product}>
+                    <div>
+                      <img  className={styles.TableCell__product__img} src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F1%2Fconversions%2FApples-thumbnail.jpg&w=3840&q=75' alt="img" />
+                    </div>
+                    <div className={styles.TableCell__product__details}>
+                      <span>Apples</span>
+                      <span className={styles.TableCell__product__details__price}>$1.60</span>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell align='center'>10</TableCell>
+                <TableCell align='center'>$100.20</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   )
