@@ -34,6 +34,7 @@ export default function ProfileSidebar() {
         className={classNames(styles.Sidebar__item, {
           [styles.Sidebar__item__active]: location.pathname === '/orders',
         })}
+        onClick={() => navigate('/orders')}
       >
         My Orders
       </Link>
