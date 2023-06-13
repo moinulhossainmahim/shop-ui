@@ -22,6 +22,7 @@ import { IoMdSearch } from 'react-icons/io';
 import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
+import ProfileImage from '../../assets/profile1.jpg';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
@@ -138,7 +139,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" />
+                  <Avatar alt="Remy Sharp" src={ProfileImage} />
                 </IconButton>
               </Tooltip>
               <Menu

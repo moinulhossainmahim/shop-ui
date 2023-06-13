@@ -23,13 +23,13 @@
     color: variables.$color-accent !important;
   }
   &__active::after {
-      position: absolute;
-      text-align: center;
-      content: '';
-      width: 4px;
-      height: 80%;
-      left: 0;
-      top: 10%;
-      background-color: variables.$color-accent;
+    position: absolute;
+    text-align: center;
+    content: '';
+    width: 4px;
+    height: 80%;
+    left: 0;
+    top: 10%;
+    background-color: variables.$color-accent;
   }
 }

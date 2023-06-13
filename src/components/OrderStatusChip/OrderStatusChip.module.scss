@@ -1,0 +1,17 @@
+@use '../../utils/variables';
+
+.OrderStatusBtn {
+  padding: 0.6em 0.5em;
+  border-radius: 10000px;
+  font-size: 12px;
+  color: variables.$color-border-white;
+  &__processing {
+    background-color: variables.$color-order-processing;
+  }
+  &__completed {
+    background-color: variables.$color-order-completed;
+  }
+  &__canceled {
+    background-color: variables.$color-order-canceled;
+  }
+}
