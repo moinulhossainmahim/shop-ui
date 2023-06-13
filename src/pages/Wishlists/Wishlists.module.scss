@@ -1,6 +1,6 @@
 @use '../../utils/variables';
 
-.ChangePasswordPage {
+.Wishlists__page {
   width: 100vw;
   height: calc(100vh - 64px);
   display: flex;
@@ -9,25 +9,11 @@
   background-color: variables.$color-dark-bg;
 }
 
-.ChangePassword {
+.Wishlists {
   padding: 2%;
   width: 80%;
   height: 80%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
-}
-
-.Form__container {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-.SubmitBtn__box {
-  margin-top: 20px;
-  text-align: end;
-  &__btn {
-    background-color: variables.$color-accent !important;
-  }
 }
