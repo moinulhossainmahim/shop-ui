@@ -1,0 +1,35 @@
+@use '../../utils/variables';
+
+.Sidebar__container {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0px !important;
+  width: 20%;
+  border-radius: 5px;
+  background-color: white;
+  height: 50%;
+  box-shadow: variables.$white-card-shadow;
+}
+
+.Sidebar__item {
+  text-decoration: none !important;
+  color: black !important;
+  padding: 10px 10px 10px 30px!important;
+  font-weight: 500 !important;
+  width: 100%;
+  text-align: left !important;
+  transition: 0.2s ease-in-out color;
+  &:hover {
+    color: variables.$color-accent !important;
+  }
+  &__active::after {
+      position: absolute;
+      text-align: center;
+      content: '';
+      width: 4px;
+      height: 80%;
+      left: 0;
+      top: 10%;
+      background-color: variables.$color-accent;
+  }
+}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
@@ -23,11 +23,11 @@ import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
 function Header({ scrolled } : { scrolled: boolean }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [page, setPage] = React.useState('Grocery');
   const [searchValue, setSearchValue] = React.useState('');
@@ -50,7 +50,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
         classNames(styles.AppBar,{
           [styles.AppBar__scrolled]: scrolled
       })}
-      position={location.pathname === '/checkout' ? 'static' : 'fixed'}
+      position={location.pathname !== '/' ? 'static' : 'fixed'}
     >
         <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
@@ -86,21 +86,21 @@ function Header({ scrolled } : { scrolled: boolean }) {
                     borderColor: 'transparent!important',
                   },
                   '&:hover fieldset': {
-                    borderColor: 'rgb(31,41,55);',
+                    borderColor: 'rgb(31,41,55)',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: 'rgb(31,41,55);',
+                    borderColor: 'rgb(31,41,55)',
                   },
                 },
                 '& .MuiOutlinedInput-input': {
-                  color: 'rgb(31,41,55);',
+                  color: 'rgb(31,41,55)',
                   fontSize: '16px',
                 },
                 '& label, label.Mui-focused': {
                   color: 'rgb(31,41,55);',
                 },
                 '& .MuiInput-underline:after': {
-                  borderBottomColor: 'rgb(31,41,55);',
+                  borderBottomColor: 'rgb(31,41,55)',
                 },
               }}
               InputProps={{
@@ -157,11 +157,41 @@ function Header({ scrolled } : { scrolled: boolean }) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    navigate('/profile')
+                  }}
+                >
+                    <Typography textAlign="center">Profile</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    navigate('/orders')
+                  }}
+                >
+                    <Typography textAlign="center">My Orders</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    navigate('/wishlists')
+                  }}
+                >
+                    <Typography textAlign="center">My Wishlists</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleCloseUserMenu()
+                    navigate('/checkout')
+                  }}
+                >
+                    <Typography textAlign="center">Checkout</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Stack>

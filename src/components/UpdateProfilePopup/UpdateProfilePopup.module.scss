@@ -1,0 +1,62 @@
+@use '../../utils/variables';
+
+.DialogDrag__area {
+  padding: 0px;
+  height: 180px;
+  border-radius: 4px;
+  border: 2px dashed variables.$color-accent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.dragOver {
+  background-color: variables.$color-dark-gray;
+}
+
+.Upload__icon {
+  color: variables.$color-accent;
+}
+
+.Upload__btn, .btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+}
+
+.Dialog__content {
+  padding: 40px !important;
+}
+
+.Form__container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px 0px;
+}
+
+.Button__container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.Preview__img {
+  max-width: 100%;
+  height: 150px;
+  object-fit: contain;
+}
+
+.Preview {
+  padding: 10px 0px;
+  position: relative;
+}
+
+.Cancel__icon {
+  font-size: 30px;
+  color: rgb(236, 107, 107);
+  position: absolute;
+  top: 0;
+  cursor: pointer;
+}

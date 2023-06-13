@@ -1,0 +1,1 @@
+export type UInputField = 'oldPassword' | 'newPassword' | 'confirmNewPassword';

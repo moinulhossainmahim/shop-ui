@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export enum ModalKey {
   ProductDetails = 'ProductDetails',
+  ProfileEditPopup = 'ProfileEditPopup',
 }
 
 interface IModalAction {
@@ -13,6 +14,7 @@ export type ModalStore = Record<ModalKey, boolean>;
 
 const initialState: ModalStore = {
   [ModalKey.ProductDetails]: false,
+  [ModalKey.ProfileEditPopup]: false,
 }
 
 const modalSlice = createSlice({
