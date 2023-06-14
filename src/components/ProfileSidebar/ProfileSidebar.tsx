@@ -43,6 +43,7 @@ export default function ProfileSidebar() {
         className={classNames(styles.Sidebar__item, {
           [styles.Sidebar__item__active]: location.pathname === '/wishlists',
         })}
+        onClick={() => navigate('/wishlists')}
       >
         My Wishlists
       </Link>
