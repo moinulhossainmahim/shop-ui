@@ -40,9 +40,10 @@ export default function Register() {
             type="email"
             variant="outlined"
             label="Email"
+            size="small"
             className={styles.LoginForm__input}
           />
-          <FormControl variant="outlined" className={styles.LoginForm__input}>
+          <FormControl size="small" variant="outlined" className={styles.LoginForm__input}>
             <InputLabel htmlFor='password'>password</InputLabel>
             <OutlinedInput
               id='password'
