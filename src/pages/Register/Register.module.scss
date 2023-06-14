@@ -1,0 +1,80 @@
+@use '../../utils/variables';
+
+.Register__btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+  width: 100%;
+  &:hover {
+    background-color: rgb(9 137 111) !important;
+  }
+}
+
+.PickBazar__logo {
+  width: 120px;
+}
+
+.Register__page {
+  height: calc(100vh - 64px);
+  width: 100vw;
+  background-color: variables.$color-dark-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Register__stack {
+  max-width: 420px;
+  height: 555px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: variables.$white-card-shadow;
+  padding: 2rem;
+  align-items: center;
+}
+
+.Register__title {
+  margin: 20px 0px !important;
+  font-style: italic;
+  color: variables.$color-text-base;
+}
+
+.RegisterForm__input {
+  margin-bottom: 30px !important;
+  width: 100%;
+}
+
+.InputLabel {
+  top: -8px !important;
+  &:focus {
+    top: 0 !important;
+  }
+}
+
+
+.OrTitle {
+  display: flex;
+  align-items: center;
+  margin: 20px 0px;
+  width: 100%;
+}
+
+.Horizontal__line {
+  width: 48%;
+  height: 1px;
+  background-color: #d1d1d1;
+}
+
+.OrText {
+  padding: 0 2%;
+  color: variables.$color-text-base;
+}
+
+.Login__link {
+  color: variables.$color-accent !important;
+  text-decoration-color: variables.$color-accent !important;
+  cursor: pointer;
+  &:hover {
+    text-decoration: none !important;
+    text-decoration-line: none !important;
+  }
+}
