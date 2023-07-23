@@ -1,8 +1,13 @@
-import { Button, Stack, TextField, TextareaAutosize, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import Typography from "@mui/material/Typography";
 
 import styles from './Checkout.module.scss';
-import { useSelector } from "react-redux";
+
 import { ReduxStore } from "../../redux/store";
 import useGetCartTotal from "../../hooks/useGetCartTotal";
 
@@ -19,20 +24,24 @@ export default function Checkout() {
             <TextField
               label='Name'
               variant="outlined"
+              size='small'
             />
             <TextField
               label='Phone'
               variant="outlined"
+              size='small'
             />
             <div className={styles.InpputIn__row}>
               <TextField
                 label='City'
                 variant="outlined"
+                size='small'
                 className={styles.InpputIn__row__textfield}
               />
               <TextField
                 label='State'
                 variant="outlined"
+                size='small'
                 className={styles.InpputIn__row__textfield}
               />
             </div>
@@ -40,11 +49,13 @@ export default function Checkout() {
               <TextField
                 label='Postal Code'
                 variant="outlined"
+                size='small'
                 className={styles.InpputIn__row__textfield}
               />
               <TextField
                 label='Street'
                 variant="outlined"
+                size='small'
                 className={styles.InpputIn__row__textfield}
               />
             </div>
