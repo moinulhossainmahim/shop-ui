@@ -20,11 +20,12 @@ import Products from '../Products/Products';
 const drawerWidth = 240;
 
 export default function Sidebar() {
-  const [open, setOpen] = React.useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [open] = React.useState(true);
   const [expanded, setExpanded] = React.useState<string>('panel1');
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : '');
     };
 
