@@ -23,6 +23,7 @@ import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
 import ProfileImage from '../../assets/profile1.jpg';
+import Logo from '../../assets/logo2.png';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
@@ -56,7 +57,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
         <Toolbar className={styles.Toolbar}>
           <Stack direction="row" width="33.3333%" alignItems="center">
             <Link to='/'>
-              <img className={styles.Logo} src="/PickBazar.webp" alt="pickbarazar-logo" />
+              <img className={styles.Logo} src={Logo} alt="shop-logo" />
             </Link>
             <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
               <Select
