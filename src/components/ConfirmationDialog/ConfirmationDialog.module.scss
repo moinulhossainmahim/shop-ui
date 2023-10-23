@@ -1,0 +1,27 @@
+@use '../../utils/variables';
+
+.Delete {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.Dialog__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+
+.Cancel__btn, .Delete__btn {
+  width: 50%;
+}
+
+.Delete__icon {
+  color: variables.$color-accent !important;
+}
+
+.Cancel__btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+}
