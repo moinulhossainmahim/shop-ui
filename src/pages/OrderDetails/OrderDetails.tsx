@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { AiOutlineHome } from 'react-icons/ai';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -18,7 +18,6 @@ import OrderStatusStepper from "../../components/OrderStatusStepper";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 
 export default function OrderDetails() {
-  const params = useParams();
   const navigate = useNavigate();
 
   return (
