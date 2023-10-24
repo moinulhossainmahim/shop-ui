@@ -4,9 +4,12 @@ import styles from './OrderStatusChip.module.scss';
 import { renderStatusName } from '../OrderStatusChipButton/OrderStatusChipButton';
 
 export enum StatusType {
-  Processing = 'Processing',
-  Completed = 'Completed',
-  Canceled = 'Canceled',
+  Processing = 'processing',
+  Completed = 'completed',
+  Canceled = 'canceled',
+  Pending = 'pending',
+  AtLocalFacility = 'atLocalFacility',
+  OutForDelivery = 'outForDelivery',
 }
 
 interface Props {

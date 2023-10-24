@@ -11,15 +11,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import { AiOutlineEye } from 'react-icons/ai';
 
 import styles from './Orders.module.scss';
 
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
 import OrderStatusChipButton from '../../components/OrderStatusChipButton';
 import OrderStatusChip, { StatusType } from '../../components/OrderStatusChip/OrderStatusChip';
+import { useNavigate } from 'react-router-dom';
 
 export default function Orders() {
   const [activeOrder, setActiveOrder] = useState(orders[0]);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.OrdersPage}>
@@ -73,7 +77,12 @@ export default function Orders() {
       </div>
       <div className={styles.OrderDetails}>
         <div>
-          <Typography variant='h6' py={2}>Order Details - 202306131822</Typography>
+          <div className={styles.Order__top}>
+            <Typography variant='h6'>Order Details - 202306131822</Typography>
+            <Button className={styles.Details__btn} variant='text' startIcon={<AiOutlineEye />} onClick={() => navigate(`${activeOrder.id}`)}>
+              Details
+            </Button>
+          </div>
           <div className={styles.Order__status}>
             <Typography variant='subtitle1' fontWeight="bold">
               <span className={styles.Order__status__title}>Order Status: </span>

@@ -92,8 +92,8 @@ export default function Checkout() {
                       <IconButton aria-label="delete" className={styles.Btn}>
                         <MdModeEdit className={styles.Edit__btn} />
                       </IconButton>
-                      <IconButton aria-label="delete" className={styles.Btn}>
-                        <RxCross2 className={styles.Delete__btn} onClick={() => setIsOpenConfirmation(true)}/>
+                      <IconButton aria-label="delete" className={styles.Btn} onClick={() => setIsOpenConfirmation(true)}>
+                        <RxCross2 className={styles.Delete__btn}/>
                       </IconButton>
                     </Box>
                   </Box>
@@ -120,8 +120,8 @@ export default function Checkout() {
                       <IconButton aria-label="delete" className={styles.Btn}>
                         <MdModeEdit className={styles.Edit__btn} />
                       </IconButton>
-                      <IconButton aria-label="delete" className={styles.Btn}>
-                        <RxCross2 className={styles.Delete__btn} onClick={() => setIsOpenConfirmation(true)}/>
+                      <IconButton aria-label="delete" className={styles.Btn} onClick={() => setIsOpenConfirmation(true)}>
+                        <RxCross2 className={styles.Delete__btn}/>
                       </IconButton>
                     </Box>
                   </Box>
