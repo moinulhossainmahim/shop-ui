@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
@@ -16,9 +17,18 @@ import Button from "@mui/material/Button";
 
 import styles from './Login.module.scss';
 
+import { IRegisterForm } from "../Register/types";
+
+import { SagaActions } from "../../redux/sagas/actions";
+
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName'>>({
+    email: '',
+    password: '',
+  })
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -27,6 +37,10 @@ export default function Register() {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
+  function handleLogin() {
+    dispatch({ type: SagaActions.Login, payload: loginFormData });
+  }
 
   return (
     <Box className={styles.Login__page}>
@@ -42,12 +56,16 @@ export default function Register() {
             label="Email"
             size="small"
             className={styles.LoginForm__input}
+            value={loginFormData.email}
+            onChange={(e) => setLoginFormData({ ...loginFormData, email: e.target.value })}
           />
           <FormControl size="small" variant="outlined" className={styles.LoginForm__input}>
             <InputLabel htmlFor='password'>password</InputLabel>
             <OutlinedInput
               id='password'
               type={showPassword ? 'text' : 'password'}
+              value={loginFormData.password}
+              onChange={(e) => setLoginFormData({ ...loginFormData, password: e.target.value })}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -63,7 +81,7 @@ export default function Register() {
               label="password"
             />
           </FormControl>
-          <Button className={styles.Login__btn} size="large">Login</Button>
+          <Button className={styles.Login__btn} size="large" onClick={handleLogin}>Login</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />

@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
@@ -16,9 +17,18 @@ import Button from "@mui/material/Button";
 
 import styles from './Register.module.scss';
 
+import { IRegisterForm } from "./types";
+import { SagaActions } from "../../redux/sagas/actions";
+
 export default function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [registerFormData, setRegisterFormData] = useState<IRegisterForm>({
+    fullName: '',
+    email: '',
+    password: '',
+  })
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -27,6 +37,10 @@ export default function Register() {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
+  function handleAccountRegister() {
+    dispatch({ type: SagaActions.Register, payload: registerFormData });
+  }
 
   return (
     <Box className={styles.Register__page}>
@@ -39,9 +53,11 @@ export default function Register() {
           <TextField
             type="text"
             variant="outlined"
-            label="Name"
+            label="Full Name"
             size="small"
             className={styles.RegisterForm__input}
+            value={registerFormData.fullName}
+            onChange={(e) => setRegisterFormData({ ...registerFormData, fullName: e.target.value })}
           />
           <TextField
             type="email"
@@ -49,12 +65,16 @@ export default function Register() {
             label="Email"
             size="small"
             className={styles.RegisterForm__input}
+            value={registerFormData.email}
+            onChange={(e) => setRegisterFormData({ ...registerFormData, email: e.target.value })}
           />
           <FormControl variant="outlined" className={styles.RegisterForm__input} size="small">
             <InputLabel htmlFor='password'>password</InputLabel>
             <OutlinedInput
               id='password'
               type={showPassword ? 'text' : 'password'}
+              value={registerFormData.password}
+              onChange={(e) => setRegisterFormData({ ...registerFormData, password: e.target.value })}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -70,7 +90,7 @@ export default function Register() {
               label="password"
             />
           </FormControl>
-          <Button className={styles.Register__btn} size="large">Register</Button>
+          <Button className={styles.Register__btn} size="large" onClick={handleAccountRegister}>Register</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />
