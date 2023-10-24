@@ -1,12 +1,15 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { SagaActions } from "./actions";
-import { API_BASE_URL } from "../../constants";
+import { API_BASE_URL, USE_AUTH } from "../../constants";
 import { IRegisterForm } from "../../pages/Register/types";
-import { setAuthData } from "../reducers/auth";
+import { registerUser, setAuthData, setUserProfile } from "../reducers/auth";
+import { ReduxStore } from "../store";
+import { IUser } from "../../pages/Login/types";
 
 interface RegisterResponse {
-  isRegistered: boolean;
-  message: '';
+  success: boolean;
+  message: string;
+  content: [];
 }
 
 interface RegisterAction {
@@ -22,11 +25,11 @@ interface LoginResponse {
   }
 }
 
-// interface ProfileResponse {
-//   message: string;
-//   success: boolean;
-//   content: ICustomer[];
-// }
+interface ProfileResponse {
+  message: string;
+  success: boolean;
+  content: IUser[];
+}
 
 interface LoginAction {
   type: SagaActions.Login;
@@ -49,7 +52,11 @@ export function* register(action: RegisterAction): any {
     )
     if(result.ok) {
       const response: RegisterResponse = yield result.json();
-      console.log(response);
+      if(response.success)
+      yield put(registerUser({
+        isRegistered: response.success,
+        message: response.message,
+      }))
     }
   } catch (error) {
     console.log(error);
@@ -79,34 +86,35 @@ export function* login(action: LoginAction): any {
           isAuthenticated: response.success,
         }))
       }
-      // yield call(fetchProfile);
     }
   } catch (error) {
     console.log(error);
   }
 }
 
-// export function* fetchProfile(): any {
-//   const token = yield select((state: ReduxStore) => state.auth.token);
-//   try {
-//     const result = yield call(
-//       fetch,
-//       `${API_BASE_URL}/users/profile`,
-//       {
-//         method: 'GET',
-//         headers: new Headers({
-//           ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
-//           'Accept': 'application/json',
-//         }),
-//       },
-//     )
-//     const response: ProfileResponse = yield result.json();
-//     yield put(setUserProfile({
-//       message: response.message,
-//       isProfileFetched: response.success,
-//       user: response.content[0],
-//     }))
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+export function* fetchProfile(): any {
+  const token = yield select((state: ReduxStore) => state.auth.token);
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/users/profile`,
+      {
+        method: 'GET',
+        headers: new Headers({
+          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
+          'Accept': 'application/json',
+        }),
+      },
+    )
+    const response: ProfileResponse = yield result.json();
+    if(response.success) {
+      yield put(setUserProfile({
+        message: response.message,
+        isProfileFetched: response.success,
+        user: response.content[0],
+      }))
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

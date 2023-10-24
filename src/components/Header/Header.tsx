@@ -1,5 +1,8 @@
-import * as React from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import InputAdornment from '@mui/material/InputAdornment';
 import AppBar from '@mui/material/AppBar';
@@ -24,15 +27,19 @@ import styles from './Header.module.scss'
 import { pageOptions } from './test-data';
 import ProfileImage from '../../assets/profile1.jpg';
 import Logo from '../../assets/logo2.png';
+import { ReduxStore } from '../../redux/store';
+import { setAuthData } from '../../redux/reducers/auth';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
 function Header({ scrolled } : { scrolled: boolean }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const [page, setPage] = React.useState('Grocery');
-  const [searchValue, setSearchValue] = React.useState('');
+  const dispatch = useDispatch();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [page, setPage] = useState('Grocery');
+  const [searchValue, setSearchValue] = useState('');
+  const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
 
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value);
@@ -129,7 +136,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               }}
             />
           </Stack>
-          <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end">
+          <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end" gap={3}>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
                 <Button key={item} className={styles.NavItems}>
@@ -138,11 +145,15 @@ function Header({ scrolled } : { scrolled: boolean }) {
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={ProfileImage} />
-                </IconButton>
-              </Tooltip>
+              {isAuthenticated ? (
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src={ProfileImage} />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Button variant='contained' className={styles.Login__btn} onClick={() => navigate('/login')}>Login</Button>
+              )}
               <Menu
                 sx={{ mt: '45px' }}
                 id="menu-appbar"
@@ -191,7 +202,14 @@ function Header({ scrolled } : { scrolled: boolean }) {
                 >
                     <Typography textAlign="center">Checkout</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={() => {
+                  handleCloseUserMenu()
+                  dispatch(setAuthData({
+                    token: '',
+                    message: '',
+                    isAuthenticated: false,
+                  }))
+                }}>
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               </Menu>

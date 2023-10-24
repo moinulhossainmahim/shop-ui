@@ -40,3 +40,8 @@
 .Toolbar {
   justify-content: space-between;
 }
+
+.Login__btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+}

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
@@ -20,11 +21,13 @@ import styles from './Login.module.scss';
 import { IRegisterForm } from "../Register/types";
 
 import { SagaActions } from "../../redux/sagas/actions";
+import { ReduxStore } from "../../redux/store";
 
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName'>>({
     email: '',
     password: '',
@@ -41,6 +44,12 @@ export default function Register() {
   function handleLogin() {
     dispatch({ type: SagaActions.Login, payload: loginFormData });
   }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated])
 
   return (
     <Box className={styles.Login__page}>
