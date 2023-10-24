@@ -1,12 +1,13 @@
 @use '../../utils/variables';
 
-.OrdersPage {
+.OrderDetails__page {
   width: 100vw;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   display: flex;
   padding: 4rem 10rem;
-  gap: 30px;
-  background-color: variables.$color-dark-bg;
+  background-color: rgb(243, 244, 246);
+  flex-direction: column;
+  align-items: center;
 }
 
 .Orders {
@@ -17,17 +18,21 @@
 }
 
 .OrderDetails {
-  padding: 2%;
-  width: 60%;
+  width: 75%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
+}
+
+.OrderDetails__bottom {
+  padding: 2% 4%;
 }
 
 .OrderStatus {
   display: flex;
   justify-content: space-between;
   padding-bottom: 8px;
+  background-color: rgb(217 217 217);
   align-items: center;
   &__p {
     margin: 0px;
@@ -94,12 +99,11 @@
 }
 
 .Address {
-  width: 60%;
-  border-right: 1px solid variables.$color-border-white;
+  width: 50%;
 }
 
 .Payment {
-  width: 40%;
+  width: 50%;
   padding-left: 20px;
   display: flex;
   flex-direction: column;
@@ -123,10 +127,7 @@
 
 .TableContainer {
   margin-top: 20px;
-}
-
-.TableHead {
-  background-color: variables.$color-dark-gray;
+  padding: 2%;
 }
 
 .TableCell__product {
@@ -159,4 +160,50 @@
   display: flex;
   justify-content: space-between;
   margin: 2rem 0;
+}
+
+.BackToHome__div {
+  width: 100%;
+}
+
+.BackToHome__btn {
+  color: variables.$color-accent !important;
+}
+
+.Card {
+  padding: 1rem 1.25rem;
+  border-radius: 2px;
+  box-shadow: variables.$white-card-shadow;
+  width: 220px;
+  border: 1px solid rgba(229,231,235, 1);
+}
+
+.Order__cards {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0px;
+}
+
+.Card__value {
+  color: variables.$color-text-base;
+  font-size: .875rem;
+  line-height: 1.25rem;
+}
+
+.Card__heading {
+  color: rgb(47 49 52);
+}
+
+.Payment__paragraph {
+  color: rgb(66 66 66);
+  display: flex;
+  &__title {
+    width: 33.33333%;
+  }
+  &__value {
+    width: 66.666667%;
+    margin-left: 20px;
+    font-size: .875rem;
+    line-height: 1.25rem;
+  }
 }

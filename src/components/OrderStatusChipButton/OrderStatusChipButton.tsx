@@ -1,11 +1,8 @@
 import classNames from 'classnames';
+
 import styles from './OrderStatusChipButton.module.scss';
 
-export enum StatusType {
-  Processing = 'Processing',
-  Completed = 'Completed',
-  Canceled = 'Canceled',
-}
+import { StatusType } from '../OrderStatusChip/OrderStatusChip';
 
 interface Props {
   type: StatusType;

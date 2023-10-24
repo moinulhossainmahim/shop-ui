@@ -10,6 +10,7 @@ import Wishlists from "../../pages/Wishlists/Wishlists";
 import Orders from "../../pages/Orders/Orders";
 import Register from "../../pages/Register/Register";
 import Login from "../../pages/Login";
+import OrderDetails from "../../pages/OrderDetails";
 
 export default function Router() {
   const [scrolled, setIsScrolled] = useState(false)
@@ -42,6 +43,7 @@ export default function Router() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
         <Route path="*" element={<h1>Ooops! it's a dead end!</h1>} />
       </Routes>
     </>

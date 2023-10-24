@@ -1,6 +1,6 @@
 import { v4 as uuid4 } from "uuid";
 import { IOrder } from "./types.d";
-import { StatusType } from "../../components/OrderStatusChipButton/OrderStatusChipButton";
+import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 
 export const orders: IOrder[] = [
   {

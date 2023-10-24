@@ -1,0 +1,18 @@
+@use '../../utils/variables';
+
+.Checkout__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.AddressDialog {
+  padding: 2rem 1rem !important;
+}
+
+.Update__btn {
+  background-color: variables.$color-accent !important;
+  color: white !important;
+}
