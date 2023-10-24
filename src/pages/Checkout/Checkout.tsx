@@ -12,20 +12,30 @@ import { TextareaAutosize } from "@mui/material";
 
 import styles from './Checkout.module.scss';
 
-
 import { ReduxStore } from "../../redux/store";
 import useGetCartTotal from "../../hooks/useGetCartTotal";
 import CreateAddressPopup from "../../components/CreateAddressPopup";
 import { IAddressFormData } from "./types";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import UpdateContactPopup from "../../components/UpdateContactPopup";
+import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 
 export default function Checkout() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
   const [openType, setOpenType] = useState('');
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
-  const [contact, setContact] = useState('+8801732748262')
+  const [contact, setContact] = useState('+8801732748262');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
+    type: '',
+    title: '',
+    country: '',
+    state: '',
+    zip: '',
+    city: '',
+    street: '',
+  });
   const [formData, setFormData] = useState<IAddressFormData>({
     type: '',
     title: '',
@@ -177,7 +187,19 @@ export default function Checkout() {
         </Box>
       </Box>
       <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
-      <CreateAddressPopup isOpen={isOpen} setIsOpen={setIsOpen} type={openType} formData={formData} setFormData={setFormData}  />
+      <CreateAddressPopup
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        type={openType}
+        formData={formData}
+        setFormData={setFormData}
+      />
+      <UpdateAdressPopup
+        isEditing={isEditing}
+        setIsEditng={setIsEditing}
+        editingAddress={editingAddress}
+        setEditingAddress={setEditingAddress}
+      />
       <ConfirmationDialog isOpen={isOpenConfirmation} setIsOpen={setIsOpenConfirmation} />
     </>
   )
