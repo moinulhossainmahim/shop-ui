@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BsFillCloudArrowUpFill } from "react-icons/bs";
@@ -13,7 +14,8 @@ import styles from './UpdateProfilePopup.module.scss';
 
 import { ReduxStore } from "../../redux/store";
 import { ModalKey, setModal } from "../../redux/reducers/modal";
-import { IProfileFormData, initialFormData } from "../../pages/Profile/types.d";
+import { IProfileFormData } from "../../pages/Profile/types.d";
+import { SagaActions } from "../../redux/sagas/actions";
 
 interface Props {
   profileFormData: IProfileFormData;
@@ -23,15 +25,30 @@ interface Props {
 export default function UpdateProfilePopup({ profileFormData, setProfileFormData } : Props) {
   const dispatch = useDispatch();
   const open = useSelector((state: ReduxStore) => state.modal.ProfileEditPopup);
+  const { user } = useSelector((state: ReduxStore) => state.auth);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragEnter, setDragEnter] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File>();
-  const { firstName, lastName, email, phoneNumber, image } = profileFormData;
+  const { fullName, email, avatar } = profileFormData;
 
   function handleDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setUploadedFile(Array.from(event.dataTransfer.files)[0]);
     setDragEnter(false);
+  }
+
+  function handleProfileUpdate() {
+    const newFormData = new FormData();
+    if(uploadedFile) {
+      newFormData.append('avatar', uploadedFile)
+    }
+    if(fullName !== user.fullName) {
+      newFormData.append('fullName', profileFormData.fullName);
+    }
+    if(email !== user.email) {
+      newFormData.append('email', email);
+    }
+    dispatch({ type: SagaActions.UpdateProfile, payload: { id: user.id, formData: newFormData }})
   }
 
   useEffect(() => {
@@ -84,26 +101,22 @@ export default function UpdateProfilePopup({ profileFormData, setProfileFormData
                 <GiCancel className={styles.Cancel__icon} onClick={() => setUploadedFile(undefined)} />
               </>
             ) : (
-              <img src={image} alt="profile-img" className={styles.Preview__img} />
+              <>
+                {avatar ? (
+                  <img src={typeof avatar === 'string' ? avatar : undefined} alt="profile-img" className={styles.Preview__img} />
+                ) : null}
+              </>
             )}
           </div>
           <div className={styles.ProfileEdit__form}>
 						<form noValidate className={styles.Form__container}>
 							<TextField
-								label='First name'
-								variant="outlined"
-								size='small'
-								type="text"
-                value={firstName}
-                onChange={(e) => setProfileFormData({ ...profileFormData, firstName: e.target.value })}
-							/>
-							<TextField
-								label='Last name'
+								label='Full Name'
 								variant="outlined"
 								size='small'
 								type='text'
-                value={lastName}
-                onChange={(e) => setProfileFormData({ ...profileFormData, lastName: e.target.value })}
+                value={fullName}
+                onChange={(e) => setProfileFormData({ ...profileFormData, fullName: e.target.value })}
 							/>
 							<TextField
 								label='Email'
@@ -113,14 +126,14 @@ export default function UpdateProfilePopup({ profileFormData, setProfileFormData
                 value={email}
                 onChange={(e) => setProfileFormData({ ...profileFormData, email: e.target.value })}
 							/>
-							<TextField
+							{/* <TextField
 								label='Phone number'
 								variant="outlined"
 								size='small'
 								type="tel"
                 value={phoneNumber}
                 onChange={(e) => setProfileFormData({ ...profileFormData, phoneNumber: e.target.value })}
-							/>
+							/> */}
 						</form>
           </div>
 					<div className={styles.Button__container}>
@@ -129,10 +142,14 @@ export default function UpdateProfilePopup({ profileFormData, setProfileFormData
               color="warning"
               onClick={() => {
                 dispatch(setModal({ key: ModalKey.ProfileEditPopup, value: false }))
-                setProfileFormData(initialFormData)
+                setProfileFormData({
+                  fullName: user.fullName,
+                  email: user.email,
+                  avatar: user.avatar,
+                })
               }}
             >Cancel</Button>
-						<Button variant="contained" color="success">Update</Button>
+						<Button variant="contained" color="success" onClick={handleProfileUpdate}>Update</Button>
 					</div>
         </div>
       </Dialog>

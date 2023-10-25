@@ -2,7 +2,7 @@
 
 .ProfilePage {
   width: 100vw;
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
   display: flex;
   padding: 4rem 10rem;
   gap: 30px;
@@ -12,7 +12,7 @@
 .Profile {
   padding: 2%;
   width: 80%;
-  height: 80%;
+  height: 60%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
@@ -36,7 +36,7 @@
 }
 
 .Profile__details {
-  padding: 20px 15%;
+  padding: 20px 8%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,10 +47,113 @@
 }
 
 .EditButton__box {
-  text-align: center;
+  text-align: end;
   margin-top: 20px;
 }
 
 .ProfileEdit {
   margin-top: 10px;
+}
+
+.Contact__container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 80%;
+}
+
+.Contact__container__top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Contact__top__left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.Number {
+  background-color: variables.$color-accent;
+  width: 30px;
+  height: 30px;
+  border-radius: 222220px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.UpdateBtn {
+  color: variables.$color-accent !important;
+}
+
+.ProfileInfo__container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  gap: 2rem;
+}
+
+.Address {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: variables.$color-dark-bg;
+  border: 1px solid variables.$color-dark-bg;
+}
+
+.Address:hover {
+  border: 1px solid variables.$color-accent;
+}
+
+.Address__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+}
+
+.Edit__btn, .Delete__btn {
+  font-size: 25px;
+  padding: 4px;
+}
+
+.Edit__btn {
+  background-color: variables.$color-accent !important;
+  color: white;
+  border-radius: 22222px;
+  margin-right: 10px;
+}
+
+.Delete__btn {
+  background-color: red;
+  color: white;
+  border-radius: 222222px;
+}
+
+.Btn {
+  padding: 0px !important
+}
+
+.Address__container {
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.Btn__container {
+  display: none;
+  transition: .1s ease-in-out display;
+}
+
+.Address:hover {
+  .Btn__container {
+    display: block;
+  }
 }

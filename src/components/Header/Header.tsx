@@ -25,10 +25,10 @@ import { IoMdSearch } from 'react-icons/io';
 import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
-import ProfileImage from '../../assets/profile1.jpg';
 import Logo from '../../assets/logo2.png';
 import { ReduxStore } from '../../redux/store';
-import { setAuthData } from '../../redux/reducers/auth';
+import { registerUser, setAuthData, setUserProfile } from '../../redux/reducers/auth';
+import { UserStatusType } from '../../pages/Login/types.d';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
@@ -40,6 +40,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
   const [page, setPage] = useState('Grocery');
   const [searchValue, setSearchValue] = useState('');
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
+  const user = useSelector((state: ReduxStore) => state.auth.user);
 
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value);
@@ -148,7 +149,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               {isAuthenticated ? (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src={ProfileImage} />
+                    <Avatar alt={user.fullName} src={user.avatar} />
                   </IconButton>
                 </Tooltip>
               ) : (
@@ -209,6 +210,24 @@ function Header({ scrolled } : { scrolled: boolean }) {
                     message: '',
                     isAuthenticated: false,
                   }))
+                  dispatch(registerUser({
+                    isRegistered: false,
+                    message: '',
+                  }))
+                  dispatch(setUserProfile({
+                    isProfileFetched: false,
+                    user: {
+                      id: "",
+                      avatar: "",
+                      fullName: "",
+                      email: "",
+                      status: UserStatusType.Active,
+                      userType: '',
+                      address: []
+                    },
+                    message: '',
+                  }))
+                  navigate('/');
                 }}>
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>

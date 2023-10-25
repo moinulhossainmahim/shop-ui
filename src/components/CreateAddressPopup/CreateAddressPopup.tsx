@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
@@ -10,21 +11,35 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import styles from './CreateAddressPopup.module.scss';
+
 import { IAddressFormData } from '../../pages/Checkout/types';
+import { SagaActions } from '../../redux/sagas/actions';
+import { useSelector } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
+import { ModalKey, setModal } from '../../redux/reducers/modal';
 
 interface Props {
-  isOpen: boolean;
-  type: string;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  type?: string;
   formData: IAddressFormData;
   setFormData: React.Dispatch<React.SetStateAction<IAddressFormData>>;
 }
 
-export default function ProductDetailsPopup({ isOpen, type, setFormData, setIsOpen, formData } : Props) {
+export default function ProductDetailsPopup({ type, setFormData, formData } : Props) {
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state: ReduxStore) => state.modal.CreateAddressPopup);
+
+  function handleCreateAddress() {
+    dispatch({ type: SagaActions.CreateAddress, payload: formData });
+  }
+
+  useEffect(() => {
+    setFormData({ ...formData, addressType: type ? type : 'shipping' })
+  }, [type])
+
   return (
     <Dialog
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: false }))}
     >
       <div className={styles.AddressDialog}>
         <Typography variant='h5' fontWeight="bold" textAlign="center">Add New Address</Typography>
@@ -43,8 +58,8 @@ export default function ProductDetailsPopup({ isOpen, type, setFormData, setIsOp
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              value={type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              value={formData.addressType}
+              onChange={(e) => setFormData({ ...formData, addressType: e.target.value })}
             >
               <FormControlLabel value="billing" control={<Radio />} label="Billing" />
               <FormControlLabel value="shipping" control={<Radio />} label="Shipping" />
@@ -91,12 +106,12 @@ export default function ProductDetailsPopup({ isOpen, type, setFormData, setIsOp
             label='Street'
             variant="outlined"
             size='medium'
-            value={formData.street}
-            onChange={(e) => setFormData({ ...formData, street: e.target.value })}
+            value={formData.streetAddress}
+            onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
             className={styles.InpputIn__row__textfield}
             fullWidth
           />
-          <Button className={styles.Update__btn} size='large'>Update Address</Button>
+          <Button className={styles.Update__btn} size='large' onClick={handleCreateAddress}>Create Address</Button>
         </form>
       </div>
     </Dialog>

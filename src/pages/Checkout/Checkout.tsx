@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
@@ -19,39 +20,36 @@ import { IAddressFormData } from "./types";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import UpdateContactPopup from "../../components/UpdateContactPopup";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
+import { ModalKey, setModal } from "../../redux/reducers/modal";
+import { parseAddress } from "../../utils/parseAddress";
 
 export default function Checkout() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
+  const dispatch = useDispatch();
   const [openType, setOpenType] = useState('');
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const [contact, setContact] = useState('+8801732748262');
-  const [isEditing, setIsEditing] = useState(false);
+  const [activeAddressID, setActiveAddressID] = useState('');
+  const user = useSelector((state: ReduxStore) => state.auth.user);
   const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
-    type: '',
+    addressType: '',
     title: '',
     country: '',
     state: '',
     zip: '',
     city: '',
-    street: '',
+    streetAddress: '',
   });
   const [formData, setFormData] = useState<IAddressFormData>({
-    type: '',
+    addressType: '',
     title: '',
     country: '',
     state: '',
     zip: '',
     city: '',
-    street: '',
+    streetAddress: '',
   })
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const { totalPrice } = useGetCartTotal();
-
-  function handleCreateAddress(type: string) {
-    setIsOpen(true);
-    setOpenType(type);
-  }
 
   return (
     <>
@@ -82,25 +80,48 @@ export default function Checkout() {
                   <Box className={styles.Number}>2</Box>
                   <Typography variant="h5">Billing Address</Typography>
                 </Box>
-                <Button className={styles.UpdateBtn} onClick={() => handleCreateAddress('billing')}>+ Add</Button>
+                <Button className={styles.UpdateBtn} onClick={() => {
+                  setOpenType('billing')
+                  dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: true }))
+                }}>
+                  + Add
+                </Button>
               </Box>
-              <Stack className={styles.Address__container}>
-                <Box className={styles.Address}>
-                  <Box className={styles.Address__top}>
-                    <Typography variant="subtitle2" fontWeight="bold">Test title</Typography>
-                    <Box className={styles.Btn__container}>
-                      <IconButton aria-label="delete" className={styles.Btn}>
-                        <MdModeEdit className={styles.Edit__btn} />
-                      </IconButton>
-                      <IconButton aria-label="delete" className={styles.Btn} onClick={() => setIsOpenConfirmation(true)}>
-                        <RxCross2 className={styles.Delete__btn}/>
-                      </IconButton>
+              <Stack className={styles.Address__container} direction='row'>
+                {user.address.map((addr) => {
+                  if(addr.addressType === 'billing') {
+                    return (
+                    <Box className={styles.Address}>
+                      <Box className={styles.Address__top}>
+                        <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
+                        <Box className={styles.Btn__container}>
+                          <IconButton
+                            aria-label="delete"
+                            className={styles.Btn}
+                            onClick={() => {
+                              setEditingAddress(addr);
+                              dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: true }));
+                            }}
+                          >
+                            <MdModeEdit className={styles.Edit__btn} />
+                          </IconButton>
+                          <IconButton aria-label="delete" className={styles.Btn} onClick={() => {
+                            setActiveAddressID(addr.id)
+                            dispatch(setModal({ key: ModalKey.ConfirmationPopup, value: true }))
+                          }}>
+                            <RxCross2 className={styles.Delete__btn}/>
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Typography variant="subtitle1" padding="10px 0px">{parseAddress(addr)}</Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                  <Box>
-                    <Typography variant="subtitle1" padding="10px 0px">Iraq, NCR, Parañaque, 1709, Philippines</Typography>
-                  </Box>
-                </Box>
+                    )
+                  } else {
+                    return null;
+                  }
+                })}
               </Stack>
             </Box>
 
@@ -110,25 +131,48 @@ export default function Checkout() {
                   <Box className={styles.Number}>3</Box>
                   <Typography variant="h5">Shipping Address</Typography>
                 </Box>
-                <Button className={styles.UpdateBtn} onClick={() => handleCreateAddress('shipping')}>+ Add</Button>
+                <Button className={styles.UpdateBtn} onClick={() => {
+                  setOpenType('shipping')
+                  dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: true }))
+                }}>
+                  + Add
+                </Button>
               </Box>
-              <Stack className={styles.Address__container}>
-                <Box className={styles.Address}>
-                  <Box className={styles.Address__top}>
-                    <Typography variant="subtitle2" fontWeight="bold">Test title</Typography>
-                    <Box className={styles.Btn__container}>
-                      <IconButton aria-label="delete" className={styles.Btn}>
-                        <MdModeEdit className={styles.Edit__btn} />
-                      </IconButton>
-                      <IconButton aria-label="delete" className={styles.Btn} onClick={() => setIsOpenConfirmation(true)}>
-                        <RxCross2 className={styles.Delete__btn}/>
-                      </IconButton>
+              <Stack className={styles.Address__container} direction='row'>
+                {user.address.map((addr) => {
+                  if(addr.addressType === 'shipping') {
+                    return (
+                    <Box className={styles.Address} key={addr.id}>
+                      <Box className={styles.Address__top}>
+                        <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
+                        <Box className={styles.Btn__container}>
+                          <IconButton
+                            aria-label="delete"
+                            className={styles.Btn}
+                            onClick={() => {
+                              setEditingAddress(addr);
+                              dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: true }));
+                            }}
+                          >
+                            <MdModeEdit className={styles.Edit__btn} />
+                          </IconButton>
+                          <IconButton aria-label="delete" className={styles.Btn} onClick={() => {
+                            setActiveAddressID(addr.id)
+                            dispatch(setModal({ key: ModalKey.ConfirmationPopup, value: true }))
+                          }}>
+                            <RxCross2 className={styles.Delete__btn}/>
+                          </IconButton>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Typography variant="subtitle1" padding="10px 0px">{parseAddress(addr)}</Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                  <Box>
-                    <Typography variant="subtitle1" padding="10px 0px">Iraq, NCR, Parañaque, 1709, Philippines</Typography>
-                  </Box>
-                </Box>
+                    )
+                  } else {
+                    return null;
+                  }
+                })}
               </Stack>
             </Box>
 
@@ -187,20 +231,9 @@ export default function Checkout() {
         </Box>
       </Box>
       <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
-      <CreateAddressPopup
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        type={openType}
-        formData={formData}
-        setFormData={setFormData}
-      />
-      <UpdateAdressPopup
-        isEditing={isEditing}
-        setIsEditng={setIsEditing}
-        editingAddress={editingAddress}
-        setEditingAddress={setEditingAddress}
-      />
-      <ConfirmationDialog isOpen={isOpenConfirmation} setIsOpen={setIsOpenConfirmation} />
+      <CreateAddressPopup type={openType} formData={formData} setFormData={setFormData} />
+      <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
+      <ConfirmationDialog name="address" id={activeAddressID} />
     </>
   )
 }

@@ -17,7 +17,7 @@ import Button from "@mui/material/Button";
 
 import styles from './Register.module.scss';
 
-import { IRegisterForm } from "./types";
+import { IRegisterForm } from "./types.d";
 import { SagaActions } from "../../redux/sagas/actions";
 
 export default function Register() {
@@ -40,6 +40,7 @@ export default function Register() {
 
   function handleAccountRegister() {
     dispatch({ type: SagaActions.Register, payload: registerFormData });
+    navigate('/login');
   }
 
   return (
