@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import Box from "@mui/material/Box";
@@ -5,9 +6,13 @@ import Link from "@mui/material/Link";
 
 import styles from './ProfileSidebar.module.scss';
 
+import { UserStatusType } from "../../pages/Login/types.d";
+import { setAuthData, registerUser, setUserProfile } from "../../redux/reducers/auth";
+
 export default function ProfileSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return(
     <Box className={styles.Sidebar__container}>
@@ -47,7 +52,32 @@ export default function ProfileSidebar() {
       >
         My Wishlists
       </Link>
-      <Link component='button' className={styles.Sidebar__item}>
+      <Link component='button' className={styles.Sidebar__item}
+        onClick={() => {
+          dispatch(setAuthData({
+            token: '',
+            message: '',
+            isAuthenticated: false,
+          }))
+          dispatch(registerUser({
+            isRegistered: false,
+            message: '',
+          }))
+          dispatch(setUserProfile({
+            isProfileFetched: false,
+            user: {
+              id: "",
+              avatar: "",
+              fullName: "",
+              email: "",
+              status: UserStatusType.Active,
+              userType: '',
+              address: []
+            },
+            message: '',
+          }))
+        }}
+      >
         Logout
       </Link>
     </Box>

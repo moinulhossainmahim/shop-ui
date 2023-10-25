@@ -9,6 +9,7 @@ export interface AuthStore {
   message: string,
   isRegistered: boolean,
   isProfileFetched: boolean,
+  isProfileUpdated: boolean,
 }
 
 const initialState: AuthStore = {
@@ -26,13 +27,14 @@ const initialState: AuthStore = {
   message: '',
   isRegistered: false,
   isProfileFetched: false,
+  isProfileUpdated: false,
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuthData: (state, action: PayloadAction<Omit<AuthStore, 'user' | 'isRegistered' | 'isProfileFetched'>>) => {
+    setAuthData: (state, action: PayloadAction<Omit<AuthStore, 'user' | 'isRegistered' | 'isProfileFetched' | 'isProfileUpdated'>>) => {
       state.isAuthenticated = action.payload.isAuthenticated;
       state.token = action.payload.token;
       state.message = action.payload.message;
@@ -46,9 +48,14 @@ const authSlice = createSlice({
       state.isProfileFetched = action.payload.isProfileFetched;
       state.message = action.payload.message;
     },
+    updateUserProfile: (state, action: PayloadAction<Pick<AuthStore, 'user' | 'isProfileUpdated' | 'message'>>) => {
+      state.user = action.payload.user;
+      state.isProfileUpdated = action.payload.isProfileUpdated;
+      state.message = action.payload.message;
+    },
   }
 })
 
-export const { setAuthData, registerUser, setUserProfile } = authSlice.actions;
+export const { setAuthData, registerUser, setUserProfile, updateUserProfile } = authSlice.actions;
 
 export default authSlice.reducer;

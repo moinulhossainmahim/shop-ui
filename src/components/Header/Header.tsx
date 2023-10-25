@@ -28,7 +28,8 @@ import { pageOptions } from './test-data';
 import ProfileImage from '../../assets/profile1.jpg';
 import Logo from '../../assets/logo2.png';
 import { ReduxStore } from '../../redux/store';
-import { setAuthData } from '../../redux/reducers/auth';
+import { registerUser, setAuthData, setUserProfile } from '../../redux/reducers/auth';
+import { UserStatusType } from '../../pages/Login/types.d';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
@@ -208,6 +209,23 @@ function Header({ scrolled } : { scrolled: boolean }) {
                     token: '',
                     message: '',
                     isAuthenticated: false,
+                  }))
+                  dispatch(registerUser({
+                    isRegistered: false,
+                    message: '',
+                  }))
+                  dispatch(setUserProfile({
+                    isProfileFetched: false,
+                    user: {
+                      id: "",
+                      avatar: "",
+                      fullName: "",
+                      email: "",
+                      status: UserStatusType.Active,
+                      userType: '',
+                      address: []
+                    },
+                    message: '',
                   }))
                 }}>
                     <Typography textAlign="center">Logout</Typography>

@@ -14,7 +14,7 @@ import { IAddressFormData } from '../../pages/Checkout/types';
 
 interface Props {
   isOpen: boolean;
-  type: string;
+  type?: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   formData: IAddressFormData;
   setFormData: React.Dispatch<React.SetStateAction<IAddressFormData>>;
@@ -43,7 +43,7 @@ export default function ProductDetailsPopup({ isOpen, type, setFormData, setIsOp
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              value={type}
+              value={formData.type}
               onChange={(e) => setFormData({ ...formData, type: e.target.value })}
             >
               <FormControlLabel value="billing" control={<Radio />} label="Billing" />
@@ -96,7 +96,7 @@ export default function ProductDetailsPopup({ isOpen, type, setFormData, setIsOp
             className={styles.InpputIn__row__textfield}
             fullWidth
           />
-          <Button className={styles.Update__btn} size='large'>Update Address</Button>
+          <Button className={styles.Update__btn} size='large'>Create Address</Button>
         </form>
       </div>
     </Dialog>
