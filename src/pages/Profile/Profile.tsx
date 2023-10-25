@@ -23,13 +23,14 @@ import { MdModeEdit } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { parseAddress } from "../../utils/parseAddress";
+import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 
 export default function Profile() {
   const dispatch = useDispatch();
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const { user, isProfileFetched } = useSelector((state: ReduxStore) => state.auth);
   const [contact, setContact] = useState('+8801732748262');
-  const [activeAddress, setActiveAddress] = useState('');
+  const [activeAddressID, setActiveAddressID] = useState('');
   const [profileFormData, setProfileFormData] = useState<IProfileFormData>({
     fullName: user.fullName,
     email: user.email,
@@ -44,6 +45,15 @@ export default function Profile() {
     city: '',
     streetAddress: '',
   })
+  const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
+    addressType: '',
+    title: '',
+    country: '',
+    state: '',
+    zip: '',
+    city: '',
+    streetAddress: '',
+  });
 
   useEffect(() => {
     setProfileFormData({ fullName: user.fullName, email: user.email, avatar: user.avatar })
@@ -110,11 +120,18 @@ export default function Profile() {
                   <Box className={styles.Address__top}>
                     <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                     <Box className={styles.Btn__container}>
-                      <IconButton aria-label="delete" className={styles.Btn}>
+                      <IconButton
+                        aria-label="delete"
+                        className={styles.Btn}
+                        onClick={() => {
+                          dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: true }));
+                          setEditingAddress(addr);
+                        }}
+                      >
                         <MdModeEdit className={styles.Edit__btn} />
                       </IconButton>
                       <IconButton aria-label="delete" className={styles.Btn} onClick={() => {
-                        setActiveAddress(addr.id);
+                        setActiveAddressID(addr.id);
                         dispatch(setModal({ key: ModalKey.ConfirmationPopup, value: true }));
                       }}>
                         <RxCross2 className={styles.Delete__btn}/>
@@ -133,7 +150,8 @@ export default function Profile() {
       <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
       <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
       <CreateAddressPopup formData={formData} setFormData={setFormData} />
-      <ConfirmationDialog name="address" id={activeAddress} />
+      <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
+      <ConfirmationDialog name="address" id={activeAddressID} />
     </>
   )
 }

@@ -12,19 +12,29 @@ import Button from '@mui/material/Button';
 import styles from './UpdateAdressPopup.module.scss';
 
 import { IAddressFormData } from '../../pages/Checkout/types';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
+import { ModalKey, setModal } from '../../redux/reducers/modal';
+import { SagaActions } from '../../redux/sagas/actions';
 
 interface Props {
-  isEditing: boolean;
-  setIsEditng: React.Dispatch<React.SetStateAction<boolean>>;
   editingAddress: IAddressFormData;
   setEditingAddress: React.Dispatch<React.SetStateAction<IAddressFormData>>;
 }
 
-export default function ProductDetailsPopup({ isEditing, setIsEditng, editingAddress, setEditingAddress } : Props) {
+export default function ProductDetailsPopup({ editingAddress, setEditingAddress } : Props) {
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state: ReduxStore) => state.modal.UpdateAddressPopup);
+
+  function handleUpdateAddress() {
+    dispatch({ type: SagaActions.EditAddress, payload: editingAddress });
+  }
+
   return (
     <Dialog
-      open={isEditing}
-      onClose={() => setIsEditng(false)}
+      open={isOpen}
+      onClose={() => dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: false }))}
     >
       <div className={styles.AddressDialog}>
         <Typography variant='h5' fontWeight="bold" textAlign="center">Update Address</Typography>
@@ -43,8 +53,8 @@ export default function ProductDetailsPopup({ isEditing, setIsEditng, editingAdd
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
-              value={editingAddress.type}
-              onChange={(e) => setEditingAddress({ ...editingAddress, type: e.target.value })}
+              value={editingAddress.addressType}
+              onChange={(e) => setEditingAddress({ ...editingAddress, addressType: e.target.value })}
             >
               <FormControlLabel value="billing" control={<Radio />} label="Billing" />
               <FormControlLabel value="shipping" control={<Radio />} label="Shipping" />
@@ -91,12 +101,12 @@ export default function ProductDetailsPopup({ isEditing, setIsEditng, editingAdd
             label='Street'
             variant="outlined"
             size='medium'
-            value={editingAddress.street}
-            onChange={(e) => setEditingAddress({ ...editingAddress, street: e.target.value })}
+            value={editingAddress.streetAddress}
+            onChange={(e) => setEditingAddress({ ...editingAddress, streetAddress: e.target.value })}
             className={styles.InpputIn__row__textfield}
             fullWidth
           />
-          <Button className={styles.Update__btn} size='large'>Update Address</Button>
+          <Button className={styles.Update__btn} size='large' onClick={handleUpdateAddress}>Update Address</Button>
         </form>
       </div>
     </Dialog>

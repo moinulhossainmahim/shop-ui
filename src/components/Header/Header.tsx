@@ -227,6 +227,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
                     },
                     message: '',
                   }))
+                  navigate('/');
                 }}>
                     <Typography textAlign="center">Logout</Typography>
                 </MenuItem>

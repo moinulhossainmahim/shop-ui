@@ -31,6 +31,11 @@ interface DeleteAddressAction {
   }
 }
 
+interface EditAddressAction {
+  type: SagaActions.EditAddress;
+  payload: IAddress;
+}
+
 export function* fetchAddresses(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
   try {
@@ -108,6 +113,36 @@ export function* deleteAddress(action: DeleteAddressAction): any {
       if(response.success) {
         toast.success(response.message, { autoClose: 1500 });
         yield put(setModal({ key: ModalKey.ConfirmationPopup, value: false }));
+        yield call(fetchAddresses);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* editAddress(action: EditAddressAction): any {
+  const token = yield select((state: ReduxStore) => state.auth.token);
+  const { id, ...address } = action.payload;
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/address/${id}`,
+      {
+        method: 'PATCH',
+        headers: new Headers({
+          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify(address),
+      }
+    )
+    if(result.ok) {
+      const response = yield result.json();
+      if(response.success) {
+        toast.success(response.message, { autoClose: 1500 })
+        yield put(setModal({ key: ModalKey.UpdateAddressPopup, value: false }));
         yield call(fetchAddresses);
       }
     }

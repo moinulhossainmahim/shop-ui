@@ -5,6 +5,7 @@ export enum ModalKey {
   ProfileEditPopup = 'ProfileEditPopup',
   CreateAddressPopup = 'CreateAddressPopup',
   ConfirmationPopup = 'ConfirmationPopup',
+  UpdateAddressPopup = 'UpdateAddressPopup',
 }
 
 interface IModalAction {
@@ -19,6 +20,7 @@ const initialState: ModalStore = {
   [ModalKey.ProfileEditPopup]: false,
   [ModalKey.CreateAddressPopup]: false,
   [ModalKey.ConfirmationPopup]: false,
+  [ModalKey.UpdateAddressPopup]: false,
 }
 
 const modalSlice = createSlice({

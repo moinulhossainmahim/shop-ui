@@ -28,7 +28,6 @@ export default function Checkout() {
   const [openType, setOpenType] = useState('');
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const [contact, setContact] = useState('+8801732748262');
-  const [isEditing, setIsEditing] = useState(false);
   const [activeAddressID, setActiveAddressID] = useState('');
   const user = useSelector((state: ReduxStore) => state.auth.user);
   const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
@@ -96,7 +95,14 @@ export default function Checkout() {
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
-                          <IconButton aria-label="delete" className={styles.Btn}>
+                          <IconButton
+                            aria-label="delete"
+                            className={styles.Btn}
+                            onClick={() => {
+                              setEditingAddress(addr);
+                              dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: true }));
+                            }}
+                          >
                             <MdModeEdit className={styles.Edit__btn} />
                           </IconButton>
                           <IconButton aria-label="delete" className={styles.Btn} onClick={() => {
@@ -140,7 +146,14 @@ export default function Checkout() {
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
-                          <IconButton aria-label="delete" className={styles.Btn}>
+                          <IconButton
+                            aria-label="delete"
+                            className={styles.Btn}
+                            onClick={() => {
+                              setEditingAddress(addr);
+                              dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: true }));
+                            }}
+                          >
                             <MdModeEdit className={styles.Edit__btn} />
                           </IconButton>
                           <IconButton aria-label="delete" className={styles.Btn} onClick={() => {
@@ -219,12 +232,7 @@ export default function Checkout() {
       </Box>
       <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
       <CreateAddressPopup type={openType} formData={formData} setFormData={setFormData} />
-      <UpdateAdressPopup
-        isEditing={isEditing}
-        setIsEditng={setIsEditing}
-        editingAddress={editingAddress}
-        setEditingAddress={setEditingAddress}
-      />
+      <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
       <ConfirmationDialog name="address" id={activeAddressID} />
     </>
   )

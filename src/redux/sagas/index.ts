@@ -1,7 +1,7 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { SagaActions } from './actions';
 import { fetchProfile, login, register, updateProfile } from './auth';
-import { createAddress, deleteAddress } from './address';
+import { createAddress, deleteAddress, editAddress } from './address';
 
 export default function* sagas() {
   yield all([
@@ -11,5 +11,6 @@ export default function* sagas() {
     takeEvery(SagaActions.UpdateProfile, updateProfile),
     takeEvery(SagaActions.CreateAddress, createAddress),
     takeEvery(SagaActions.DeleteAddress, deleteAddress),
+    takeEvery(SagaActions.EditAddress, editAddress),
   ])
 }
