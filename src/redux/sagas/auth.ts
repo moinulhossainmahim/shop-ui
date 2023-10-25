@@ -52,6 +52,33 @@ interface UpdateProfileResponse {
   success: boolean;
 }
 
+export function* fetchProfile(): any {
+  const token = yield select((state: ReduxStore) => state.auth.token);
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/users/profile`,
+      {
+        method: 'GET',
+        headers: new Headers({
+          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
+          'Accept': 'application/json',
+        }),
+      },
+    )
+    const response: ProfileResponse = yield result.json();
+    if(response.success) {
+      yield put(setUserProfile({
+        message: response.message,
+        isProfileFetched: response.success,
+        user: response.content[0],
+      }))
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export function* register(action: RegisterAction): any {
   try {
     const result = yield call(
@@ -103,36 +130,10 @@ export function* login(action: LoginAction): any {
           message: response.message,
           isAuthenticated: response.success,
         }))
+        yield call(fetchProfile);
       } else {
         toast.error(response.message, { autoClose: 1500 });
       }
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export function* fetchProfile(): any {
-  const token = yield select((state: ReduxStore) => state.auth.token);
-  try {
-    const result = yield call(
-      fetch,
-      `${API_BASE_URL}/users/profile`,
-      {
-        method: 'GET',
-        headers: new Headers({
-          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
-          'Accept': 'application/json',
-        }),
-      },
-    )
-    const response: ProfileResponse = yield result.json();
-    if(response.success) {
-      yield put(setUserProfile({
-        message: response.message,
-        isProfileFetched: response.success,
-        user: response.content[0],
-      }))
     }
   } catch (error) {
     console.log(error);

@@ -14,6 +14,7 @@ export interface IUser {
 }
 
 interface IAddress {
+	id: string;
 	title: string;
 	country: string;
 	city: string;

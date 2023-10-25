@@ -146,3 +146,14 @@
   gap: 20px;
   flex-wrap: wrap;
 }
+
+.Btn__container {
+  display: none;
+  transition: .1s ease-in-out display;
+}
+
+.Address:hover {
+  .Btn__container {
+    display: block;
+  }
+}

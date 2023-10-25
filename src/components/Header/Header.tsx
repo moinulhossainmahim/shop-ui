@@ -25,7 +25,6 @@ import { IoMdSearch } from 'react-icons/io';
 import styles from './Header.module.scss'
 
 import { pageOptions } from './test-data';
-import ProfileImage from '../../assets/profile1.jpg';
 import Logo from '../../assets/logo2.png';
 import { ReduxStore } from '../../redux/store';
 import { registerUser, setAuthData, setUserProfile } from '../../redux/reducers/auth';
@@ -41,6 +40,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
   const [page, setPage] = useState('Grocery');
   const [searchValue, setSearchValue] = useState('');
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
+  const user = useSelector((state: ReduxStore) => state.auth.user);
 
   const handleChange = (event: SelectChangeEvent) => {
     setPage(event.target.value);
@@ -149,7 +149,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               {isAuthenticated ? (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src={ProfileImage} />
+                    <Avatar alt={user.fullName} src={user.avatar} />
                   </IconButton>
                 </Tooltip>
               ) : (

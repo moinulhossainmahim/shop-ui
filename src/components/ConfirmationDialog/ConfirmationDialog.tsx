@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -8,25 +7,26 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import styles from './ConfirmationDialog.module.scss';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
+import { ModalKey, setModal } from '../../redux/reducers/modal';
+import { SagaActions } from '../../redux/sagas/actions';
 
 interface Props {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  name: string;
+  id: string;
 }
 
-export default function AlertDialog({ isOpen, setIsOpen } : Props) {
-  // function handleDelete(name: string, id: string) {
-  //   if(name === 'categories') {
-  //     dispatch({ type: SagaActions.DeleteCategory, payload: { id } });
-  //     setIsOpen(false);
-  //   } else if(name === 'subCategory') {
-  //     dispatch({ type: SagaActions.DeleteSubCategory, payload: { id } });
-  //     setIsOpen(false);
-  //   } else if(name === 'products') {
-  //     dispatch({ type: SagaActions.DeleteProduct, payload: { id }});
-  //     setIsOpen(false);
-  //   }
-  // }
+export default function AlertDialog({ name, id } : Props) {
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state: ReduxStore) => state.modal.ConfirmationPopup);
+
+  function handleDelete(name: string, id: string) {
+    if(name === 'address') {
+      dispatch({ type: SagaActions.DeleteAddress, payload: { id }});
+    }
+  }
 
   return (
     <div>
@@ -34,7 +34,7 @@ export default function AlertDialog({ isOpen, setIsOpen } : Props) {
         maxWidth="xs"
         fullWidth
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => dispatch(setModal({ key: ModalKey.ConfirmationPopup, value: false }))}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -45,8 +45,8 @@ export default function AlertDialog({ isOpen, setIsOpen } : Props) {
           <Typography variant='h6' fontWeight="bold" textAlign="center">Delete</Typography>
           <Typography variant='subtitle1' fontWeight="300" textAlign="center">Are you sure you want to delete?</Typography>
           <Box display="flex" gap={2} width="100%" mt={2}>
-            <Button variant='contained' color='primary' size='large' className={styles.Cancel__btn} fullWidth onClick={() => setIsOpen(false)}>No</Button>
-            <Button variant='contained' color='error' size='large' className={styles.Delete__btn} fullWidth onClick={() => setIsOpen(false)}>Yes</Button>
+            <Button variant='contained' color='primary' size='large' className={styles.Cancel__btn} fullWidth onClick={() => dispatch(setModal({ key: ModalKey.ConfirmationPopup, value: false }))}>No</Button>
+            <Button variant='contained' color='error' size='large' className={styles.Delete__btn} fullWidth onClick={() => handleDelete(name, id)}>Yes</Button>
           </Box>
         </DialogContent>
         <DialogActions>

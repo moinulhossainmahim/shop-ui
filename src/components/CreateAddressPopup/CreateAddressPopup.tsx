@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -31,6 +31,10 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
   function handleCreateAddress() {
     dispatch({ type: SagaActions.CreateAddress, payload: formData });
   }
+
+  useEffect(() => {
+    setFormData({ ...formData, addressType: type ? type : 'shipping' })
+  }, [type])
 
   return (
     <Dialog

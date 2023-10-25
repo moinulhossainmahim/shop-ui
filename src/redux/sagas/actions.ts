@@ -5,4 +5,5 @@ export enum SagaActions {
   UpdateProfile = 'UPDATE_PROFILE',
 
   CreateAddress = 'CREATE_ADDRESS',
+  DeleteAddress = 'DELETE_ADDRESS',
 }
