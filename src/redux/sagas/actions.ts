@@ -3,4 +3,6 @@ export enum SagaActions {
   Login = 'LOGIN',
   FetchProfile = 'FETCH_PROFILE',
   UpdateProfile = 'UPDATE_PROFILE',
+
+  CreateAddress = 'CREATE_ADDRESS',
 }

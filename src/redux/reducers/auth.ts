@@ -1,6 +1,6 @@
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { UserStatusType, IUser } from "../../pages/Login/types.d";
+import { UserStatusType, IUser, IAddress } from "../../pages/Login/types.d";
 
 export interface AuthStore {
   isAuthenticated: boolean,
@@ -53,9 +53,12 @@ const authSlice = createSlice({
       state.isProfileUpdated = action.payload.isProfileUpdated;
       state.message = action.payload.message;
     },
+    setUserAddress: (state, action: PayloadAction<IAddress[]>) => {
+      state.user.address = action.payload;
+    }
   }
 })
 
-export const { setAuthData, registerUser, setUserProfile, updateUserProfile } = authSlice.actions;
+export const { setAuthData, registerUser, setUserProfile, updateUserProfile, setUserAddress } = authSlice.actions;
 
 export default authSlice.reducer;

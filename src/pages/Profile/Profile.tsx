@@ -18,10 +18,10 @@ import UpdateContactPopup from "../../components/UpdateContactPopup";
 import Stack from "@mui/material/Stack";
 import CreateAddressPopup from "../../components/CreateAddressPopup";
 import { IAddressFormData } from "../Checkout/types";
+import { IAddress } from "../Login/types";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(false);
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const { user, isProfileFetched } = useSelector((state: ReduxStore) => state.auth);
   const [contact, setContact] = useState('+8801732748262');
@@ -31,14 +31,18 @@ export default function Profile() {
     avatar: user.avatar,
   });
   const [formData, setFormData] = useState<IAddressFormData>({
-    type: '',
+    addressType: '',
     title: '',
     country: '',
     state: '',
     zip: '',
     city: '',
-    street: '',
+    streetAddress: '',
   })
+
+  function parseAddress(address: IAddress) {
+    return `${address.streetAddress}, ${address.state}, ${address.city}, ${address.zip}, ${address.country}`;
+  }
 
   useEffect(() => {
     setProfileFormData({ fullName: user.fullName, email: user.email, avatar: user.avatar })
@@ -97,17 +101,19 @@ export default function Profile() {
               <Box className={styles.Contact__top__left}>
                 <Typography variant="h5">Addresses</Typography>
               </Box>
-              <Button className={styles.UpdateBtn} onClick={() => setIsOpen(true)}>+ Add</Button>
+              <Button className={styles.UpdateBtn} onClick={() => dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: true }))}>+ Add</Button>
             </Box>
-            <Stack className={styles.Address__container}>
-              <Box className={styles.Address}>
-                <Box className={styles.Address__top}>
-                  <Typography variant="subtitle2" fontWeight="bold">Test title</Typography>
+            <Stack className={styles.Address__container} direction='row'>
+              {user.address.map((addr) => (
+                <Box className={styles.Address}>
+                  <Box className={styles.Address__top}>
+                    <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle1" padding="10px 0px">{parseAddress(addr)}</Typography>
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant="subtitle1" padding="10px 0px">Iraq, NCR, Parañaque, 1709, Philippines</Typography>
-                </Box>
-              </Box>
+              ))}
             </Stack>
           </Box>
 
@@ -115,13 +121,7 @@ export default function Profile() {
       </div>
       <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
       <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
-      <CreateAddressPopup
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        formData={formData}
-        setFormData={setFormData}
-        type="shipping"
-      />
+      <CreateAddressPopup formData={formData} setFormData={setFormData} />
     </>
   )
 }
