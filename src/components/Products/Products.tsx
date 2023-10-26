@@ -39,8 +39,10 @@ export default function Products() {
   const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
 
   useEffect(() => {
-    dispatch({ type: SagaActions.FetchProducts });
-  }, [])
+    if(!products.length) {
+      dispatch({ type: SagaActions.FetchProducts });
+    }
+  }, [products.length])
 
   return (
     <>

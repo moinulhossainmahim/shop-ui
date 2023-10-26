@@ -31,7 +31,9 @@ export default function Sidebar() {
   const categoriesData = useSelector((state: ReduxStore) => state.categories.categoryResponse.content);
 
   useEffect(() => {
-    dispatch({ type: SagaActions.FetchCategories });
+    if(!categoriesData.length) {
+      dispatch({ type: SagaActions.FetchCategories });
+    }
   }, [])
 
   const handleChange =
