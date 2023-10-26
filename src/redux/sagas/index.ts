@@ -1,6 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { SagaActions } from './actions';
-import { fetchProfile, login, register, updateProfile } from './auth';
+import { changePassword, fetchProfile, login, register, updateProfile } from './auth';
 import { createAddress, deleteAddress, editAddress } from './address';
 
 export default function* sagas() {
@@ -12,5 +12,6 @@ export default function* sagas() {
     takeEvery(SagaActions.CreateAddress, createAddress),
     takeEvery(SagaActions.DeleteAddress, deleteAddress),
     takeEvery(SagaActions.EditAddress, editAddress),
+    takeEvery(SagaActions.ChangePassword, changePassword),
   ])
 }

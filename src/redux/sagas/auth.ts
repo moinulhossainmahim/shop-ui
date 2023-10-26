@@ -30,7 +30,7 @@ interface LoginResponse {
 interface ProfileResponse {
   message: string;
   success: boolean;
-  content: IUser[];
+  content: IUser;
 }
 
 interface LoginAction {
@@ -46,9 +46,26 @@ export interface UpdateProfileAction {
   }
 }
 
+export interface ChangePasswordAction {
+  type: SagaActions.ChangePassword,
+  payload: {
+    id: string;
+    data: {
+      oldPassword: string;
+      newPassword: string;
+    }
+  }
+}
+
 interface UpdateProfileResponse {
   message: string;
   content: IUser;
+  success: boolean;
+}
+
+interface ChangePasswordResponse {
+  message: string;
+  content: [];
   success: boolean;
 }
 
@@ -71,7 +88,7 @@ export function* fetchProfile(): any {
       yield put(setUserProfile({
         message: response.message,
         isProfileFetched: response.success,
-        user: response.content[0],
+        user: response.content,
       }))
     }
   } catch (error) {
@@ -164,6 +181,31 @@ export function* updateProfile(action: UpdateProfileAction): any {
       }))
       toast.success(response.message, { autoClose: 1500 });
       yield put(setModal({ key: ModalKey.ProfileEditPopup, value: false }));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* changePassword(action: ChangePasswordAction): any {
+  const token = yield select((state: ReduxStore) => state.auth.token);
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/users/${action.payload.id}/update-password`,
+      {
+        method: 'PATCH',
+        headers: new Headers({
+          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify(action.payload.data),
+      },
+    )
+    const response: ChangePasswordResponse = yield result.json();
+    if(response.success) {
+      toast.success(response.message, { autoClose: 1500 });
     }
   } catch (error) {
     console.log(error);

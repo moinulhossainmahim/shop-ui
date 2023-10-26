@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
@@ -12,6 +15,9 @@ import IconButton from "@mui/material/IconButton";
 
 import styles from './ChangePassword.module.scss';
 import { UInputField } from "./types.d";
+import { SagaActions } from "../../redux/sagas/actions";
+import { useSelector } from "react-redux";
+import { ReduxStore } from "../../redux/store";
 
 const inputFields: { name: UInputField, label: string }[] = [
   {
@@ -29,6 +35,9 @@ const inputFields: { name: UInputField, label: string }[] = [
 ]
 
 export default function ChangePassword() {
+  const dispatch = useDispatch();
+  const user = useSelector((state: ReduxStore) => state.auth.user);
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
     newPassword: false,
@@ -47,6 +56,20 @@ export default function ChangePassword() {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
+  function handleChangePassword() {
+    if(passwordData.newPassword !== passwordData.confirmNewPassword) {
+      toast.error('new password and confirm new password not matched');
+    } else {
+      dispatch({ type: SagaActions.ChangePassword, payload: { id: user.id, data: { oldPassword: passwordData.oldPassword, newPassword: passwordData.newPassword }}});
+      setPasswordData({
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+      })
+      navigate('/');
+    }
+  }
 
   return (
     <div className={styles.ChangePasswordPage}>
@@ -80,7 +103,7 @@ export default function ChangePassword() {
           ))}
         </div>
         <div className={styles.SubmitBtn__box}>
-          <Button variant="contained" className={styles.SubmitBtn__box__btn}>Submit</Button>
+          <Button variant="contained" className={styles.SubmitBtn__box__btn} onClick={handleChangePassword}>Submit</Button>
         </div>
       </div>
     </div>
