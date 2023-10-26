@@ -47,7 +47,7 @@ export default function Sidebar() {
           flexShrink: 0,
           position: 'sticky',
           top: '0',
-          height: '100vh',
+          height: 'calc(100vh - 64px)',
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
