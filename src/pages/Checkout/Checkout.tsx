@@ -103,7 +103,7 @@ export default function Checkout() {
                 {user.address.map((addr) => {
                   if(addr.addressType === 'billing') {
                     return (
-                    <Box className={styles.Address}>
+                    <Box className={styles.Address} key={addr.id}>
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
@@ -206,38 +206,36 @@ export default function Checkout() {
                 {cartItems.length > 0 ? (
                   <>
                     {cartItems.map((cartItem) => (
-                      <>
-                        <Stack direction="row" className={styles.Product}>
-                          <div className={styles.Product__left}>
-                          <div className={styles.Product__amount}>
-                            <button
-                              className={styles.ProductAmount__btn}
-                              disabled={cartItem.quantity === cartItem.amount}
-                              onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: cartItem.id }))}
-                            >
-                              <HiPlusSm />
-                            </button>
-                            <span>{cartItem.amount}</span>
-                            <button
-                              className={styles.ProductAmount__btn}
-                              onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.DECREMENT, id: cartItem.id }))}
-                            >
-                              <HiMinusSm />
-                            </button>
+                      <Stack direction="row" className={styles.Product} key={cartItem.id}>
+                        <div className={styles.Product__left}>
+                        <div className={styles.Product__amount}>
+                          <button
+                            className={styles.ProductAmount__btn}
+                            disabled={cartItem.quantity === cartItem.amount}
+                            onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: cartItem.id }))}
+                          >
+                            <HiPlusSm />
+                          </button>
+                          <span>{cartItem.amount}</span>
+                          <button
+                            className={styles.ProductAmount__btn}
+                            onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.DECREMENT, id: cartItem.id }))}
+                          >
+                            <HiMinusSm />
+                          </button>
+                        </div>
+                          <div>
+                            <img className={styles.Product__img} src={String(cartItem.featuredImg)} alt="cart-img1" />
                           </div>
-                            <div>
-                              <img className={styles.Product__img} src={String(cartItem.featuredImg)} alt="cart-img1" />
-                            </div>
-                            <div className={styles.Product__details}>
-                              <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
-                              <Typography variant="body2">{cartItem.amount} x {cartItem.salePrice}</Typography>
-                            </div>
+                          <div className={styles.Product__details}>
+                            <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
+                            <Typography variant="body2">{cartItem.amount} x {cartItem.salePrice}</Typography>
                           </div>
-                          <div className={styles.Product__right}>
-                            <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.salePrice) * cartItem.amount).toFixed(2)}</Typography>
-                          </div>
-                        </Stack>
-                      </>
+                        </div>
+                        <div className={styles.Product__right}>
+                          <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.salePrice) * cartItem.amount).toFixed(2)}</Typography>
+                        </div>
+                      </Stack>
                     ))}
                   </>
                 ) : (

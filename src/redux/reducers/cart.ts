@@ -7,7 +7,7 @@ export interface ProductToggleAction {
   type: ProductToggleType;
 }
 
-interface ICartItem extends IProductTemp {
+export interface ICartItem extends IProductTemp {
   amount: number;
 }
 

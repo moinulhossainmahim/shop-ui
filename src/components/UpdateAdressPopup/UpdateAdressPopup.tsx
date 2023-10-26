@@ -29,6 +29,15 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
 
   function handleUpdateAddress() {
     dispatch({ type: SagaActions.EditAddress, payload: editingAddress });
+    setEditingAddress({
+      title: '',
+      addressType: '',
+      country: '',
+      state: '',
+      city: '',
+      zip: '',
+      streetAddress: '',
+    })
   }
 
   return (

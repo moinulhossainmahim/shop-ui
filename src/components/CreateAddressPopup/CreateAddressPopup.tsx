@@ -30,6 +30,15 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
 
   function handleCreateAddress() {
     dispatch({ type: SagaActions.CreateAddress, payload: formData });
+    setFormData({
+      title: '',
+      addressType: type || '',
+      country: '',
+      state: '',
+      city: '',
+      zip: '',
+      streetAddress: '',
+    })
   }
 
   useEffect(() => {

@@ -78,7 +78,7 @@ export default function ChangePassword() {
         <Typography variant="h6" fontWeight='bold' mb={2}>Change Password</Typography>
         <div className={styles.Form__container}>
           {inputFields.map((inputField) => (
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" key={inputField.name}>
               <InputLabel htmlFor={inputField.name}>{inputField.label}</InputLabel>
               <OutlinedInput
                 id={inputField.name}
