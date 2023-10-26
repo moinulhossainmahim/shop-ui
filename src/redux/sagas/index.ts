@@ -1,7 +1,9 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { SagaActions } from './actions';
-import { fetchProfile, login, register, updateProfile } from './auth';
+import { changePassword, fetchProfile, login, register, updateProfile } from './auth';
 import { createAddress, deleteAddress, editAddress } from './address';
+import { fetchCategories } from './category';
+import { fetchProducts } from './products';
 
 export default function* sagas() {
   yield all([
@@ -12,5 +14,8 @@ export default function* sagas() {
     takeEvery(SagaActions.CreateAddress, createAddress),
     takeEvery(SagaActions.DeleteAddress, deleteAddress),
     takeEvery(SagaActions.EditAddress, editAddress),
+    takeEvery(SagaActions.ChangePassword, changePassword),
+    takeEvery(SagaActions.FetchCategories, fetchCategories),
+    takeEvery(SagaActions.FetchProducts, fetchProducts),
   ])
 }

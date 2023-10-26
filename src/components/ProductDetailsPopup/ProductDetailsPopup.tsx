@@ -20,15 +20,14 @@ import 'swiper/scss/navigation';
 import styles from './ProductDetailsPopup.module.scss';
 
 import Product from '../Products/Product/Product';
-import { products } from '../Products/test-data';
-import { IProduct } from '../Products/types.d';
+import { IProductTemp } from '../Products/types.d';
 import { ReduxStore } from '../../redux/store';
 import { addProduct, removeProduct } from '../../redux/reducers/cart';
 import { ModalKey, setModal } from '../../redux/reducers/modal';
 
 interface Props {
-  product: IProduct | null;
-  setActiveProduct: React.Dispatch<React.SetStateAction<IProduct | null>>;
+  product: IProductTemp | null;
+  setActiveProduct: React.Dispatch<React.SetStateAction<IProductTemp | null>>;
 }
 
 export default function ProductDetailsPopup({ product, setActiveProduct } : Props) {
@@ -41,7 +40,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
   const [isStared, setIsStared] = useState(false);
   const [isShowSubstring, setIsShowSubtring] = useState(true);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
-  const productDetails = 'clementine is a tangor, a citrus fruit hybrid between a willowleaf mandarin orange and a sweet orange, named for its late 19th-century discoverer. The exterior is a deep orange colour with a smooth, glossy appearance.'
+  const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
 
   useEffect(() => {
     const isFound = cartItems.some(cartProduct => cartProduct.id === product?.id);
@@ -87,17 +86,13 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                 }}
               >
                 <SwiperSlide>
-                  <img src={product?.img} alt="details-one" />
+                  <img src={String(product?.featuredImg)} alt="details-one" />
                 </SwiperSlide>
-                <SwiperSlide>
-                  <img src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F591%2FClementines-2.png&w=1080&q=75' alt="details-two" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F590%2FClementines.png&w=1080&q=75' alt="details-three" />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F589%2FClementines-1.png&w=1080&q=75' alt="details-four" />
-                </SwiperSlide>
+                {product?.galleryImg.map((img) => (
+                  <SwiperSlide key={String(img)}>
+                    <img src={String(img)} alt="details-two" />
+                  </SwiperSlide>
+                ))}
               </Swiper>
               <Button
                 disabled={swiperSlideStatus.isEnd}
@@ -114,7 +109,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
               >
                 <SwiperSlide>
                   <img
-                    src={product?.img}
+                    src={String(product?.featuredImg)}
                     className={classNames(styles.SlidePreview__image, {
                       [styles.Active__slide]: activeIndex === 0,
                     })}
@@ -122,36 +117,18 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                     onClick={() => handlePreviewClick(0)}
                   />
                 </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F591%2FClementines-2.png&w=1080&q=75'
-                    alt="details-two"
-                    onClick={() => handlePreviewClick(1)}
-                    className={classNames(styles.SlidePreview__image, {
-                      [styles.Active__slide]: activeIndex === 1,
-                    })}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F590%2FClementines.png&w=1080&q=75'
-                    alt="details-three"
-                    onClick={() => handlePreviewClick(2)}
-                    className={classNames(styles.SlidePreview__image, {
-                      [styles.Active__slide]: activeIndex === 2,
-                    })}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <img
-                    src='https://shop-pickbazar-rest.vercel.app/_next/image?url=https%3A%2F%2Fpickbazarlaravel.s3.ap-southeast-1.amazonaws.com%2F589%2FClementines-1.png&w=1080&q=75'
-                    alt="details-four"
-                    onClick={() => handlePreviewClick(3)}
-                    className={classNames(styles.SlidePreview__image, {
-                      [styles.Active__slide]: activeIndex === 3,
-                    })}
-                  />
-                </SwiperSlide>
+                {product?.galleryImg.map((img, index) => (
+                  <SwiperSlide key={String(img)}>
+                    <img
+                      src={String(img)}
+                      alt="details-two"
+                      onClick={() => handlePreviewClick(index+1)}
+                      className={classNames(styles.SlidePreview__image, {
+                        [styles.Active__slide]: activeIndex === index+1,
+                      })}
+                    />
+                  </SwiperSlide>
+                ))}
               </Swiper>
             </Stack>
           </Box>
@@ -177,21 +154,21 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
               )}
             </Box>
             <Box className={styles.Row}>
-              <span className={styles.TextBase}>1lb</span>
+              <span className={styles.TextBase}>{product?.unit}</span>
               <Button variant='contained' size='small' className={styles.ProductDetails__btn}>2<AiTwotoneStar size={15}/></Button>
             </Box>
             <Box>
               <Typography variant='body1' className={styles.TextBase}>
-              {isShowSubstring ? productDetails.substring(0, 120) + '...' : productDetails}
+              {isShowSubstring ? product?.desc.substring(0, 120) + '...' : product?.desc}
               </Typography>
               <Button variant='outlined' size="small" className={styles.Btn__less} onClick={() => setIsShowSubtring(!isShowSubstring)}>
                 {isShowSubstring ? 'More' : 'Less'}
               </Button>
             </Box>
             <Box className={styles.Product__amount}>
-              <span className={styles.Discount__price}>{product?.discountPrice}</span>
-              {product?.regularPrice ? (
-                <span className={styles.Regular__price}>{product.regularPrice}</span>
+              <span className={styles.Discount__price}>${product?.salePrice}</span>
+              {product?.price ? (
+                <span className={styles.Regular__price}>${product.price}</span>
               ) : null}
             </Box>
             <Box className={styles.Product__add}>
@@ -218,13 +195,13 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                 Add To Shopping Cart
               </Button>
             )}
-              <Typography variant='subtitle1' className={styles.TextBase}>50 pieces available</Typography>
+              <Typography variant='subtitle1' className={styles.TextBase}>{product?.quantity} pieces available</Typography>
             </Box>
             <Box className={styles.Categories}>
               <Typography variant='h6'>Categories</Typography>
               <div>
-                <Button variant='outlined' size='small'>fruits and vegetables</Button>
-                <Button variant='outlined' size="small">fruits</Button>
+                <Button variant='outlined' size='small'>{product?.categories[0].name.toLowerCase()}</Button>
+                <Button variant='outlined' size="small">{product?.subcategories[0].name.toLowerCase()}</Button>
               </div>
             </Box>
           </Box>
@@ -232,8 +209,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
         <Box className={styles.Details}>
           <Typography variant='h5' className={styles.Details__title}>Details</Typography>
           <Typography variant='subtitle1' className={styles.Details__description}>
-            clementine is a tangor, a citrus fruit hybrid between a willowleaf mandarin orange and a sweet orange, named for its late 19th-century discoverer.
-            The exterior is a deep orange colour with a smooth, glossy appearance.
+            {product?.desc}
           </Typography>
         </Box>
         <Box className={styles.Related__products}>

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -14,15 +16,23 @@ import Link from '@mui/material/Link';
 
 import styles from './ProductsWithSidebar.module.scss'
 
-import { sidebarData } from './data';
 import Products from '../Products/Products';
+import { SagaActions } from '../../redux/sagas/actions';
+import { useSelector } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
 
 const drawerWidth = 240;
 
 export default function Sidebar() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open] = React.useState(true);
-  const [expanded, setExpanded] = React.useState<string>('panel1');
+  const dispatch = useDispatch()
+  const [expanded, setExpanded] = useState<string>('panel1');
+  const categoriesData = useSelector((state: ReduxStore) => state.categories.categoryResponse.content);
+
+  useEffect(() => {
+    dispatch({ type: SagaActions.FetchCategories });
+  }, [])
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -50,7 +60,7 @@ export default function Sidebar() {
         open={open}
       >
         <List>
-          {sidebarData.map((sidebar) => (
+          {categoriesData.map((sidebar) => (
             <ListItem key={sidebar.id} className={styles.ListItem}>
               <Accordion
                 expanded={expanded === sidebar.id}
@@ -76,16 +86,16 @@ export default function Sidebar() {
                 >
                   <ListItemButton className={styles.ListItem__button}>
                     <ListItemIcon className={styles.ListItem__icon}>
-                      <sidebar.icon />
+                      <img src={sidebar.icon} alt={sidebar.name} height={25} width={25} />
                     </ListItemIcon>
                     <ListItemText primary={
-                      <span className={styles.ListItem__text}>{sidebar.parentText}</span>
+                      <span className={styles.ListItem__text}>{sidebar.name}</span>
                     } />
                   </ListItemButton>
                 </AccordionSummary>
                 <AccordionDetails className={styles.Accordian__details}>
-                  {sidebar.childText?.map((child) => (
-                    <Link component="button" className={styles.Sidebar__child} key={child}>{child}</Link>
+                  {sidebar.subCategories?.map((child) => (
+                    <Link component="button" className={styles.Sidebar__child} key={child.id}>{child.name}</Link>
                   ))}
                 </AccordionDetails>
               </Accordion>

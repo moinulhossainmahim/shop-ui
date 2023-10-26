@@ -23,7 +23,7 @@ export default function OrderDetails() {
   return (
     <div className={styles.OrderDetails__page}>
       <div className={styles.BackToHome__div}>
-        <Button className={styles.BackToHome__btn} variant="text" startIcon={<AiOutlineHome onClick={() => navigate('/')} />}>
+        <Button className={styles.BackToHome__btn} variant="text" startIcon={<AiOutlineHome />} onClick={() => navigate('/')}>
           Back to Home
         </Button>
       </div>
