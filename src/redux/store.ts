@@ -6,6 +6,7 @@ import sagas from './sagas';
 import authReducer, { AuthStore } from './reducers/auth';
 import loaderReducer, { LoaderStore } from './reducers/loader';
 import categoriesReducer, { CategoryStore } from './reducers/category';
+import productsReducer, { ProductsStore } from './reducers/products';
 
 export interface ReduxStore {
   cart: CartStore;
@@ -13,6 +14,7 @@ export interface ReduxStore {
   auth: AuthStore;
   loader: LoaderStore;
   categories: CategoryStore,
+  products: ProductsStore,
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -24,6 +26,7 @@ const store = configureStore({
     auth: authReducer,
     loader: loaderReducer,
     categories: categoriesReducer,
+    products: productsReducer,
   },
   middleware: [sagaMiddleware],
 })

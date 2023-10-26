@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IProduct } from "../../components/Products/types";
+import { IProductTemp } from "../../components/Products/types";
 import { ProductToggleType } from "../../components/Cart/types.d";
 
 export interface ProductToggleAction {
@@ -7,8 +7,12 @@ export interface ProductToggleAction {
   type: ProductToggleType;
 }
 
+interface ICartItem extends IProductTemp {
+  amount: number;
+}
+
 export interface CartStore {
-  cartProducts: IProduct[];
+  cartProducts: ICartItem[];
 }
 
 const initialState: CartStore = {
@@ -19,8 +23,8 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<IProduct>) => {
-      state.cartProducts = [...state.cartProducts, { ...action.payload, amount: action.payload.amount + 1 }];
+    addProduct: (state, action: PayloadAction<Omit<ICartItem, 'amount'>>) => {
+      state.cartProducts = [...state.cartProducts, { ...action.payload, amount: 1 }];
     },
     removeProduct: (state, action: PayloadAction<{ id: string }>) => {
       state.cartProducts = state.cartProducts.filter((product) => product.id !== action.payload.id);

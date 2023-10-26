@@ -9,6 +9,6 @@ export enum SagaActions {
   EditAddress = 'EDIT_ADDRESS',
 
   ChangePassword = 'CHANGE_PASSWORD',
-
+  FetchProducts = 'FETCH_PRODUCTS',
   FetchCategories = 'FETCH_CATEGORIES',
 }

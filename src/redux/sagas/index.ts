@@ -3,6 +3,7 @@ import { SagaActions } from './actions';
 import { changePassword, fetchProfile, login, register, updateProfile } from './auth';
 import { createAddress, deleteAddress, editAddress } from './address';
 import { fetchCategories } from './category';
+import { fetchProducts } from './products';
 
 export default function* sagas() {
   yield all([
@@ -15,5 +16,6 @@ export default function* sagas() {
     takeEvery(SagaActions.EditAddress, editAddress),
     takeEvery(SagaActions.ChangePassword, changePassword),
     takeEvery(SagaActions.FetchCategories, fetchCategories),
+    takeEvery(SagaActions.FetchProducts, fetchProducts),
   ])
 }

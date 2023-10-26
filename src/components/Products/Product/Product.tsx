@@ -9,14 +9,14 @@ import { IoMdAdd } from 'react-icons/io'
 
 import styles from './Product.module.scss'
 
-import { IProduct } from "../types.d";
+import { IProductTemp } from "../types.d";
 import { addProduct, removeProduct } from "../../../redux/reducers/cart";
 import { ReduxStore } from "../../../redux/store";
 import { ModalKey, setModal } from "../../../redux/reducers/modal";
 
 interface Props {
-  product: IProduct;
-  setActiveProduct: React.Dispatch<React.SetStateAction<IProduct | null>>;
+  product: IProductTemp;
+  setActiveProduct: React.Dispatch<React.SetStateAction<IProductTemp | null>>;
 }
 
 export default function Product({ product, setActiveProduct } : Props) {
@@ -34,24 +34,24 @@ export default function Product({ product, setActiveProduct } : Props) {
     <>
       <article className={styles.Product}>
         <div className={styles.ProductImg__container}>
-          { product.offerPercent ? (
+          {/* { product.offerPercent ? (
             <Badge color="info" badgeContent={product.offerPercent} className={styles.Offer__badge} />
-          ) : null}
+          ) : null} */}
           <img
             onClick={() => {
               dispatch(setModal({ key: ModalKey.ProductDetails, value: true }))
               setActiveProduct(product);
             }}
             className={styles.Product__img}
-            src={product.img} alt={product.name}
+            src={String(product.featuredImg)} alt={product.name}
             loading="lazy"
           />
         </div>
         <div className={styles.Product__details}>
           <div>
-            <span className={styles.Price}>{product.discountPrice}</span>
-            { product.regularPrice ? (
-              <span className={styles.Price}>{product.regularPrice}</span>
+            <span className={styles.Price}>${product.salePrice}</span>
+            { product.price ? (
+              <span className={styles.Price}>${product.price}</span>
             ) : <span className={styles.Price}></span> }
           </div>
           <Typography variant="body2" color='rgb(107,114,128)'>{product.name}</Typography>

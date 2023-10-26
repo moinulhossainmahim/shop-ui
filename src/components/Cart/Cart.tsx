@@ -68,6 +68,7 @@ export default function Cart() {
                   <div className={styles.Product__amount}>
                     <button
                       className={styles.ProductAmount__btn}
+                      disabled={cartItem.quantity === cartItem.amount}
                       onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: cartItem.id }))}
                     >
                       <HiPlusSm />
@@ -81,15 +82,15 @@ export default function Cart() {
                     </button>
                   </div>
                   <div>
-                    <img className={styles.Product__img} src={cartItem.img} alt="cart-img1" />
+                    <img className={styles.Product__img} src={String(cartItem.featuredImg)} alt="cart-img1" />
                   </div>
                   <div className={styles.Product__details}>
                     <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
-                    <span>{cartItem.discountPrice}</span>
+                    <span>{cartItem.salePrice}</span>
                   </div>
                 </div>
                 <div className={styles.Product__right}>
-                  <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.discountPrice.slice(1)) * cartItem.amount).toFixed(2)}</Typography>
+                  <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.salePrice) * cartItem.amount).toFixed(2)}</Typography>
                   <Button
                     className={styles.Product__cancel}
                     onClick={() => dispatch(removeProduct({ id: cartItem.id }))}

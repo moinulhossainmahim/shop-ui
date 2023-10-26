@@ -5,8 +5,8 @@ export default function useGetCartTotal() {
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
 
   const { totalItems, totalPrice } = cartItems.reduce((cartTotal, cartItem) => {
-    const { amount, discountPrice } = cartItem;
-    const itemTotal = amount * Number(discountPrice.slice(1));
+    const { amount, salePrice } = cartItem;
+    const itemTotal = amount * Number(salePrice);
     cartTotal.totalPrice += itemTotal;
     cartTotal.totalItems += amount;
     return cartTotal;

@@ -47,6 +47,7 @@
   justify-content: center;
   padding: 4rem 0rem;
   background-color: rgb(243, 244, 246);
+  flex-direction: column;
 }
 
 .Checkout__content {
@@ -96,6 +97,7 @@
   max-height: 462px;
   overflow-y: auto;
   border-bottom: 1px solid rgb(224, 213, 213);
+  margin-bottom: 2rem;
 }
 
 .Notes {
@@ -200,4 +202,56 @@
 .Address__container {
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.Empty__cart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.Empty__bag {
+  font-size: 50px;
+  color: variables.$color-accent;
+  margin-bottom: 20px;
+}
+
+.Active__payment {
+  border: 1px solid variables.$color-accent;
+  border-radius: 5px;
+  box-shadow: variables.$white-card-shadow;
+  width: 120px;
+  padding: 1rem 1rem;
+  text-align: center;
+}
+
+.BackToHome__div {
+  width: 100%;
+  padding-left: 10%;
+}
+
+.BackToHome__btn {
+  color: variables.$color-accent !important;
+}
+
+.Product__amount {
+  display: flex;
+  flex-direction: column;
+  width: 32px;
+  background-color: rgb(243, 244, 246);
+  align-items: center;
+  justify-content: center;
+  border-radius: 20000px;
+  gap: 3px;
+  padding: 8px 0px;
+}
+
+.ProductAmount__btn {
+  all: unset;
+  cursor: pointer;
+  height: 20px;
+  &:focus {
+    outline: none;
+  }
 }

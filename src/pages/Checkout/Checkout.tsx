@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
@@ -9,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { MdModeEdit } from 'react-icons/md';
 import { RxCross2 } from 'react-icons/rx';
+import { BsBagXFill } from "react-icons/bs";
+import { AiOutlineHome } from "react-icons/ai";
 import { TextareaAutosize } from "@mui/material";
 
 import styles from './Checkout.module.scss';
@@ -22,9 +25,13 @@ import UpdateContactPopup from "../../components/UpdateContactPopup";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 import { ModalKey, setModal } from "../../redux/reducers/modal";
 import { parseAddress } from "../../utils/parseAddress";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import { toggleQuantity } from "../../redux/reducers/cart";
+import { ProductToggleType } from "../../components/Cart/types.d";
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openType, setOpenType] = useState('');
   const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const [contact, setContact] = useState('+8801732748262');
@@ -54,6 +61,11 @@ export default function Checkout() {
   return (
     <>
       <Box className={styles.Checkout__container}>
+        <div className={styles.BackToHome__div}>
+          <Button className={styles.BackToHome__btn} variant="text" startIcon={<AiOutlineHome />} onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
+        </div>
         <Box className={styles.Checkout__content}>
           <Stack className={styles.CheckoutForm__container}>
             <Box className={styles.Contact__container}>
@@ -187,29 +199,53 @@ export default function Checkout() {
                 <TextareaAutosize placeholder="Order Notes" minRows={8} className={styles.Notes} />
               </Stack>
             </Box>
-
           </Stack>
           <Stack className={styles.CheckoutOrder__container}>
             <div className={styles.Order}>
               <div className={styles.Product__container}>
-                {cartItems.map((cartItem) => (
+                {cartItems.length > 0 ? (
                   <>
-                    <Stack direction="row" className={styles.Product}>
-                      <div className={styles.Product__left}>
-                        <div>
-                          <img className={styles.Product__img} src={cartItem.img} alt="cart-img1" />
-                        </div>
-                        <div className={styles.Product__details}>
-                          <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
-                          <Typography variant="body2">{cartItem.amount} x {cartItem.discountPrice}</Typography>
-                        </div>
-                      </div>
-                      <div className={styles.Product__right}>
-                        <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.discountPrice.slice(1)) * cartItem.amount).toFixed(2)}</Typography>
-                      </div>
-                    </Stack>
+                    {cartItems.map((cartItem) => (
+                      <>
+                        <Stack direction="row" className={styles.Product}>
+                          <div className={styles.Product__left}>
+                          <div className={styles.Product__amount}>
+                            <button
+                              className={styles.ProductAmount__btn}
+                              disabled={cartItem.quantity === cartItem.amount}
+                              onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: cartItem.id }))}
+                            >
+                              <HiPlusSm />
+                            </button>
+                            <span>{cartItem.amount}</span>
+                            <button
+                              className={styles.ProductAmount__btn}
+                              onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.DECREMENT, id: cartItem.id }))}
+                            >
+                              <HiMinusSm />
+                            </button>
+                          </div>
+                            <div>
+                              <img className={styles.Product__img} src={String(cartItem.featuredImg)} alt="cart-img1" />
+                            </div>
+                            <div className={styles.Product__details}>
+                              <Typography variant="subtitle1" fontWeight='bold'>{cartItem.name}</Typography>
+                              <Typography variant="body2">{cartItem.amount} x {cartItem.salePrice}</Typography>
+                            </div>
+                          </div>
+                          <div className={styles.Product__right}>
+                            <Typography variant="subtitle1" fontWeight='bold'>${(Number(cartItem.salePrice) * cartItem.amount).toFixed(2)}</Typography>
+                          </div>
+                        </Stack>
+                      </>
+                    ))}
                   </>
-                ))}
+                ) : (
+                  <Stack className={styles.Empty__cart}>
+                    <BsBagXFill className={styles.Empty__bag} />
+                    <Typography variant="h5">No products found</Typography>
+                  </Stack>
+                )}
               </div>
               <div>
                 <Typography variant="subtitle1" className={styles.Price}>
@@ -217,15 +253,24 @@ export default function Checkout() {
                   <span>${totalPrice.toFixed(2)}</span>
                 </Typography>
                 <Typography variant="subtitle1" className={styles.Price}>
-                  <span>Discout</span>
+                  <span>Discount</span>
                   <span>$0.00</span>
                 </Typography>
                 <Typography variant="subtitle1" className={styles.Price}>
                   <span>Total</span>
                   <span>${totalPrice.toFixed(2)}</span>
                 </Typography>
+                <Stack direction='column' gap={3} mt={2}>
+                  <Typography variant="subtitle1" fontWeight='bold'>Choose Payment Method</Typography>
+                  <Box>
+                    <Box className={styles.Active__payment}>
+                      <Typography variant="subtitle1" fontSize='small' fontWeight='bold'>Cash On Delivery</Typography>
+                    </Box>
+                  </Box>
+                  <Typography variant="body1">Please click Place order to make order and payment</Typography>
+                </Stack>
               </div>
-              <Button variant="contained" className={styles.Order__btn}>Place Order</Button>
+              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length}>Place Order</Button>
             </div>
           </Stack>
         </Box>
