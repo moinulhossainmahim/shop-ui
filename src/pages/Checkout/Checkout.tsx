@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +13,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { BsBagXFill } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
 import { TextareaAutosize } from "@mui/material";
+import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 
 import styles from './Checkout.module.scss';
 
@@ -25,18 +26,19 @@ import UpdateContactPopup from "../../components/UpdateContactPopup";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 import { ModalKey, setModal } from "../../redux/reducers/modal";
 import { parseAddress } from "../../utils/parseAddress";
-import { HiMinusSm, HiPlusSm } from "react-icons/hi";
 import { toggleQuantity } from "../../redux/reducers/cart";
 import { ProductToggleType } from "../../components/Cart/types.d";
+import { AddressType, IBillingAddress, IShippingAddress } from "../Orders/types.d";
+import classNames from "classnames";
 
 export default function Checkout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { totalPrice } = useGetCartTotal();
   const [openType, setOpenType] = useState('');
-  const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
-  const [contact, setContact] = useState('+8801732748262');
+  const [activeBillingAddress, setActiveBillingAddress] = useState<IBillingAddress | null>();
+  const [activeShippingAddress, setActiveShippingAddress] = useState<IShippingAddress | null>();
   const [activeAddressID, setActiveAddressID] = useState('');
-  const user = useSelector((state: ReduxStore) => state.auth.user);
   const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
     addressType: '',
     title: '',
@@ -55,8 +57,15 @@ export default function Checkout() {
     city: '',
     streetAddress: '',
   })
+  const user = useSelector((state: ReduxStore) => state.auth.user);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
-  const { totalPrice } = useGetCartTotal();
+
+  useEffect(() => {
+    const foundBillingAddress = user.address.find((addr) => addr.addressType === AddressType.Billing) as IBillingAddress || null;
+    const foundShippingAddress = user.address.find((addr) => addr.addressType === AddressType.Shipping) as IShippingAddress || null;
+    setActiveBillingAddress(foundBillingAddress);
+    setActiveShippingAddress(foundShippingAddress);
+  }, [])
 
   return (
     <>
@@ -74,13 +83,13 @@ export default function Checkout() {
                   <Box className={styles.Number}>1</Box>
                   <Typography variant="h5">Contact Number</Typography>
                 </Box>
-                <Button className={styles.UpdateBtn} onClick={() => setIsContactPopupOpen(true)}>+ Update</Button>
+                <Button className={styles.UpdateBtn} onClick={() => dispatch(setModal({ key: ModalKey.UpdateContactPopup, value: true }))}>+ Update</Button>
               </Box>
               <TextField
                 variant="outlined"
                 size='small'
                 className={styles.InpputIn__row__textfield}
-                value={contact}
+                value={user.contact}
                 fullWidth
                 disabled
               />
@@ -103,7 +112,13 @@ export default function Checkout() {
                 {user.address.map((addr) => {
                   if(addr.addressType === 'billing') {
                     return (
-                    <Box className={styles.Address} key={addr.id}>
+                    <Box
+                      key={addr.id}
+                      className={classNames(styles.Address, {
+                        [styles.Address__active]: activeBillingAddress?.id === addr.id
+                      })}
+                      onClick={() => setActiveBillingAddress(addr as IBillingAddress)}
+                    >
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
@@ -154,7 +169,13 @@ export default function Checkout() {
                 {user.address.map((addr) => {
                   if(addr.addressType === 'shipping') {
                     return (
-                    <Box className={styles.Address} key={addr.id}>
+                    <Box
+                      key={addr.id}
+                      className={classNames(styles.Address, {
+                        [styles.Address__active]: activeShippingAddress?.id === addr.id
+                      })}
+                      onClick={() => setActiveShippingAddress(addr as IShippingAddress)}
+                    >
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
@@ -273,7 +294,7 @@ export default function Checkout() {
           </Stack>
         </Box>
       </Box>
-      <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
+      <UpdateContactPopup contact={user.contact} />
       <CreateAddressPopup type={openType} formData={formData} setFormData={setFormData} />
       <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
       <ConfirmationDialog name="address" id={activeAddressID} />

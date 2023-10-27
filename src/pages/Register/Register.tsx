@@ -28,6 +28,7 @@ export default function Register() {
     fullName: '',
     email: '',
     password: '',
+    contact: '',
   })
 
   const handleClickShowPassword = () => {
@@ -68,6 +69,15 @@ export default function Register() {
             className={styles.RegisterForm__input}
             value={registerFormData.email}
             onChange={(e) => setRegisterFormData({ ...registerFormData, email: e.target.value })}
+          />
+          <TextField
+            type="text"
+            variant="outlined"
+            label="Contact No"
+            size="small"
+            className={styles.RegisterForm__input}
+            value={registerFormData.contact}
+            onChange={(e) => setRegisterFormData({ ...registerFormData, contact: e.target.value })}
           />
           <FormControl variant="outlined" className={styles.RegisterForm__input} size="small">
             <InputLabel htmlFor='password'>password</InputLabel>

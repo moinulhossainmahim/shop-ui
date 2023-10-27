@@ -223,7 +223,8 @@ function Header({ scrolled } : { scrolled: boolean }) {
                       email: "",
                       status: UserStatusType.Active,
                       userType: '',
-                      address: []
+                      address: [],
+                      contact: ''
                     },
                     message: '',
                   }))

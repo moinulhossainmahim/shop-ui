@@ -10,6 +10,7 @@ export interface IUser {
 	email: string;
 	status: UserStatusType;
   userType: string;
+	contact: string;
 	address: IAddress[];
 }
 

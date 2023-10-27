@@ -4,7 +4,11 @@ import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import { MdModeEdit } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
 import styles from './Profile.module.scss';
 
@@ -15,21 +19,15 @@ import { IProfileFormData } from "./types.d";
 import { ReduxStore } from "../../redux/store";
 import { SagaActions } from "../../redux/sagas/actions";
 import UpdateContactPopup from "../../components/UpdateContactPopup";
-import Stack from "@mui/material/Stack";
 import CreateAddressPopup from "../../components/CreateAddressPopup";
 import { IAddressFormData } from "../Checkout/types";
-import { IconButton } from "@mui/material";
-import { MdModeEdit } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { parseAddress } from "../../utils/parseAddress";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const [isContactPopupOpen, setIsContactPopupOpen] = useState(false);
   const { user, isProfileFetched } = useSelector((state: ReduxStore) => state.auth);
-  const [contact, setContact] = useState('+8801732748262');
   const [activeAddressID, setActiveAddressID] = useState('');
   const [profileFormData, setProfileFormData] = useState<IProfileFormData>({
     fullName: user.fullName,
@@ -77,7 +75,7 @@ export default function Profile() {
                 <div>
                   <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Full Name:</b> {user.fullName}</Typography>
                   <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Email:</b> {user.email}</Typography>
-                  <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Phone Number: </b>01732748262</Typography>
+                  <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Phone Number: </b>{user.contact || 'No number'}</Typography>
                 </div>
                 <div>
                   {user.avatar ? (
@@ -96,12 +94,12 @@ export default function Profile() {
               <Box className={styles.Contact__top__left}>
                 <Typography variant="h5">Contact Number</Typography>
               </Box>
-              <Button className={styles.UpdateBtn} onClick={() => setIsContactPopupOpen(true)}>+ Update</Button>
+              <Button className={styles.UpdateBtn} onClick={() => dispatch(setModal({ key: ModalKey.UpdateContactPopup, value: true }))}>+ Update</Button>
             </Box>
             <TextField
               variant="outlined"
               size='small'
-              value={contact}
+              value={user.contact}
               fullWidth
               disabled
             />
@@ -148,7 +146,7 @@ export default function Profile() {
         </div>
       </div>
       <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
-      <UpdateContactPopup isOpen={isContactPopupOpen} setContact={setContact} setIsOpen={setIsContactPopupOpen} contact={contact} />
+      <UpdateContactPopup contact={user.contact} />
       <CreateAddressPopup formData={formData} setFormData={setFormData} />
       <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
       <ConfirmationDialog name="address" id={activeAddressID} />
