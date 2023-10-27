@@ -5,6 +5,7 @@
   border-radius: 10000px;
   font-size: 12px;
   color: variables.$color-border-white;
+  text-align: center;
   &__processing {
     background-color: variables.$color-order-processing;
   }
@@ -13,5 +14,14 @@
   }
   &__canceled {
     background-color: variables.$color-order-canceled;
+  }
+  &__pending {
+    background-color: variables.$color-order-pending;
+  }
+  &__delivery {
+    background-color: variables.$color-order-processing;
+  }
+  &__local {
+    background-color: variables.$color-order-local;
   }
 }

@@ -17,4 +17,5 @@ export enum SagaActions {
   RemoveFromWishlist = 'REMOVE_FROM_WISHLIST',
 
   FetchOrders = 'FETCH_ORDERS',
+  FetchOrder = 'FETCH_ORDER',
 }

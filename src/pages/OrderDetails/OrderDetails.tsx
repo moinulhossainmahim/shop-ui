@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"
 import { AiOutlineHome } from 'react-icons/ai';
 import Typography from '@mui/material/Typography';
@@ -16,9 +17,13 @@ import styles from './OrderDetails.module.scss';
 import OrderStatusChip from "../../components/OrderStatusChip";
 import OrderStatusStepper from "../../components/OrderStatusStepper";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
+import { ReduxStore } from "../../redux/store";
+import { parseDate } from "../../utils/parseDate";
 
 export default function OrderDetails() {
   const navigate = useNavigate();
+  const order = useSelector((state: ReduxStore) => state.orders.orderResponse.order);
+  const user = useSelector((state: ReduxStore) => state.auth.user);
 
   return (
     <div className={styles.OrderDetails__page}>
@@ -31,7 +36,7 @@ export default function OrderDetails() {
         <div className={styles.Order__status}>
           <Typography variant='subtitle1' fontWeight="bold">
             <span className={styles.Order__status__title}>Order Status: </span>
-            <OrderStatusChip type={StatusType.Processing} />
+            <OrderStatusChip type={order.order_status} />
           </Typography>
           <Typography variant='subtitle1' fontWeight="bold">
             <span className={styles.Order__status__title}>Payment Status: </span>
@@ -42,23 +47,23 @@ export default function OrderDetails() {
           <Box className={styles.Order__cards}>
             <Box className={styles.Card}>
               <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
-              <Typography variant="subtitle2" className={styles.Card__value}>20234552134</Typography>
+              <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
             </Box>
             <Box className={styles.Card}>
               <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Date</Typography>
-              <Typography variant="subtitle2" className={styles.Card__value}>October 23, 2023</Typography>
+              <Typography variant="subtitle2" className={styles.Card__value}>{parseDate(order.order_date || Date.now().toString())}</Typography>
             </Box>
             <Box className={styles.Card}>
               <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Total</Typography>
-              <Typography variant="subtitle2" className={styles.Card__value}>$897.60</Typography>
+              <Typography variant="subtitle2" className={styles.Card__value}>${order.total}</Typography>
             </Box>
             <Box className={styles.Card}>
               <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Payment Method</Typography>
-              <Typography variant="subtitle2" className={styles.Card__value}>Cash On Delivery</Typography>
+              <Typography variant="subtitle2" className={styles.Card__value}>{order.payment_method}</Typography>
             </Box>
           </Box>
           <Box>
-            <OrderStatusStepper activeStatus={StatusType.Processing} />
+            <OrderStatusStepper activeStatus={order.order_status} />
           </Box>
           <div className={styles.Address__payment}>
             <div className={styles.Payment}>
@@ -67,13 +72,13 @@ export default function OrderDetails() {
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Sub Total</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>$880.00</span>
+                  <span className={styles.Payment__paragraph__value}>${order.amount}</span>
                 </p>
 
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Delivery Charge</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>$10.00</span>
+                  <span className={styles.Payment__paragraph__value}>$0.00</span>
                 </p>
 
                 <p className={styles.Payment__paragraph}>
@@ -85,13 +90,13 @@ export default function OrderDetails() {
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Discount</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>$880.00</span>
+                  <span className={styles.Payment__paragraph__value}>$000</span>
                 </p>
 
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Total</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>$890.00</span>
+                  <span className={styles.Payment__paragraph__value}>${order.total}</span>
                 </p>
               </div>
             </div>
@@ -101,13 +106,13 @@ export default function OrderDetails() {
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Name</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>Moinul Hossain</span>
+                  <span className={styles.Payment__paragraph__value}>{user.fullName}</span>
                 </p>
 
                 <p className={styles.Payment__paragraph}>
                   <strong className={styles.Payment__paragraph__title}>Total Item</strong>
                   :
-                  <span className={styles.Payment__paragraph__value}>1 Item</span>
+                  <span className={styles.Payment__paragraph__value}>{order.orderItems.length} Item</span>
                 </p>
               </div>
             </div>
@@ -123,51 +128,23 @@ export default function OrderDetails() {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow className={styles.TableBody__row}>
-                <TableCell className={styles.TableCell}>
-                  <div className={styles.TableCell__product}>
-                    <div>
-                      <img  className={styles.TableCell__product__img} src='' alt="img" />
+              {order.orderItems.map((orderItem) => (
+                <TableRow className={styles.TableBody__row} key={orderItem.id}>
+                  <TableCell className={styles.TableCell}>
+                    <div className={styles.TableCell__product}>
+                      <div>
+                        <img  className={styles.TableCell__product__img} src={String(orderItem.product.featuredImg)} alt={orderItem.product.name} />
+                      </div>
+                      <div className={styles.TableCell__product__details}>
+                        <span>{orderItem.product.name}</span>
+                        <span className={styles.TableCell__product__details__price}>${orderItem.product.salePrice}</span>
+                      </div>
                     </div>
-                    <div className={styles.TableCell__product__details}>
-                      <span>Safari Ash Single Sofa</span>
-                      <span className={styles.TableCell__product__details__price}>$280.00</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell align='center'>10</TableCell>
-                <TableCell align='center'>$100.20</TableCell>
-              </TableRow>
-              <TableRow className={styles.TableBody__row}>
-                <TableCell className={styles.TableCell}>
-                  <div className={styles.TableCell__product}>
-                    <div>
-                      <img  className={styles.TableCell__product__img} src='' alt="img" />
-                    </div>
-                    <div className={styles.TableCell__product__details}>
-                      <span>Armani Leather purse</span>
-                      <span className={styles.TableCell__product__details__price}>$40.00</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell align='center'>10</TableCell>
-                <TableCell align='center'>$100.20</TableCell>
-              </TableRow>
-              <TableRow className={styles.TableBody__row}>
-                <TableCell className={styles.TableCell}>
-                  <div className={styles.TableCell__product}>
-                    <div>
-                      <img  className={styles.TableCell__product__img} src='' alt="img" />
-                    </div>
-                    <div className={styles.TableCell__product__details}>
-                      <span>Apples</span>
-                      <span className={styles.TableCell__product__details__price}>$1.60</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell align='center'>10</TableCell>
-                <TableCell align='center'>$100.20</TableCell>
-              </TableRow>
+                  </TableCell>
+                  <TableCell align='center'>{orderItem.quantity}</TableCell>
+                  <TableCell align='center'>${(Number(orderItem.quantity) * Number(orderItem.product.salePrice)).toFixed()}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

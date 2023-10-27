@@ -1,5 +1,5 @@
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
-import { IMeta, IProduct } from "../../components/Products/types";
+import { IMeta, IProductTemp } from "../../components/Products/types";
 
 export interface IOrder {
   id: string;
@@ -31,7 +31,7 @@ interface IOrderItem {
 	quantity: number;
 	unit_price: string;
 	subtotal: string;
-	product: IProduct;
+	product: IProductTemp;
 }
 
 interface IShippingAddress {
@@ -72,8 +72,11 @@ export interface INewOrder {
 }
 
 export interface IOrderResponse {
-  content: INewOrder[];
+  content: INewOrder[] | INewOrder;
   success: boolean;
   message: string;
+	order: INewOrder;
+	orderMessage: string;
+	orderSuccess: boolean;
   meta?: IMeta;
 }
