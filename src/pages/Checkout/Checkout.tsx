@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ import styles from './Checkout.module.scss';
 import { ReduxStore } from "../../redux/store";
 import useGetCartTotal from "../../hooks/useGetCartTotal";
 import CreateAddressPopup from "../../components/CreateAddressPopup";
-import { IAddressFormData } from "./types";
+import { IAddressFormData, ICreateOrderItem, IOrderData } from "./types";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import UpdateContactPopup from "../../components/UpdateContactPopup";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
@@ -28,8 +29,9 @@ import { ModalKey, setModal } from "../../redux/reducers/modal";
 import { parseAddress } from "../../utils/parseAddress";
 import { toggleQuantity } from "../../redux/reducers/cart";
 import { ProductToggleType } from "../../components/Cart/types.d";
-import { AddressType, IBillingAddress, IShippingAddress } from "../Orders/types.d";
-import classNames from "classnames";
+import { AddressType, IBillingAddress, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types.d";
+import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
+import { SagaActions } from "../../redux/sagas/actions";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -59,6 +61,31 @@ export default function Checkout() {
   })
   const user = useSelector((state: ReduxStore) => state.auth.user);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+
+  function handleCreateOrder() {
+    const orderItems: ICreateOrderItem[] = cartItems.map((cartItem) => {
+      return {
+        productId: cartItem.id,
+        quantity: cartItem.amount,
+        subtotal: Number((cartItem.amount * Number(cartItem.salePrice)).toFixed(2)),
+        unit_price: Number(cartItem.salePrice),
+      }
+    })
+    if (activeBillingAddress && activeShippingAddress && cartItems.length) {
+      const orderData: IOrderData = {
+        order_status: StatusType.Pending,
+        delivery_fee: 0,
+        amount: totalPrice,
+        total: totalPrice,
+        payment_method: PaymentMethod.Cashon,
+        payment_status: PaymentStatus.Pending,
+        shippingAddress: activeShippingAddress,
+        billingAddress: activeBillingAddress,
+        orderItems
+      }
+      dispatch({ type: SagaActions.CreateOrder, payload: { orderData }})
+    }
+  }
 
   useEffect(() => {
     const foundBillingAddress = user.address.find((addr) => addr.addressType === AddressType.Billing) as IBillingAddress || null;
@@ -263,6 +290,7 @@ export default function Checkout() {
                   <Stack className={styles.Empty__cart}>
                     <BsBagXFill className={styles.Empty__bag} />
                     <Typography variant="h5">No products found</Typography>
+                    <Typography variant="subtitle1">Add products to cart</Typography>
                   </Stack>
                 )}
               </div>
@@ -289,7 +317,7 @@ export default function Checkout() {
                   <Typography variant="body1">Please click Place order to make order and payment</Typography>
                 </Stack>
               </div>
-              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length}>Place Order</Button>
+              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length} onClick={handleCreateOrder}>Place Order</Button>
             </div>
           </Stack>
         </Box>

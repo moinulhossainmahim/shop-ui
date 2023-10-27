@@ -93,8 +93,7 @@ export default function Orders() {
                   variant='text'
                   startIcon={<AiOutlineEye />}
                   onClick={() => {
-                    dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id }})
-                    navigate(`${activeOrder.id}`)
+                    dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id, navigation: navigate }})
                   }}
                 >
                   Details
