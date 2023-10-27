@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { orders } from './test-data';
 import Stack from '@mui/material/Stack';
@@ -19,11 +21,21 @@ import styles from './Orders.module.scss';
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
 import OrderStatusChipButton from '../../components/OrderStatusChipButton';
 import OrderStatusChip, { StatusType } from '../../components/OrderStatusChip/OrderStatusChip';
-import { useNavigate } from 'react-router-dom';
+import { SagaActions } from '../../redux/sagas/actions';
+import { useSelector } from 'react-redux';
+import { ReduxStore } from '../../redux/store';
 
 export default function Orders() {
   const [activeOrder, setActiveOrder] = useState(orders[0]);
+  const newOrders = useSelector((state: ReduxStore) => state.orders.orderResponse);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: SagaActions.FetchOrders });
+  }, [])
+
+  console.log(newOrders);
 
   return (
     <div className={styles.OrdersPage}>

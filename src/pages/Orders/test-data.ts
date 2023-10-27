@@ -1,5 +1,5 @@
 import { v4 as uuid4 } from "uuid";
-import { IOrder } from "./types.d";
+import { IOrder } from "./types";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 
 export const orders: IOrder[] = [
