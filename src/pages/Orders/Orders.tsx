@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
@@ -18,19 +18,24 @@ import { AiOutlineEye } from 'react-icons/ai';
 
 import styles from './Orders.module.scss';
 
-import OrderStatusChip, { StatusType } from '../../components/OrderStatusChip/OrderStatusChip';
+import OrderStatusChip from '../../components/OrderStatusChip/OrderStatusChip';
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
 import { SagaActions } from '../../redux/sagas/actions';
 import { ReduxStore } from '../../redux/store';
-import { INewOrder } from './types';
+import { INewOrder } from './types.d';
 import { parseDate } from '../../utils/parseDate';
 import { parseAddress } from '../../utils/parseAddress';
+import PaymentStatusChip from '../../components/PaymentStatusChip';
 
 export default function Orders() {
   const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
   const [activeOrder, setActiveOrder] = useState(orders[0]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: SagaActions.FetchOrders });
+  }, [])
 
   return (
     <div className={styles.OrdersPage}>
@@ -106,7 +111,7 @@ export default function Orders() {
                 </Typography>
                 <Typography variant='subtitle1' fontWeight="bold">
                   <span className={styles.Order__status__title}>Payment Status: </span>
-                  <OrderStatusChip type={StatusType.Completed} />
+                  <PaymentStatusChip type={activeOrder.payment_status} />
                 </Typography>
               </div>
               <div className={styles.Address__payment}>

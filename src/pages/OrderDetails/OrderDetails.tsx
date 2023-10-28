@@ -16,9 +16,10 @@ import styles from './OrderDetails.module.scss';
 
 import OrderStatusChip from "../../components/OrderStatusChip";
 import OrderStatusStepper from "../../components/OrderStatusStepper";
-import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 import { ReduxStore } from "../../redux/store";
 import { parseDate } from "../../utils/parseDate";
+import PaymentStatusChip from "../../components/PaymentStatusChip";
+import { PaymentMethod } from "../Orders/types.d";
 
 export default function OrderDetails() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function OrderDetails() {
           </Typography>
           <Typography variant='subtitle1' fontWeight="bold">
             <span className={styles.Order__status__title}>Payment Status: </span>
-            <OrderStatusChip type={StatusType.Completed} content='Cash On Delivery' />
+            <PaymentStatusChip type={order.payment_status} />
           </Typography>
         </div>
         <div className={styles.OrderDetails__bottom}>
@@ -59,7 +60,7 @@ export default function OrderDetails() {
             </Box>
             <Box className={styles.Card}>
               <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Payment Method</Typography>
-              <Typography variant="subtitle2" className={styles.Card__value}>{order.payment_method}</Typography>
+              <Typography variant="subtitle2" className={styles.Card__value}>{order.payment_method === PaymentMethod.Cashon ? 'Cash on' : 'Online'}</Typography>
             </Box>
           </Box>
           <Box>
