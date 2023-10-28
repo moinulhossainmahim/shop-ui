@@ -81,9 +81,9 @@ export default function Checkout() {
         payment_status: PaymentStatus.Pending,
         shippingAddress: activeShippingAddress,
         billingAddress: activeBillingAddress,
-        orderItems
+        orderItems,
       }
-      dispatch({ type: SagaActions.CreateOrder, payload: { orderData }})
+      dispatch({ type: SagaActions.CreateOrder, payload: { orderData, navigation: navigate }})
     }
   }
 
@@ -317,7 +317,10 @@ export default function Checkout() {
                   <Typography variant="body1">Please click Place order to make order and payment</Typography>
                 </Stack>
               </div>
-              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length} onClick={handleCreateOrder}>Place Order</Button>
+              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress} onClick={handleCreateOrder}>Place Order</Button>
+              {!activeBillingAddress || !activeShippingAddress || !user.contact && (
+                <Typography variant="body2" color='red'>Add contact no, shipping and billing address to make an order</Typography>
+              )}
             </div>
           </Stack>
         </Box>

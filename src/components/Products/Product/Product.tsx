@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Badge from "@mui/material/Badge";
 import { MdDelete } from 'react-icons/md';
 import { IoMdAdd } from 'react-icons/io'
 
@@ -12,6 +13,7 @@ import { IProductTemp } from "../types.d";
 import { addProduct, removeProduct } from "../../../redux/reducers/cart";
 import { ReduxStore } from "../../../redux/store";
 import { ModalKey, setModal } from "../../../redux/reducers/modal";
+import { calculatePercentage } from "../../../utils/calculatePercentage";
 
 interface Props {
   product: IProductTemp;
@@ -33,9 +35,9 @@ export default function Product({ product, setActiveProduct } : Props) {
     <>
       <article className={styles.Product}>
         <div className={styles.ProductImg__container}>
-          {/* { product.offerPercent ? (
-            <Badge color="info" badgeContent={product.offerPercent} className={styles.Offer__badge} />
-          ) : null} */}
+          { Number(product.salePrice) !== Number(product.price) ? (
+            <Badge color="info" badgeContent={calculatePercentage(Number(product.salePrice), Number(product.price)) + '%'} className={styles.Offer__badge} />
+          ) : null}
           <img
             onClick={() => {
               dispatch(setModal({ key: ModalKey.ProductDetails, value: true }))
@@ -49,7 +51,7 @@ export default function Product({ product, setActiveProduct } : Props) {
         <div className={styles.Product__details}>
           <div>
             <span className={styles.Price}>${product.salePrice}</span>
-            { product.price ? (
+            { Number(product.salePrice) !== Number(product.price) ? (
               <span className={styles.Price}>${product.price}</span>
             ) : <span className={styles.Price}></span> }
           </div>

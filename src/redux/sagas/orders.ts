@@ -21,6 +21,7 @@ interface CreateOrderAction {
   type: SagaActions.CreateOrder;
   payload: {
     orderData: IOrderData;
+    navigation: NavigateFunction;
   }
 }
 
@@ -103,9 +104,17 @@ export function* createOrder(action: CreateOrderAction): any {
         orderMessage: response.message,
         orderSuccess: response.success,
       }))
+      const order = response.content as INewOrder;
       yield put(resetCart())
       toast.success(response.message, { autoClose: 1500 });
       yield call(fetchOrders);
+      yield call(fetchOrder, {
+        type: SagaActions.FetchOrder,
+        payload: {
+          id: order.id,
+          navigation: action.payload.navigation,
+        }
+      });
     }
   } catch (error) {
     console.log(error);

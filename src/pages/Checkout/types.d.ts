@@ -1,5 +1,5 @@
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
-import { IBillingAddress, IOrderItem, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types";
+import { IBillingAddress, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types";
 
 export interface IAddressFormData {
   title: string;
