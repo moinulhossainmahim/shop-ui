@@ -44,8 +44,11 @@ const cartSlice = createSlice({
       }).filter((product) => product.amount !== 0)
       state.cartProducts = tempCartItems;
     },
+    resetCart: (state) => {
+      state.cartProducts = [];
+    }
   }
 })
 
-export const { addProduct, removeProduct, toggleQuantity } = cartSlice.actions
+export const { addProduct, removeProduct, toggleQuantity, resetCart } = cartSlice.actions
 export default cartSlice.reducer;

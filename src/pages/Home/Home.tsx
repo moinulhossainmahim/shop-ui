@@ -3,7 +3,7 @@ import Cart from "../../components/Cart";
 import Hero from "../../components/Hero";
 import ProductsWithSidebar from "../../components/ProductsWithSidebar";
 
-function App() {
+function Home() {
   return (
     <>
       <Hero />
@@ -14,4 +14,4 @@ function App() {
   )
 }
 
-export default App
+export default Home

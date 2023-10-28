@@ -19,7 +19,6 @@ import Button from "@mui/material/Button";
 import styles from './Login.module.scss';
 
 import { IRegisterForm } from "../Register/types";
-
 import { SagaActions } from "../../redux/sagas/actions";
 import { ReduxStore } from "../../redux/store";
 
@@ -28,7 +27,7 @@ export default function Register() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
-  const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName'>>({
+  const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName' | 'contact'>>({
     email: '',
     password: '',
   })

@@ -21,6 +21,7 @@ const initialState: AuthStore = {
     email: "",
     status: UserStatusType.InActive,
     userType: '',
+    contact: '',
     address: []
   },
   token: '',
