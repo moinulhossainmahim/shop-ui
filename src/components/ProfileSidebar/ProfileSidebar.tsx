@@ -72,7 +72,8 @@ export default function ProfileSidebar() {
               email: "",
               status: UserStatusType.Active,
               userType: '',
-              address: []
+              address: [],
+              contact: ""
             },
             message: '',
           }))
