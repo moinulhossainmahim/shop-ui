@@ -9,6 +9,9 @@ export enum LoaderKey {
   CreateAddress = 'CreateAddress',
   EditAddress = 'EditAddress',
   DeleteAddress = 'DeleteAddress',
+
+  FetchCategories = 'FetchCategories',
+  FetchProducts = 'FetchProducts',
 }
 
 interface ILoaderAction {
@@ -27,18 +30,20 @@ const initialState: LoaderStore = {
   [LoaderKey.EditAddress]: false,
   [LoaderKey.FetchAddresses]: false,
   [LoaderKey.DeleteAddress]: false,
+  [LoaderKey.FetchCategories]: false,
+  [LoaderKey.FetchProducts]: false,
 }
 
-const modalSlice = createSlice({
-  name: 'modal',
+const loaderSlice = createSlice({
+  name: 'loader',
   initialState,
   reducers: {
-    setModal: (state, action: PayloadAction<ILoaderAction>) => {
+    setLoader: (state, action: PayloadAction<ILoaderAction>) => {
       const { key, value } = action.payload;
       state[key] = value;
     }
   }
 })
 
-export const { setModal } = modalSlice.actions;
-export default modalSlice.reducer;
+export const { setLoader } = loaderSlice.actions;
+export default loaderSlice.reducer;
