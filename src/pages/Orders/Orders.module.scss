@@ -175,3 +175,17 @@
   gap: 2rem;
   width: 60%;
 }
+
+.Loading__container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 100%;
+  gap: 20px;
+}
+
+.Skeleton__top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

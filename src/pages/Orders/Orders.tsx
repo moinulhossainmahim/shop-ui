@@ -26,12 +26,14 @@ import { INewOrder } from './types.d';
 import { parseDate } from '../../utils/parseDate';
 import { parseAddress } from '../../utils/parseAddress';
 import PaymentStatusChip from '../../components/PaymentStatusChip';
+import { Skeleton } from '@mui/material';
 
 export default function Orders() {
-  const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
-  const [activeOrder, setActiveOrder] = useState(orders[0]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
+  const [activeOrder, setActiveOrder] = useState(orders[0]);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.FetchOrders);
 
   useEffect(() => {
     dispatch({ type: SagaActions.FetchOrders });
@@ -40,7 +42,18 @@ export default function Orders() {
   return (
     <div className={styles.OrdersPage}>
       <ProfileSidebar />
-      {orders.length ? (
+      {isLoading ? (
+        <div className={styles.Loading__container}>
+          <div className={styles.Skeleton__top}>
+            <Skeleton variant="circular" width='5%' height={50} />
+            <Skeleton variant="rectangular" width="95%" height={30} />
+          </div>
+          <Skeleton variant="rectangular" width="100%" height={200} />
+          <Skeleton variant="rectangular" width="100%" height={60} />
+          <Skeleton variant="rectangular" width="80%" height={30} />
+        </div>
+      ) : null}
+      {orders.length && !isLoading ? (
         <>
           <div className={styles.Orders}>
             <Typography p={1} variant='h6' fontWeight='bold'>My Orders</Typography>
@@ -182,13 +195,14 @@ export default function Orders() {
             </TableContainer>
           </div>
         </>
-      ) : (
+      ) : null}
+      {!isLoading && !(orders.length) ? (
         <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
           <Typography variant='h6'>Empty order list</Typography>
           <Typography variant='subtitle1'>Make order to see order item</Typography>
           <Button className={styles.Back__btn} variant='contained' onClick={() => navigate('/')}>Back to Products</Button>
         </Stack>
-      )}
+      ) : null}
     </div>
   )
 }
