@@ -42,20 +42,14 @@ export default function Products() {
   const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchProducts);
 
-  const fetchProducts = useCallback(() => {
-    dispatch({ type: SagaActions.FetchProducts });
-  }, [products.length])
-
-  const fetchWishlist = useCallback(() => {
-    if (isAuthenticated) {
-      dispatch({ type: SagaActions.FetchWishlist });
-    }
-  }, [wishlist.length, isAuthenticated])
-
   useEffect(() => {
-    fetchProducts();
-    fetchWishlist();
-  }, [])
+    if (isAuthenticated && !wishlist.length) {
+      dispatch({ type: SagaActions.FetchWishlist })
+    }
+    if(!products.length) {
+      dispatch({ type: SagaActions.FetchProducts });
+    }
+  }, [isAuthenticated, products.length])
 
   return (
     <>
