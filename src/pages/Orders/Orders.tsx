@@ -184,8 +184,9 @@ export default function Orders() {
         </>
       ) : (
         <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
-          <Typography variant='h6'>No Ordered items found!</Typography>
+          <Typography variant='h6'>Empty order list</Typography>
           <Typography variant='subtitle1'>Make order to see order item</Typography>
+          <Button className={styles.Back__btn} variant='contained' onClick={() => navigate('/')}>Back to Products</Button>
         </Stack>
       )}
     </div>

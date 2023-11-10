@@ -37,6 +37,7 @@ const inputFields: { name: UInputField, label: string }[] = [
 export default function ChangePassword() {
   const dispatch = useDispatch();
   const user = useSelector((state: ReduxStore) => state.auth.user);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.ChangePassword);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState({
     oldPassword: false,
@@ -103,7 +104,7 @@ export default function ChangePassword() {
           ))}
         </div>
         <div className={styles.SubmitBtn__box}>
-          <Button variant="contained" className={styles.SubmitBtn__box__btn} onClick={handleChangePassword}>Submit</Button>
+          <Button variant="contained" className={styles.SubmitBtn__box__btn} onClick={handleChangePassword} disabled={isLoading}>Submit</Button>
         </div>
       </div>
     </div>
