@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -49,6 +49,7 @@ export default function Products() {
     if(!products.length) {
       dispatch({ type: SagaActions.FetchProducts });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, products.length])
 
   return (
