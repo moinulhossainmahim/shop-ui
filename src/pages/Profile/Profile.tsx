@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
@@ -28,7 +28,8 @@ import UpdateAdressPopup from "../../components/UpdateAdressPopup";
 export default function Profile() {
   const dispatch = useDispatch();
   const { user, isProfileFetched } = useSelector((state: ReduxStore) => state.auth);
-  const isLoading = useSelector((state: ReduxStore) => state.loader.FetchProfile);
+  const fetchProfileLoading = useSelector((state: ReduxStore) => state.loader.FetchProfile);
+  const updateProfileLoading = useSelector((state: ReduxStore) => state.loader.UpdateProfile);
   const [activeAddressID, setActiveAddressID] = useState('');
   const [profileFormData, setProfileFormData] = useState<IProfileFormData>({
     fullName: user.fullName,
@@ -53,6 +54,11 @@ export default function Profile() {
     city: '',
     streetAddress: '',
   });
+
+  const isLoading = useMemo(() => {
+    if (fetchProfileLoading || updateProfileLoading) return true;
+    else return false;
+  }, [fetchProfileLoading, updateProfileLoading]);
 
   useEffect(() => {
     setProfileFormData({ fullName: user.fullName, email: user.email, avatar: user.avatar })

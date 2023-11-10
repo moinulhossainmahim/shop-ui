@@ -7,8 +7,8 @@ import { ReduxStore } from "../store";
 import { IUser } from "../../pages/Login/types";
 import { toast } from "react-toastify";
 import { ModalKey, setModal } from "../reducers/modal";
-import { fetchOrders } from "./orders";
 import { LoaderKey, setLoader } from "../reducers/loader";
+import { fetchOrders } from "./orders";
 
 interface RegisterResponse {
   success: boolean;
@@ -156,7 +156,6 @@ export function* login(action: LoginAction): any {
           message: response.message,
           isAuthenticated: response.success,
         }))
-        yield call(fetchProfile);
         yield call(fetchOrders);
       } else {
         toast.error(response.message, { autoClose: 1500 });

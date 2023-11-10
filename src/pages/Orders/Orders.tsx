@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
 import { AiOutlineEye } from 'react-icons/ai';
 
@@ -26,7 +27,6 @@ import { INewOrder } from './types.d';
 import { parseDate } from '../../utils/parseDate';
 import { parseAddress } from '../../utils/parseAddress';
 import PaymentStatusChip from '../../components/PaymentStatusChip';
-import { Skeleton } from '@mui/material';
 
 export default function Orders() {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ export default function Orders() {
                     <div className={styles.OrderStatus}>
                       <p className={styles.OrderStatus__p}>
                         <span className={styles.OrderStatus__title}>Order</span>
-                        <span># {order.tracking_no}</span>
+                        <span># {order.tracking_no || ''}</span>
                       </p>
                       <OrderStatusChip type={order.order_status} />
                     </div>
@@ -107,15 +107,12 @@ export default function Orders() {
           <div className={styles.OrderDetails}>
             <div>
               <div className={styles.Order__top}>
-                <Typography variant='h6'>Order Details - {activeOrder.tracking_no}</Typography>
+                <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
                 <Link to={`/orders/${activeOrder.id}`}>
                   <Button
                     className={styles.Details__btn}
                     variant='text'
                     startIcon={<AiOutlineEye />}
-                    // onClick={() => {
-                    //   // dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id, navigation: navigate }})
-                    // }}
                     >
                     Details
                   </Button>

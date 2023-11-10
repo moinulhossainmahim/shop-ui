@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -36,15 +36,26 @@ const Main = styled('div', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 export default function Products() {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const [activeProduct, setActiveProduct] = useState<IProductTemp | null>(null);
   const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
+  const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchProducts);
 
-  useEffect(() => {
-    if(!products.length) {
-      dispatch({ type: SagaActions.FetchProducts });
-    }
+  const fetchProducts = useCallback(() => {
+    dispatch({ type: SagaActions.FetchProducts });
   }, [products.length])
+
+  const fetchWishlist = useCallback(() => {
+    if (isAuthenticated) {
+      dispatch({ type: SagaActions.FetchWishlist });
+    }
+  }, [wishlist.length, isAuthenticated])
+
+  useEffect(() => {
+    fetchProducts();
+    fetchWishlist();
+  }, [])
 
   return (
     <>

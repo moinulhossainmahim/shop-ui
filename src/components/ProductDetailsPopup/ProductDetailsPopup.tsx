@@ -54,13 +54,6 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems.length, product])
 
-  useEffect(() => {
-    if(isAuthenticated) {
-      dispatch({ type: SagaActions.FetchWishlist });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInWishlist, product])
-
   const handlePreviewClick = (index: number) => {
     setActiveIndex(index);
     activeSwiper?.slideTo(index);
@@ -156,39 +149,45 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
           <Box className={styles.ProductDetails__content}>
             <Box className={classNames(styles.ProductName, styles.Row)}>
               <Typography variant='h5'>{product?.name}</Typography>
-              {isInWishlist ? (
-                <Tooltip title='Remove from wishlist'>
-                  <span>
-                    <button className={styles.All__unset} disabled={!isAuthenticated}>
-                      <AiTwotoneHeart
-                        size={30}
-                        className={
-                          classNames(styles.Heart__icon, {
-                            [styles.Heart__icon__active]: isInWishlist,
-                          })
-                        }
-                        onClick={() => removeFromWishlist(activeProductWishlistId)}
-                      />
-                    </button>
-                  </span>
-                </Tooltip>
-              ) : (
-                <Tooltip title='Add To wishlist'>
-                  <span>
-                    <button className={styles.All__unset} disabled={!isAuthenticated}>
-                      <AiOutlineHeart
-                        className={
-                          classNames(styles.Heart__icon, {
-                            [styles.Heart__icon__active]: isInWishlist,
-                          })
-                        }
-                        size={30}
-                        onClick={() => addToWishlist(product?.id || '')}
-                      />
-                    </button>
-                  </span>
-                </Tooltip>
-              )}
+              {isAuthenticated ? (
+                <>
+                {isInWishlist ? (
+                  <Tooltip title='Remove from wishlist' followCursor={true}>
+                    <span>
+                      <button className={styles.All__unset} disabled={!isAuthenticated}>
+                        <AiTwotoneHeart
+                          disabled={!isAuthenticated}
+                          size={30}
+                          className={
+                            classNames(styles.Heart__icon, {
+                              [styles.Heart__icon__active]: isInWishlist,
+                            })
+                          }
+                          onClick={() => removeFromWishlist(activeProductWishlistId)}
+                        />
+                      </button>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title='Add To wishlist' followCursor={true}>
+                    <span>
+                      <button className={styles.All__unset} disabled={!isAuthenticated}>
+                        <AiOutlineHeart
+                          disabled={!isAuthenticated}
+                          className={
+                            classNames(styles.Heart__icon, {
+                              [styles.Heart__icon__active]: isInWishlist,
+                            })
+                          }
+                          size={30}
+                          onClick={() => addToWishlist(product?.id || '')}
+                        />
+                      </button>
+                    </span>
+                  </Tooltip>
+                )}
+                </>
+              ) : null}
             </Box>
             <Box className={styles.Row}>
               <span className={styles.TextBase}>{product?.unit}</span>
