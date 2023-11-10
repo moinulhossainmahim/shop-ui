@@ -155,3 +155,17 @@
     display: block;
   }
 }
+
+.Loading__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+}
+
+.Skeleton__top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
