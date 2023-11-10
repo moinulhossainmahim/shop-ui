@@ -13,6 +13,7 @@ import { SagaActions } from "../../redux/sagas/actions";
 import { ReduxStore } from "../../redux/store";
 import { isInCart } from "../../utils/isInCart";
 import { addProduct, removeProduct } from "../../redux/reducers/cart";
+import Skeleton from "@mui/material/Skeleton";
 
 export default function Wishlists() {
   const dispatch = useDispatch();
@@ -86,6 +87,14 @@ export default function Wishlists() {
                 ))}
               </Stack>
             </>
+          ) : null}
+          {isLoading ? (
+            <div className={styles.Loading__container}>
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+            </div>
           ) : null}
         </div>
       </div>

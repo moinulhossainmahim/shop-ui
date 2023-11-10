@@ -5,6 +5,7 @@ import { IWishlistResponse } from "../../pages/Wishlists/types";
 import { setWishlist } from "../reducers/wishlist";
 import { SagaActions } from "./actions";
 import { toast } from "react-toastify";
+import { LoaderKey, setLoader } from "../reducers/loader";
 
 interface AddToWishlistAction {
   type: SagaActions.AddToWishlist;
@@ -22,6 +23,7 @@ interface RemoveFromWishlistAction {
 
 export function* fetchWishlist(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchWishlist, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -40,8 +42,10 @@ export function* fetchWishlist(): any {
         yield put(setWishlist(response));
       }
     }
+    yield put(setLoader({ key: LoaderKey.FetchWishlist, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchWishlist, value: false }));
   }
 }
 
