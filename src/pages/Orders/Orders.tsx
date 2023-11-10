@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import Stack from '@mui/material/Stack';
@@ -36,8 +36,10 @@ export default function Orders() {
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchOrders);
 
   useEffect(() => {
-    dispatch({ type: SagaActions.FetchOrders });
-  }, [])
+    if (!(orders.length)) {
+      dispatch({ type: SagaActions.FetchOrders });
+    }
+  }, [orders.length])
 
   return (
     <div className={styles.OrdersPage}>
@@ -106,16 +108,18 @@ export default function Orders() {
             <div>
               <div className={styles.Order__top}>
                 <Typography variant='h6'>Order Details - {activeOrder.tracking_no}</Typography>
-                <Button
-                  className={styles.Details__btn}
-                  variant='text'
-                  startIcon={<AiOutlineEye />}
-                  onClick={() => {
-                    dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id, navigation: navigate }})
-                  }}
-                >
-                  Details
-                </Button>
+                <Link to={`/orders/${activeOrder.id}`}>
+                  <Button
+                    className={styles.Details__btn}
+                    variant='text'
+                    startIcon={<AiOutlineEye />}
+                    // onClick={() => {
+                    //   // dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id, navigation: navigate }})
+                    // }}
+                    >
+                    Details
+                  </Button>
+                </Link>
               </div>
               <div className={styles.Order__status}>
                 <Typography variant='subtitle1' fontWeight="bold">

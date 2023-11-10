@@ -15,6 +15,8 @@ export enum LoaderKey {
   ChangePassword = 'ChangePassword',
   FetchWishlist = 'FetchWishlist',
   FetchOrders = 'FetchOrders',
+  FetchOrder = 'FetchOrder',
+  CreateOrder = 'CreateOrder',
 }
 
 interface ILoaderAction {
@@ -38,6 +40,8 @@ const initialState: LoaderStore = {
   [LoaderKey.ChangePassword]: false,
   [LoaderKey.FetchWishlist]: false,
   [LoaderKey.FetchOrders]: false,
+  [LoaderKey.FetchOrder]: false,
+  [LoaderKey.CreateOrder]: false,
 }
 
 const loaderSlice = createSlice({

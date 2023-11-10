@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AddressType, IOrderResponse, PaymentMethod, PaymentStatus } from "../../pages/Orders/types.d";
-import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
+import { IOrderResponse } from "../../pages/Orders/types.d";
 
 export interface OrdersStore {
   orderResponse: IOrderResponse;
@@ -10,39 +9,8 @@ const initialState: OrdersStore = {
   orderResponse: {
     content: [],
     success: false,
+    order: null,
     message: "",
-    order: {
-      id: "",
-      tracking_no: "",
-      order_date: "",
-      order_status: StatusType.Processing,
-      delivery_fee: 0,
-      total: 0,
-      amount: 0,
-      payment_status: PaymentStatus.Pending,
-      payment_method: PaymentMethod.Cashon,
-      orderItems: [],
-      shippingAddress: {
-        id: "",
-        title: "",
-        country: "",
-        city: "",
-        state: "",
-        zip: "",
-        streetAddress: "",
-        addressType: AddressType.Shipping
-      },
-      billingAddress: {
-        id: "",
-        title: "",
-        country: "",
-        city: "",
-        state: "",
-        zip: "",
-        streetAddress: "",
-        addressType: AddressType.Billing
-      },
-    },
     orderMessage: '',
     orderSuccess: false,
   },

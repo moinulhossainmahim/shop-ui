@@ -207,3 +207,20 @@
     line-height: 1.25rem;
   }
 }
+
+.Loading__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  padding: 30px;
+  align-items: center;
+  height: 70vh;
+  justify-content: center;
+}
+
+.Skeleton__top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
