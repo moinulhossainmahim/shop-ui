@@ -3,9 +3,11 @@ import { ReduxStore } from "../store";
 import { API_BASE_URL, USE_AUTH } from "../../constants";
 import { IProductsResponse } from "../../components/Products/types";
 import { setProducts } from "../reducers/products";
+import { LoaderKey, setLoader } from "../reducers/loader";
 
 export function* fetchProducts(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchProducts, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -24,7 +26,9 @@ export function* fetchProducts(): any {
         yield put(setProducts(response));
       }
     }
+    yield put(setLoader({ key: LoaderKey.FetchProducts, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchProducts, value: false }));
   }
 }
