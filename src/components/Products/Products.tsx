@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import ProductDetailsPopup from '../ProductDetailsPopup/ProductDetailsPopup';
 import { SagaActions } from '../../redux/sagas/actions';
 import { useSelector } from 'react-redux';
 import { ReduxStore } from '../../redux/store';
+import ProductsLoader from '../ProductsLoader';
 
 const drawerWidth = 240;
 
@@ -35,27 +36,52 @@ const Main = styled('div', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 export default function Products() {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const [activeProduct, setActiveProduct] = useState<IProductTemp | null>(null);
   const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
+  const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.FetchProducts);
+
+  const fetchProducts = useCallback(() => {
+    dispatch({ type: SagaActions.FetchProducts });
+  }, [products.length])
+
+  const fetchWishlist = useCallback(() => {
+    if (isAuthenticated) {
+      dispatch({ type: SagaActions.FetchWishlist });
+    }
+  }, [wishlist.length, isAuthenticated])
 
   useEffect(() => {
-    if(!products.length) {
-      dispatch({ type: SagaActions.FetchProducts });
-    }
-  }, [products.length])
+    fetchProducts();
+    fetchWishlist();
+  }, [])
 
   return (
     <>
       <Main open={true}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            {products?.map((product) => {
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
-                  <Product product={product} setActiveProduct={setActiveProduct} />
+          {isLoading ? (
+            <>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product}>
+                  <ProductsLoader />
                 </Grid>
-              )
-            })}
+              ))}
+            </>
+          ) : null}
+          {!isLoading && products.length ? (
+            <>
+              {products?.map((product) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
+                    <Product product={product} setActiveProduct={setActiveProduct} />
+                  </Grid>
+                )
+              })}
+            </>
+          ) : null}
           </Grid>
         </Box>
       </Main>

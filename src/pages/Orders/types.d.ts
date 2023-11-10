@@ -75,7 +75,7 @@ export interface IOrderResponse {
   content: INewOrder[] | INewOrder;
   success: boolean;
   message: string;
-	order: INewOrder;
+	order: INewOrder | null;
 	orderMessage: string;
 	orderSuccess: boolean;
   meta?: IMeta;

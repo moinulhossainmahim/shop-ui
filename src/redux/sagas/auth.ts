@@ -7,6 +7,7 @@ import { ReduxStore } from "../store";
 import { IUser } from "../../pages/Login/types";
 import { toast } from "react-toastify";
 import { ModalKey, setModal } from "../reducers/modal";
+import { LoaderKey, setLoader } from "../reducers/loader";
 import { fetchOrders } from "./orders";
 
 interface RegisterResponse {
@@ -72,6 +73,7 @@ interface ChangePasswordResponse {
 
 export function* fetchProfile(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchProfile, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -92,12 +94,15 @@ export function* fetchProfile(): any {
         user: response.content,
       }))
     }
+    yield put(setLoader({ key: LoaderKey.FetchProfile, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchProfile, value: false }));
   }
 }
 
 export function* register(action: RegisterAction): any {
+  yield put(setLoader({ key: LoaderKey.Register, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -120,12 +125,15 @@ export function* register(action: RegisterAction): any {
         }))
       }
     }
+    yield put(setLoader({ key: LoaderKey.Register, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.Register, value: false }));
   }
 }
 
 export function* login(action: LoginAction): any {
+  yield put(setLoader({ key: LoaderKey.Login, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -148,19 +156,21 @@ export function* login(action: LoginAction): any {
           message: response.message,
           isAuthenticated: response.success,
         }))
-        yield call(fetchProfile);
         yield call(fetchOrders);
       } else {
         toast.error(response.message, { autoClose: 1500 });
       }
     }
+    yield put(setLoader({ key: LoaderKey.Login, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.Login, value: false }));
   }
 }
 
 export function* updateProfile(action: UpdateProfileAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.UpdateProfile, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -184,13 +194,16 @@ export function* updateProfile(action: UpdateProfileAction): any {
       toast.success(response.message, { autoClose: 1500 });
       yield put(setModal({ key: ModalKey.ProfileEditPopup, value: false }));
     }
+    yield put(setLoader({ key: LoaderKey.UpdateProfile, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.UpdateProfile, value: false }));
   }
 }
 
 export function* changePassword(action: ChangePasswordAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.ChangePassword, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -209,7 +222,9 @@ export function* changePassword(action: ChangePasswordAction): any {
     if(response.success) {
       toast.success(response.message, { autoClose: 1500 });
     }
+    yield put(setLoader({ key: LoaderKey.ChangePassword, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.ChangePassword, value: false }));
   }
 }

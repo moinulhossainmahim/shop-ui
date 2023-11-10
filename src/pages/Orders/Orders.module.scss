@@ -160,9 +160,13 @@
   width: 80%;
   justify-content: center;
   align-items: center;
-  height: 50%;
   box-shadow: variables.$white-card-shadow;
   background-color: white;
+}
+
+.Back__btn {
+  background-color: variables.$color-accent !important;
+  margin-top: 10px !important;
 }
 
 .Address__container {
@@ -170,4 +174,18 @@
   flex-direction: column;
   gap: 2rem;
   width: 60%;
+}
+
+.Loading__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+}
+
+.Skeleton__top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }

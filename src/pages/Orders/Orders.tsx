@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import Stack from '@mui/material/Stack';
@@ -13,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
 import { AiOutlineEye } from 'react-icons/ai';
 
@@ -28,19 +29,33 @@ import { parseAddress } from '../../utils/parseAddress';
 import PaymentStatusChip from '../../components/PaymentStatusChip';
 
 export default function Orders() {
-  const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
-  const [activeOrder, setActiveOrder] = useState(orders[0]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
+  const [activeOrder, setActiveOrder] = useState(orders[0]);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.FetchOrders);
 
   useEffect(() => {
-    dispatch({ type: SagaActions.FetchOrders });
-  }, [])
+    if (!(orders.length)) {
+      dispatch({ type: SagaActions.FetchOrders });
+    }
+  }, [orders.length])
 
   return (
     <div className={styles.OrdersPage}>
       <ProfileSidebar />
-      {orders.length ? (
+      {isLoading ? (
+        <div className={styles.Loading__container}>
+          <div className={styles.Skeleton__top}>
+            <Skeleton variant="circular" width='5%' height={50} />
+            <Skeleton variant="rectangular" width="95%" height={30} />
+          </div>
+          <Skeleton variant="rectangular" width="100%" height={200} />
+          <Skeleton variant="rectangular" width="100%" height={60} />
+          <Skeleton variant="rectangular" width="80%" height={30} />
+        </div>
+      ) : null}
+      {orders.length && !isLoading ? (
         <>
           <div className={styles.Orders}>
             <Typography p={1} variant='h6' fontWeight='bold'>My Orders</Typography>
@@ -57,7 +72,7 @@ export default function Orders() {
                     <div className={styles.OrderStatus}>
                       <p className={styles.OrderStatus__p}>
                         <span className={styles.OrderStatus__title}>Order</span>
-                        <span># {order.tracking_no}</span>
+                        <span># {order.tracking_no || ''}</span>
                       </p>
                       <OrderStatusChip type={order.order_status} />
                     </div>
@@ -92,17 +107,16 @@ export default function Orders() {
           <div className={styles.OrderDetails}>
             <div>
               <div className={styles.Order__top}>
-                <Typography variant='h6'>Order Details - {activeOrder.tracking_no}</Typography>
-                <Button
-                  className={styles.Details__btn}
-                  variant='text'
-                  startIcon={<AiOutlineEye />}
-                  onClick={() => {
-                    dispatch({ type: SagaActions.FetchOrder, payload: { id: activeOrder.id, navigation: navigate }})
-                  }}
-                >
-                  Details
-                </Button>
+                <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
+                <Link to={`/orders/${activeOrder.id}`}>
+                  <Button
+                    className={styles.Details__btn}
+                    variant='text'
+                    startIcon={<AiOutlineEye />}
+                    >
+                    Details
+                  </Button>
+                </Link>
               </div>
               <div className={styles.Order__status}>
                 <Typography variant='subtitle1' fontWeight="bold">
@@ -182,12 +196,14 @@ export default function Orders() {
             </TableContainer>
           </div>
         </>
-      ) : (
+      ) : null}
+      {!isLoading && !(orders.length) ? (
         <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
-          <Typography variant='h6'>No Ordered items found!</Typography>
+          <Typography variant='h6'>Empty order list</Typography>
           <Typography variant='subtitle1'>Make order to see order item</Typography>
+          <Button className={styles.Back__btn} variant='contained' onClick={() => navigate('/')}>Back to Products</Button>
         </Stack>
-      )}
+      ) : null}
     </div>
   )
 }

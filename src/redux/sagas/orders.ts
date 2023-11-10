@@ -8,12 +8,12 @@ import { IOrderData } from "../../pages/Checkout/types.d";
 import { resetCart } from "../reducers/cart";
 import { toast } from "react-toastify";
 import { NavigateFunction } from "react-router-dom";
+import { LoaderKey, setLoader } from "../reducers/loader";
 
 interface FetchOrderAction {
   type: SagaActions.FetchOrder;
   payload: {
     id: string;
-    navigation: NavigateFunction;
   }
 }
 
@@ -27,6 +27,7 @@ interface CreateOrderAction {
 
 export function* fetchOrders(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchOrders, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -48,13 +49,16 @@ export function* fetchOrders(): any {
         meta: response.meta,
       }));
     }
+    yield put(setLoader({ key: LoaderKey.FetchOrders, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchOrders, value: false }));
   }
 }
 
 export function* fetchOrder(action: FetchOrderAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchOrder, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -74,15 +78,17 @@ export function* fetchOrder(action: FetchOrderAction): any {
         orderMessage: response.message,
         orderSuccess: response.success,
       }))
-      action.payload.navigation(`/orders/${action.payload.id}`);
     }
+    yield put(setLoader({ key: LoaderKey.FetchOrder, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchOrder, value: false }));
   }
 }
 
 export function* createOrder(action: CreateOrderAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.CreateOrder, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -108,15 +114,19 @@ export function* createOrder(action: CreateOrderAction): any {
       yield put(resetCart())
       toast.success(response.message, { autoClose: 1500 });
       yield call(fetchOrders);
-      yield call(fetchOrder, {
-        type: SagaActions.FetchOrder,
-        payload: {
-          id: order.id,
-          navigation: action.payload.navigation,
-        }
-      });
+      setTimeout(() => {
+        action.payload.navigation(`/orders/${order.id}`);
+      }, 2000)
+      // yield call(fetchOrder, {
+      //   type: SagaActions.FetchOrder,
+      //   payload: {
+      //     id: order.id,
+      //   }
+      // });
     }
+    yield put(setLoader({ key: LoaderKey.CreateOrder, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.CreateOrder, value: false }));
   }
 }

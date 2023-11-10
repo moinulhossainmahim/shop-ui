@@ -3,9 +3,11 @@ import { ReduxStore } from "../store";
 import { ICateogryResponse } from "../../components/ProductsWithSidebar/types";
 import { API_BASE_URL, USE_AUTH } from "../../constants";
 import { setCategories } from "../reducers/category";
+import { LoaderKey, setLoader } from "../reducers/loader";
 
 export function* fetchCategories(): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  yield put(setLoader({ key: LoaderKey.FetchCategories, value: true }));
   try {
     const result = yield call(
       fetch,
@@ -24,7 +26,9 @@ export function* fetchCategories(): any {
         yield put(setCategories(response));
       }
     }
+    yield put(setLoader({ key: LoaderKey.FetchCategories, value: false }));
   } catch (error) {
     console.log(error);
+    yield put(setLoader({ key: LoaderKey.FetchCategories, value: false }));
   }
 }
