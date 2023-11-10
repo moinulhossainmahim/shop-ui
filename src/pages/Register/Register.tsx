@@ -19,11 +19,14 @@ import styles from './Register.module.scss';
 
 import { IRegisterForm } from "./types.d";
 import { SagaActions } from "../../redux/sagas/actions";
+import { useSelector } from "react-redux";
+import { ReduxStore } from "../../redux/store";
 
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.Register);
   const [registerFormData, setRegisterFormData] = useState<IRegisterForm>({
     fullName: '',
     email: '',
@@ -101,7 +104,7 @@ export default function Register() {
               label="password"
             />
           </FormControl>
-          <Button className={styles.Register__btn} size="large" onClick={handleAccountRegister}>Register</Button>
+          <Button className={styles.Register__btn} size="large" onClick={handleAccountRegister} disabled={isLoading}>Register</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />

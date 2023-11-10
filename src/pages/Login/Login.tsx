@@ -27,6 +27,7 @@ export default function Register() {
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.Login);
   const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName' | 'contact'>>({
     email: '',
     password: '',
@@ -89,7 +90,7 @@ export default function Register() {
               label="password"
             />
           </FormControl>
-          <Button className={styles.Login__btn} size="large" onClick={handleLogin}>Login</Button>
+          <Button className={styles.Login__btn} size="large" onClick={handleLogin} disabled={isLoading}>Login</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />
