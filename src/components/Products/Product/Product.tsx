@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
-import { MdDelete } from 'react-icons/md';
 import { BsFillBagPlusFill } from 'react-icons/bs'
 
 import styles from './Product.module.scss'
 
 import { IProductTemp } from "../types.d";
-import { addProduct, removeProduct, toggleQuantity } from "../../../redux/reducers/cart";
+import { addProduct, toggleQuantity } from "../../../redux/reducers/cart";
 import { ReduxStore } from "../../../redux/store";
 import { ModalKey, setModal } from "../../../redux/reducers/modal";
 import { calculatePercentage } from "../../../utils/calculatePercentage";
@@ -21,9 +20,10 @@ import { ProductToggleType } from "../../Cart/types.d";
 interface Props {
   product: IProductTemp;
   setActiveProduct: React.Dispatch<React.SetStateAction<IProductTemp | null>>;
+  handleButtonClick: (event: any) => void;
 }
 
-export default function Product({ product, setActiveProduct } : Props) {
+export default function Product({ product, setActiveProduct, handleButtonClick } : Props) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -45,7 +45,9 @@ export default function Product({ product, setActiveProduct } : Props) {
 
   return (
     <>
-      <article className={styles.Product}>
+      <article className={classNames('item', {
+        [styles.Product]: true,
+      })}>
         <div className={styles.ProductImg__container}>
           { Number(product.salePrice) !== Number(product.price) ? (
             <Badge color="warning" badgeContent={calculatePercentage(Number(product.salePrice), Number(product.price)) + '%'} className={styles.Offer__badge} />
@@ -100,8 +102,9 @@ export default function Product({ product, setActiveProduct } : Props) {
                   [styles.Add__btn]: true,
                 })}
                 startIcon={<BsFillBagPlusFill />}
-                onClick={() => {
+                onClick={(event) => {
                   dispatch(addProduct(product))
+                  handleButtonClick(event)
                 }}
               >
                 Cart

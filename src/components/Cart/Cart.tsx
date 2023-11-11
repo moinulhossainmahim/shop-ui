@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -21,13 +21,20 @@ import useGetCartTotal from "../../hooks/useGetCartTotal";
 export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cartRef = useRef(null);
   const { totalPrice } = useGetCartTotal();
   const [isOpen, setIsOpen] = useState(false)
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    window.cartRef = cartRef;
+  }, [])
+
   return (
     <>
-      <Button variant="contained" className={styles.Cart__button} onClick={() => setIsOpen(true)}>
+      <Button variant="contained" className={styles.Cart__button} onClick={() => setIsOpen(true)}  ref={cartRef}>
         <div className={styles.CartButton__top}>
           <span>
             <BsFillBagCheckFill size={20} color="white"/>

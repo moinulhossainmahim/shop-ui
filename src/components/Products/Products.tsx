@@ -37,6 +37,9 @@ const Main = styled('div', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 export default function Products() {
   const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
+  const cartRef = window.cartRef;
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const [activeProduct, setActiveProduct] = useState<IProductTemp | null>(null);
   const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
@@ -55,7 +58,6 @@ export default function Products() {
 
   const itemListRef = useRef(null);
   const showRef = useRef(null);
-  const cartRef = useRef(null);
 
   const handleButtonClick = (event: any) => {
     const item = event.target.closest(".item");
@@ -67,13 +69,17 @@ export default function Products() {
     // @ts-ignore
     const cartPosLeft = cartRef.current?.getBoundingClientRect().left;
 
+    console.log('itemListLeft', itemListLeft);
+    console.log('cartPosLeft', cartPosLeft);
     const itemX = item.getBoundingClientRect().left - itemListLeft;
-    const itemY = item.getBoundingClientRect().top;
+    const itemY = item.getBoundingClientRect().top - 200;
+    console.log('itemX', itemX);
+    console.log('itemY', itemY);
     gsap.killTweensOf(showRef.current);
 
     gsap.set(showRef.current, {
-      left: itemX,
-      top: itemY,
+      left: `${itemX}px`,
+      top: `${itemY}px`,
       width: '200px',
       opacity: 1
     });
@@ -99,7 +105,10 @@ export default function Products() {
     <>
       <Main open={true}>
         <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} ref={itemListRef} position='relative'>
+            <div id="show" className="fly-cart" ref={showRef} style={{ position: 'absolute', zIndex: 9999, width: '200px', filter: 'brightness(200%)' }}>
+              <img className="img-fluid" src="" alt="" />
+            </div>
           {isLoading ? (
             <>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((product) => (
@@ -114,7 +123,7 @@ export default function Products() {
               {products?.map((product) => {
                 return (
                   <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
-                    <Product product={product} setActiveProduct={setActiveProduct} />
+                    <Product product={product} setActiveProduct={setActiveProduct} handleButtonClick={handleButtonClick} />
                   </Grid>
                 )
               })}
