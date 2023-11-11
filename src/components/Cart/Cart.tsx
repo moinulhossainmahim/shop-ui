@@ -34,7 +34,7 @@ export default function Cart() {
           </span>
           <span>{cartItems.length} Items</span>
         </div>
-        <span>
+        <span className={styles.Total__price}>
           ${totalPrice.toFixed(2)}
         </span>
       </Button>
