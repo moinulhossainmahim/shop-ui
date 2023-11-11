@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -8,12 +8,13 @@ import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack';
-import { MdDelete } from 'react-icons/md';
 import { IoMdAdd } from 'react-icons/io';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { AiOutlineHeart, AiTwotoneStar, AiTwotoneHeart } from 'react-icons/ai';
+import { HiMinusSm, HiPlusSm } from 'react-icons/hi';
+import Tooltip from '@mui/material/Tooltip';
 
 import 'swiper/css';
 import 'swiper/scss/navigation';
@@ -22,12 +23,12 @@ import styles from './ProductDetailsPopup.module.scss';
 import Product from '../Products/Product/Product';
 import { IProductTemp } from '../Products/types.d';
 import { ReduxStore } from '../../redux/store';
-import { addProduct, removeProduct } from '../../redux/reducers/cart';
+import { addProduct, toggleQuantity } from '../../redux/reducers/cart';
 import { ModalKey, setModal } from '../../redux/reducers/modal';
 import { useIsInWishlist } from '../../hooks/useIsInWishlist';
-import { Tooltip } from '@mui/material';
 import { SagaActions } from '../../redux/sagas/actions';
 import { useCurrentWishlist } from '../../hooks/useGetCurrentWishlistId';
+import { ProductToggleType } from '../Cart/types.d';
 
 interface Props {
   product: IProductTemp | null;
@@ -66,6 +67,15 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
   function removeFromWishlist(id: string) {
     dispatch({ type: SagaActions.RemoveFromWishlist, payload: { id }});
   }
+
+  const amountOfProduct = useMemo(() => {
+    const cartItem = cartItems.find((cartItem) => cartItem.id === product?.id);
+    return cartItem?.amount;
+  }, [cartItems, product?.id])
+
+  const activeCartProduct = useCallback(() => {
+    return cartItems.find((cartItem) => cartItem.id === product?.id);
+  }, [cartItems, product?.id])
 
   return (
     <Dialog
@@ -209,14 +219,25 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
             </Box>
             <Box className={styles.Product__add}>
             {isAddedToCart ? (
-              <Button
-                variant="contained"
-                color="warning"
-                startIcon={<MdDelete />}
-                onClick={() => {
-                  dispatch(removeProduct({ id: product?.id || ''}))
-                }}
-              >Remove</Button>
+              <div className={classNames({
+                [styles.Product__amount__two]: true,
+                [styles.Btn]: true,
+              })}>
+                <button
+                  className={styles.ProductAmount__btn}
+                  onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.DECREMENT, id: product?.id || '' }))}
+                >
+                  <HiMinusSm />
+                </button>
+                <span>{amountOfProduct}</span>
+                <button
+                  disabled={activeCartProduct()?.amount === product?.quantity}
+                  className={styles.ProductAmount__btn}
+                  onClick={() => dispatch(toggleQuantity({ type: ProductToggleType.INCREMENT, id: product?.id || '' }))}
+                >
+                  <HiPlusSm />
+                </button>
+              </div>
             ) : (
               <Button
                 variant="contained"

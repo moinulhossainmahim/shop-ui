@@ -149,3 +149,30 @@ Button {
   all: unset;
   cursor: pointer;
 }
+
+.Product__amount__two {
+  display: flex;
+  width: 32px;
+  background-color: variables.$color-accent;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3px;
+  padding: 8px 0px;
+  color: white;
+}
+
+.ProductAmount__btn {
+  all: unset;
+  color: white;
+  cursor: pointer;
+  height: 20px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.Btn {
+  height: 38px !important;
+  width: 90px !important;
+  border-radius: 20px !important;
+}

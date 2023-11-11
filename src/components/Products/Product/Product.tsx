@@ -20,7 +20,7 @@ import { ProductToggleType } from "../../Cart/types.d";
 interface Props {
   product: IProductTemp;
   setActiveProduct: React.Dispatch<React.SetStateAction<IProductTemp | null>>;
-  handleButtonClick: (event: any) => void;
+  handleButtonClick?: (event: any) => void;
 }
 
 export default function Product({ product, setActiveProduct, handleButtonClick } : Props) {
@@ -104,7 +104,7 @@ export default function Product({ product, setActiveProduct, handleButtonClick }
                 startIcon={<BsFillBagPlusFill />}
                 onClick={(event) => {
                   dispatch(addProduct(product))
-                  handleButtonClick(event)
+                  if (handleButtonClick) handleButtonClick(event)
                 }}
               >
                 Cart
