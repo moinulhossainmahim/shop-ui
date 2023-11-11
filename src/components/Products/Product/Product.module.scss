@@ -20,11 +20,13 @@
 
 .Price {
   &:first-child {
-    margin-right: 10px;
-  }
-  &:last-child {
     color: rgb(156, 163, 175);
     text-decoration: line-through;
+    font-size: 12px;
+  }
+  &:last-child {
+    font-size: 15px;
+    font-weight: 700;
   }
 }
 
@@ -47,40 +49,56 @@
 }
 
 .Add__btn {
-  background-color: variables.$color-accent !important;
+  border: 1px solid transparent !important;
+  box-shadow: variables.$dark-box-shadow;
+  color: variables.$color-accent !important;
   &:focus {
     outline: none;
   }
-}
-
-.Product__button {
-  all: unset;
-  cursor: pointer;
-  padding: 0em 0.9em;
-  display: flex;
-  height: 100%;
-  align-items: center;
-  transition: .2s ease-in-out background-color;
-  &__left {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-  &__right {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
+  &:hover {
+    background-color: variables.$color-accent !important;
+    color: white !important;
   }
 }
 
-.Product__buttons {
+.Product__bottom {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: variables.$color-accent;
-  color: white;
-  border-radius: 4px;
-  height: 38px;
 }
 
-.Product__button:hover {
-  background-color: variables.$color-accent-dark;
+.Product__price {
+  display: flex;
+  flex-direction: column;
+}
+
+.Btn {
+  height: 38px !important;
+  width: 90px !important;
+  border-radius: 20px !important;
+}
+
+.Original__price {
+  color: variables.$color-accent;
+}
+
+.Product__amount {
+  display: flex;
+  width: 32px;
+  background-color: variables.$color-accent;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3px;
+  padding: 8px 0px;
+  color: white;
+}
+
+.ProductAmount__btn {
+  all: unset;
+  color: white;
+  cursor: pointer;
+  height: 20px;
+  &:focus {
+    outline: none;
+  }
 }
