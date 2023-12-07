@@ -15,6 +15,7 @@ import { BsBagXFill } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
 import { TextareaAutosize } from "@mui/material";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import { FaStripe } from "react-icons/fa";
 
 import styles from './Checkout.module.scss';
 
@@ -41,6 +42,7 @@ export default function Checkout() {
   const [activeBillingAddress, setActiveBillingAddress] = useState<IBillingAddress | null>();
   const [activeShippingAddress, setActiveShippingAddress] = useState<IShippingAddress | null>();
   const [activeAddressID, setActiveAddressID] = useState('');
+  const [activePaymentMethod, setActivePaymentMethod] = useState('cashon')
   const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
     addressType: '',
     title: '',
@@ -61,6 +63,10 @@ export default function Checkout() {
   })
   const user = useSelector((state: ReduxStore) => state.auth.user);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+
+  function togglePaymentMethod(method: string) {
+    setActivePaymentMethod(method);
+  }
 
   function handleCreateOrder() {
     const orderItems: ICreateOrderItem[] = cartItems.map((cartItem) => {
@@ -309,9 +315,20 @@ export default function Checkout() {
                 </Typography>
                 <Stack direction='column' gap={3} mt={2}>
                   <Typography variant="subtitle1" fontWeight='bold'>Choose Payment Method</Typography>
-                  <Box>
-                    <Box className={styles.Active__payment}>
+                  <Box className={styles.Payment__methods}>
+                    <Box
+                      className={classNames(styles.Payment__method, {
+                        [styles.Payment__method__active]: activePaymentMethod === 'cashon',
+                      })}
+                      onClick={() => togglePaymentMethod('cashon')}>
                       <Typography variant="subtitle1" fontSize='small' fontWeight='bold'>Cash On Delivery</Typography>
+                    </Box>
+                    <Box
+                      className={classNames(styles.Payment__method, {
+                        [styles.Payment__method__active]: activePaymentMethod === 'stripe',
+                      })}
+                      onClick={() => togglePaymentMethod('stripe')}>
+                      <FaStripe size={30} className={styles.Stripe__icon} />
                     </Box>
                   </Box>
                   <Typography variant="body1">Please click Place order to make order and payment</Typography>
