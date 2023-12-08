@@ -138,7 +138,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
             />
           </Stack>
           <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end" gap={3}>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
               {navItems.map((item) => (
                 <Button key={item} className={styles.NavItems}>
                   {item}

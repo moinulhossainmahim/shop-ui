@@ -8,7 +8,7 @@ import styles from './Hero.module.scss';
 
 export default function Hero() {
   return (
-    <Box className={styles.Hero__section}>
+    <Box className={styles.Hero__section} sx={{ display: { xs: 'none', md: 'flex' }}}>
       <Box className={styles.Container}>
         <Box className={styles.Content}>
           <Typography className={styles.Heading} component='h1' fontWeight='bold'>
