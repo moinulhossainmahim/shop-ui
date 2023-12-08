@@ -156,6 +156,7 @@ export function* login(action: LoginAction): any {
           message: response.message,
           isAuthenticated: response.success,
         }))
+        yield call(fetchProfile);
         yield call(fetchOrders);
       } else {
         toast.error(response.message, { autoClose: 1500 });
