@@ -34,7 +34,7 @@ export default function Cart() {
 
   return (
     <>
-      <Button variant="contained" className={styles.Cart__button} onClick={() => setIsOpen(true)}  ref={cartRef}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' }}} className={styles.Cart__button} onClick={() => setIsOpen(true)}  ref={cartRef}>
         <div className={styles.CartButton__top}>
           <span>
             <BsFillBagCheckFill size={20} color="white"/>
@@ -44,7 +44,7 @@ export default function Cart() {
         <span className={styles.Total__price}>
           ${totalPrice.toFixed(2)}
         </span>
-      </Button>
+      </Box>
       <Drawer
         anchor="right"
         open={isOpen}
