@@ -80,7 +80,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'}>
+          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'} sx={{ display: { xs: 'none', lg: 'flex' }}}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"
