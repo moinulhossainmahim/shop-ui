@@ -1,0 +1,11 @@
+@use '../../utils/variables';
+
+.CategoryFilter {
+  border-bottom: 1px solid rgb(211 212 214);
+  justify-content: space-between;
+  padding: 15px 5%;
+}
+
+.Filter__btn {
+  background-color: variables.$color-accent !important;
+}
