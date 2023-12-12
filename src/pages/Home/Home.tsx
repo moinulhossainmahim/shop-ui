@@ -3,6 +3,7 @@ import Cart from "../../components/Cart";
 import Hero from "../../components/Hero";
 import ProductsWithSidebar from "../../components/ProductsWithSidebar";
 import CategoryFilter from "../../components/CategoryFilter";
+import BottomNav from "../../components/BottomNavigation/BottomNav";
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
       <CouponSlider />
       <CategoryFilter />
       <ProductsWithSidebar />
+      <BottomNav />
       <Cart />
     </>
   )

@@ -22,7 +22,7 @@ import TextField from '@mui/material/TextField';
 import { MdClose } from 'react-icons/md';
 import { IoMdSearch } from 'react-icons/io';
 
-import styles from './Header.module.scss'
+import styles from './Header.module.scss';
 
 import { pageOptions } from './test-data';
 import Logo from '../../assets/logo2.png';
@@ -67,7 +67,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
             <Link to='/'>
               <img className={styles.Logo} src={Logo} alt="shop-logo" />
             </Link>
-            <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
+            <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' } }} size="small">
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"

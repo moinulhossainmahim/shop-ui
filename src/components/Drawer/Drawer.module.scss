@@ -1,0 +1,75 @@
+@use '../../utils/variables';
+
+.Logo {
+  height: 30px;
+}
+
+.Drawer__section {
+  width: 400px;
+  height: 100vh;
+}
+
+.Drawer__cancel {
+  background-color: #f1f1f1 !important;
+  min-width: 20px !important;
+  border-radius: 10000px !important;
+  padding: 4px !important;
+  &:hover {
+    background-color: green !important;
+    color: white;
+  }
+}
+
+.Drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid variables.$color-border-white;
+}
+
+.ListItem {
+  padding-bottom: 0px !important;
+}
+
+.Accordian__summary {
+  padding: 0px !important;
+  min-height: auto !important;
+}
+
+.ListItem__button {
+  padding: 0px !important;
+}
+
+.ListItem__text {
+  padding: 0px 0px 0px 8px !important;
+  font-size: 15px !important;
+}
+
+.ListItem__icon {
+  min-width: auto !important;
+}
+
+.Accordian__details {
+  padding: 0px 0px 0px 30px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.Sidebar__child {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #141a26;
+  padding: 2px 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: variables.$color-light-gray;
+  }
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+.Skeleton__container {
+  margin-top: 40px;
+}
