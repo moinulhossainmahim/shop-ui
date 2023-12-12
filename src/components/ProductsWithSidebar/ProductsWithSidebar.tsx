@@ -46,6 +46,7 @@ export default function Sidebar() {
     <Box sx={{ display: 'flex', borderTop: '1px solid rgb(243,244,246)' }}>
       <Drawer
         sx={{
+          display: { xs: 'none', lg: 'flex' },
           width: drawerWidth,
           flexShrink: 0,
           position: 'sticky',

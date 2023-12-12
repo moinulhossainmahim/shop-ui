@@ -14,7 +14,7 @@ export default function CouponSlider() {
   const [swiperSlideStatus, setSwiperSlideStatus] = useState({ isBeginning: true, isEnd: false });
 
   return (
-    <Stack p={3} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
+    <Stack sx={{ marginTop: { xs: '64px', md: '0px' } }} p={3} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
       <Button
         disabled={swiperSlideStatus.isBeginning}
         className={styles.Button}

@@ -122,7 +122,7 @@ export default function Products() {
             <>
               {products?.map((product) => {
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={product.id}>
+                  <Grid item xs={12} sm={4} md={3} lg={3} xl={2} key={product.id}>
                     <Product product={product} setActiveProduct={setActiveProduct} handleButtonClick={handleButtonClick} />
                   </Grid>
                 )

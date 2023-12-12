@@ -22,7 +22,7 @@ import TextField from '@mui/material/TextField';
 import { MdClose } from 'react-icons/md';
 import { IoMdSearch } from 'react-icons/io';
 
-import styles from './Header.module.scss'
+import styles from './Header.module.scss';
 
 import { pageOptions } from './test-data';
 import Logo from '../../assets/logo2.png';
@@ -67,7 +67,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
             <Link to='/'>
               <img className={styles.Logo} src={Logo} alt="shop-logo" />
             </Link>
-            <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
+            <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' } }} size="small">
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
@@ -80,7 +80,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'}>
+          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'} sx={{ display: { xs: 'none', lg: 'flex' }}}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"
@@ -138,7 +138,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
             />
           </Stack>
           <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end" gap={3}>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
               {navItems.map((item) => (
                 <Button key={item} className={styles.NavItems}>
                   {item}

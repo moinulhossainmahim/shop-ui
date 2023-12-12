@@ -5,6 +5,7 @@ import modalReducer, { ModalStore } from "./reducers/modal";
 import sagas from './sagas';
 import authReducer, { AuthStore } from './reducers/auth';
 import loaderReducer, { LoaderStore } from './reducers/loader';
+import drawerReducer, { DrawerStore } from './reducers/drawer';
 import categoriesReducer, { CategoryStore } from './reducers/category';
 import productsReducer, { ProductsStore } from './reducers/products';
 import wishlistReducer, { WishlistStore } from './reducers/wishlist';
@@ -19,6 +20,7 @@ export interface ReduxStore {
   products: ProductsStore;
   wishlist: WishlistStore;
   orders: OrdersStore;
+  drawers: DrawerStore;
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -33,6 +35,7 @@ const store = configureStore({
     products: productsReducer,
     wishlist: wishlistReducer,
     orders: ordersReducer,
+    drawers: drawerReducer,
   },
   middleware: [sagaMiddleware],
 })
