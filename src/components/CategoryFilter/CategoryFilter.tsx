@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,10 +11,10 @@ import styles from './CategoryFilter.module.scss';
 
 import { pageOptions } from "../Header/test-data";
 import FilterDrawer from "../FilterDrawer";
-
+import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
 const CategoryFilter = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
   const [page, setPage] = useState('Grocery');
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -24,7 +25,7 @@ const CategoryFilter = () => {
     <>
       <Box sx={{ display: { xs: 'flex', lg: 'none' } }} className={styles.CategoryFilter}>
         <Box>
-        <Button variant="contained" startIcon={<IoFilter />} className={styles.Filter__btn} onClick={() => setIsOpen(true)}>
+        <Button variant="contained" startIcon={<IoFilter />} className={styles.Filter__btn} onClick={() => dispatch(setDrawer({ key: DrawerKey.FilterCategory, value: true }))}>
           Filter
         </Button>
         </Box>
@@ -43,7 +44,7 @@ const CategoryFilter = () => {
         </FormControl>
         </Box>
       </Box>
-      <FilterDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+      <FilterDrawer />
     </>
   )
 }

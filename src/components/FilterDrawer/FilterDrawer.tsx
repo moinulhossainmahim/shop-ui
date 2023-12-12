@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -6,25 +9,24 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ListItemText from "@mui/material/ListItemText";
 
 import styles from './FilterDrawer.module.scss'
-import { useSelector } from "react-redux";
+
 import { ReduxStore } from "../../redux/store";
-import ListItemText from "@mui/material/ListItemText";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { SagaActions } from "../../redux/sagas/actions";
 import BaseDrawer from "../BaseDrawer";
+import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
-interface FilterDrawerProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FilterDrawer = ({ isOpen, setIsOpen } : FilterDrawerProps) => {
+const FilterDrawer = () => {
   const dispatch = useDispatch();
+  const isOpen = useSelector((state: ReduxStore) => state.drawers.FilterCategory);
   const [expanded, setExpanded] = useState<string>('panel1');
   const categoriesData = useSelector((state: ReduxStore) => state.categories.categoryResponse.content);
+
+  const onClose = () => {
+    dispatch(setDrawer({ key: DrawerKey.FilterCategory, value: false }));
+  }
 
   useEffect(() => {
     if(!categoriesData.length) {
@@ -83,7 +85,7 @@ const FilterDrawer = ({ isOpen, setIsOpen } : FilterDrawerProps) => {
     </List>
   );
   return (
-    <BaseDrawer isOpen={isOpen} setIsOpen={setIsOpen} bodyContent={bodyContent} />
+    <BaseDrawer isOpen={isOpen} onClose={onClose} bodyContent={bodyContent} />
   )
 }
 

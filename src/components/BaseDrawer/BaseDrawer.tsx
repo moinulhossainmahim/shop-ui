@@ -11,24 +11,24 @@ import Logo from '../../assets/logo2.png';
 
 interface BaseDrawerProps {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
   bodyContent: React.ReactElement;
 }
 
-export default function BaseDrawer({ isOpen, setIsOpen, bodyContent } : BaseDrawerProps) {
+export default function BaseDrawer({ isOpen, onClose, bodyContent } : BaseDrawerProps) {
   return (
     <>
       <Drawer
         anchor="left"
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={onClose}
       >
         <section className={styles.Drawer__section}>
           <Box className={styles.Drawer__header}>
             <Link to='/'>
               <img className={styles.Logo} src={Logo} alt="shop-logo" />
             </Link>
-            <Button className={styles.Drawer__cancel} onClick={() => setIsOpen(false)}>
+            <Button className={styles.Drawer__cancel} onClick={onClose}>
               <RxCross2 size={15}/>
             </Button>
           </Box>
