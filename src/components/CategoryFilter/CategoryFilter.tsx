@@ -9,7 +9,8 @@ import { IoFilter } from "react-icons/io5";
 import styles from './CategoryFilter.module.scss';
 
 import { pageOptions } from "../Header/test-data";
-import Drawer from "../Drawer";
+import FilterDrawer from "../FilterDrawer";
+
 
 const CategoryFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ const CategoryFilter = () => {
         </FormControl>
         </Box>
       </Box>
-      <Drawer isOpen={isOpen} setIsOpen={setIsOpen} />
+      <FilterDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
 }
