@@ -1,15 +1,31 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Paper from "@mui/material/Paper";
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import { CgMenuLeft } from "react-icons/cg";
 import { AiOutlineHome } from "react-icons/ai";
 import { IoBagHandleOutline } from "react-icons/io5";
-import OptionsDrawer from "../OptionsDrawer";
+
+import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
 const BottomNav = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (newValue: any) => {
+    switch (newValue) {
+      case 0:
+        dispatch(setDrawer({ key: DrawerKey.PageOptions, value: true }));
+        break;
+      case 2:
+        dispatch(setDrawer({ key: DrawerKey.Cart, value: true }))
+        break;
+      default:
+        break;
+    }
+    setValue(newValue);
+  }
 
   return (
     <>
@@ -24,7 +40,7 @@ const BottomNav = () => {
           }}
           value={value}
           onChange={(_event, newValue) => {
-            setValue(newValue);
+            handleChange(newValue);
           }}
         >
           <BottomNavigationAction icon={<CgMenuLeft size={25} />} />
@@ -32,7 +48,6 @@ const BottomNav = () => {
           <BottomNavigationAction icon={<IoBagHandleOutline size={25} />} />
         </BottomNavigation>
       </Paper>
-      <OptionsDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
 }

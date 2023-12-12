@@ -1,11 +1,16 @@
+import { useDispatch, useSelector } from "react-redux";
+
 import BaseDrawer from "../BaseDrawer";
+import { ReduxStore } from "../../redux/store";
+import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
-interface FilterDrawerProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const OptionsDrawer = () => {
+  const dispatch = useDispatch();
+  const isOpen = useSelector((state: ReduxStore) => state.drawers.PageOptions);
 
-const OptionsDrawer = ({ isOpen, setIsOpen } : FilterDrawerProps) => {
+  const onClose = () => {
+    dispatch(setDrawer({ key: DrawerKey.PageOptions, value: false }));
+  }
 
   const bodyContent = (
     <div>
@@ -14,7 +19,7 @@ const OptionsDrawer = ({ isOpen, setIsOpen } : FilterDrawerProps) => {
   )
 
   return (
-    <BaseDrawer isOpen={isOpen} setIsOpen={setIsOpen} bodyContent={bodyContent} />
+    <BaseDrawer isOpen={isOpen} onClose={onClose} bodyContent={bodyContent} />
   )
 }
 
