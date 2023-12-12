@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -17,14 +17,15 @@ import { ReduxStore } from "../../redux/store";
 import { ProductToggleType } from "./types.d";
 import { removeProduct, toggleQuantity } from "../../redux/reducers/cart";
 import useGetCartTotal from "../../hooks/useGetCartTotal";
+import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartRef = useRef(null);
   const { totalPrice } = useGetCartTotal();
-  const [isOpen, setIsOpen] = useState(false)
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+  const isOpen = useSelector((state: ReduxStore) => state.drawers.Cart);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -34,7 +35,7 @@ export default function Cart() {
 
   return (
     <>
-      <Box sx={{ display: { xs: 'none', md: 'flex' }}} className={styles.Cart__button} onClick={() => setIsOpen(true)}  ref={cartRef}>
+      <Box sx={{ display: { xs: 'none', md: 'flex' }}} className={styles.Cart__button} onClick={() => dispatch(setDrawer({ key: DrawerKey.Cart, value: true }))} ref={cartRef}>
         <div className={styles.CartButton__top}>
           <span>
             <BsFillBagCheckFill size={20} color="white"/>
@@ -48,7 +49,7 @@ export default function Cart() {
       <Drawer
         anchor="right"
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => dispatch(setDrawer({ key: DrawerKey.Cart, value: false }))}
       >
         <section className={styles.Cart}>
           <Stack direction='row' className={styles.Cart__top}>
@@ -58,7 +59,7 @@ export default function Cart() {
               </span>
               <span className={styles.Item__text}>{cartItems.length} Items</span>
             </Box>
-            <Button className={styles.CartTop__cancelBtn} onClick={() => setIsOpen(false)}>
+            <Button className={styles.CartTop__cancelBtn} onClick={() => dispatch(setDrawer({ key: DrawerKey.Cart, value: false }))}>
               <RxCross2 size={15}/>
             </Button>
           </Stack>
