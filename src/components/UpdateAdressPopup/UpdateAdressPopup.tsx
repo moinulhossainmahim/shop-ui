@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Dialog from "@mui/material/Dialog";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 import styles from './UpdateAdressPopup.module.scss';
 
@@ -85,7 +86,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
             value={editingAddress.city}
             onChange={(e) => setEditingAddress({ ...editingAddress, city: e.target.value })}
           />
-          <div className={styles.InpputIn__row}>
+          <Box className={styles.InpputIn__row} sx={{ flexDirection: { xs: 'column', sm: 'row' }}}>
             <TextField
               type='text'
               label='State'
@@ -94,6 +95,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
               value={editingAddress.state}
               onChange={(e) => setEditingAddress({ ...editingAddress, state: e.target.value })}
               className={styles.InpputIn__row__textfield}
+              sx={{ width: { xs: '100%', sm: '50%' }}}
             />
             <TextField
               type='text'
@@ -103,8 +105,9 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
               value={editingAddress.zip}
               onChange={(e) => setEditingAddress({ ...editingAddress, zip: e.target.value })}
               className={styles.InpputIn__row__textfield}
+              sx={{ width: { xs: '100%', sm: '50%' }}}
             />
-          </div>
+          </Box>
           <TextField
             type='text'
             label='Street'

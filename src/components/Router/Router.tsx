@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import Home from '../../pages/Home';
 import Checkout from "../../pages/Checkout";
-import CssBaseline from "@mui/material/CssBaseline";
 import Header from "../Header";
 import Profile from "../../pages/Profile/Profile";
 import ChangePassword from "../../pages/ChangePassword/ChangePassword";
@@ -11,8 +13,8 @@ import Orders from "../../pages/Orders/Orders";
 import Register from "../../pages/Register/Register";
 import Login from "../../pages/Login";
 import OrderDetails from "../../pages/OrderDetails";
-import { useSelector } from "react-redux";
 import { ReduxStore } from "../../redux/store";
+import BottomNav from "../BottomNav";
 
 export default function Router() {
   const [scrolled, setIsScrolled] = useState(false)
@@ -89,6 +91,7 @@ export default function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<h1>Ooops! it's a dead end!</h1>} />
       </Routes>
+      <BottomNav />
     </>
   )
 }

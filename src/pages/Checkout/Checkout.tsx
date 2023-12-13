@@ -102,8 +102,8 @@ export default function Checkout() {
             Back to Home
           </Button>
         </div>
-        <Box className={styles.Checkout__content}>
-          <Stack className={styles.CheckoutForm__container}>
+        <Box className={styles.Checkout__content} sx={{ flexDirection: { xs: 'column', lg: 'row' }, padding: { xs: '20px', sm: '2% 5%'}}}>
+          <Stack className={styles.CheckoutForm__container} sx={{ width: { xs: '100%', lg: '45%' }}}>
             <Box className={styles.Contact__container}>
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
@@ -121,7 +121,6 @@ export default function Checkout() {
                 disabled
               />
             </Box>
-
             <Box className={styles.Contact__container}>
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
@@ -141,6 +140,7 @@ export default function Checkout() {
                     return (
                     <Box
                       key={addr.id}
+                      sx={{ width: { xs: '100%', sm: '220px' } }}
                       className={classNames(styles.Address, {
                         [styles.Address__active]: activeBillingAddress?.id === addr.id
                       })}
@@ -198,6 +198,7 @@ export default function Checkout() {
                     return (
                     <Box
                       key={addr.id}
+                      sx={{ width: { xs: '100%', sm: '220px' } }}
                       className={classNames(styles.Address, {
                         [styles.Address__active]: activeShippingAddress?.id === addr.id
                       })}
@@ -248,7 +249,7 @@ export default function Checkout() {
               </Stack>
             </Box>
           </Stack>
-          <Stack className={styles.CheckoutOrder__container}>
+          <Stack className={styles.CheckoutOrder__container} sx={{ width: { xs: '100%', lg: '35%' }}}>
             <div className={styles.Order}>
               <div className={styles.Product__container}>
                 {cartItems.length > 0 ? (
