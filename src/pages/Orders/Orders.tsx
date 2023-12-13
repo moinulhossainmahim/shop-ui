@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import Stack from '@mui/material/Stack';
@@ -42,6 +42,14 @@ export default function Orders() {
     }
   }, [orders.length])
 
+  const handleOrderClick = useCallback((order: INewOrder) => {
+    if (activeOrder.id === order.id) {
+      setActiveOrder({} as INewOrder);
+    } else {
+      setActiveOrder(order);
+    }
+  }, [activeOrder.id])
+
   return (
     <Box className={styles.OrdersPage} sx={{ flexDirection: { xs: 'column', md: 'row' }}}>
       <ProfileSidebar />
@@ -59,7 +67,7 @@ export default function Orders() {
       {orders.length && !isLoading ? (
         <>
           <Box className={styles.Orders} sx={{ width: { xs: '96%', md: '40%', lg: '35%' }}}>
-            <Typography p={1} variant='h6' fontWeight='bold'>My Orders</Typography>
+            <Typography p={1} variant='h6' fontWeight='bold' sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }}}>My Orders</Typography>
             <Stack className={styles.Order__container}>
               <div className={styles.Order__container__orders}>
                 {orders?.map((order) => (
@@ -69,7 +77,7 @@ export default function Orders() {
                     className={classNames(styles.Order, {
                       [styles.Order__active]: activeOrder?.id === order?.id,
                     })}
-                    onClick={() => setActiveOrder(order)}
+                    onClick={() => handleOrderClick(order)}
                     >
                       <div className={styles.OrderStatus}>
                         <p className={styles.OrderStatus__p}>
@@ -102,11 +110,11 @@ export default function Orders() {
                         </Typography>
                       </div>
                     </div>
-                    {order.id === activeOrder.id ? (
+                    {activeOrder.id !== '' && order.id === activeOrder.id ? (
                       <Box className={styles.OrderDetails} sx={{ width: { xs: '96%', md: '56%', lg: '45%' }, display: { xs: 'block', md: 'none' }}}>
                         <div>
                           <div className={styles.Order__top}>
-                            <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
+                            <Typography variant='h6' sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }}}>Order Details - {activeOrder.tracking_no || ''}</Typography>
                             <Link to={`/orders/${activeOrder.id}`}>
                               <Button
                                 className={styles.Details__btn}
@@ -119,14 +127,14 @@ export default function Orders() {
                           </div>
                           <div className={styles.Order__status}>
                             <Typography variant='subtitle1' fontWeight="bold">
-                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
-                                <span className={styles.Order__status__title}>Order Status: </span>
+                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '15px', md: '0px' }, alignItems: 'center'}}>
+                                <Typography variant='subtitle2' className={styles.Order__status__title}>Order Status: </Typography>
                                 <OrderStatusChip type={activeOrder.order_status} />
                               </Box>
                             </Typography>
                             <Typography variant='subtitle1' fontWeight="bold">
-                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
-                                <span className={styles.Order__status__title}>Payment Status: </span>
+                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '15px', md: '0px' }, alignItems: 'center'}}>
+                                <Typography variant='subtitle2' className={styles.Order__status__title}>Payment Status: </Typography>
                                 <PaymentStatusChip type={activeOrder.payment_status} />
                               </Box>
                             </Typography>
@@ -177,7 +185,7 @@ export default function Orders() {
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              {activeOrder?.orderItems.map((orderItem) => (
+                              {activeOrder?.orderItems?.map((orderItem) => (
                                 <TableRow className={styles.TableBody__row} key={orderItem.id}>
                                   <TableCell className={styles.TableCell}>
                                     <div className={styles.TableCell__product}>
@@ -278,7 +286,7 @@ export default function Orders() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {activeOrder?.orderItems.map((orderItem) => (
+                  {activeOrder?.orderItems?.map((orderItem) => (
                     <TableRow className={styles.TableBody__row} key={orderItem.id}>
                       <TableCell className={styles.TableCell}>
                         <div className={styles.TableCell__product}>
