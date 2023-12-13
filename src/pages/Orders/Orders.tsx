@@ -40,6 +40,7 @@ export default function Orders() {
     if (!(orders.length)) {
       dispatch({ type: SagaActions.FetchOrders });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orders.length])
 
   const handleOrderClick = useCallback((order: INewOrder) => {
