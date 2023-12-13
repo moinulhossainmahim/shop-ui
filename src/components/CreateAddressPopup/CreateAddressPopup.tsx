@@ -48,6 +48,8 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
 
   return (
     <Dialog
+      maxWidth='xs'
+      fullWidth
       open={isOpen}
       onClose={() => dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: false }))}
     >
@@ -58,7 +60,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='Title'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
@@ -79,7 +81,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='Country'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.country}
             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
           />
@@ -87,7 +89,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='City'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
           />
@@ -96,7 +98,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
               type='text'
               label='State'
               variant="outlined"
-              size='medium'
+              size='small'
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
               className={styles.InpputIn__row__textfield}
@@ -106,7 +108,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
               type='text'
               label='Zip'
               variant="outlined"
-              size='medium'
+              size='small'
               value={formData.zip}
               onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
               className={styles.InpputIn__row__textfield}
@@ -117,7 +119,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='Street'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.streetAddress}
             onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
             className={styles.InpputIn__row__textfield}

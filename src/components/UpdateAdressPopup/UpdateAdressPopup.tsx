@@ -43,6 +43,8 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
 
   return (
     <Dialog
+      maxWidth='xs'
+      fullWidth
       open={isOpen}
       onClose={() => dispatch(setModal({ key: ModalKey.UpdateAddressPopup, value: false }))}
     >
@@ -53,7 +55,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
             type='text'
             label='Title'
             variant="outlined"
-            size='medium'
+            size='small'
             value={editingAddress.title}
             onChange={(e) => setEditingAddress({ ...editingAddress, title: e.target.value })}
           />
@@ -74,7 +76,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
             type='text'
             label='Country'
             variant="outlined"
-            size='medium'
+            size='small'
             value={editingAddress.country}
             onChange={(e) => setEditingAddress({ ...editingAddress, country: e.target.value })}
           />
@@ -82,7 +84,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
             type='text'
             label='City'
             variant="outlined"
-            size='medium'
+            size='small'
             value={editingAddress.city}
             onChange={(e) => setEditingAddress({ ...editingAddress, city: e.target.value })}
           />
@@ -91,7 +93,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
               type='text'
               label='State'
               variant="outlined"
-              size='medium'
+              size='small'
               value={editingAddress.state}
               onChange={(e) => setEditingAddress({ ...editingAddress, state: e.target.value })}
               className={styles.InpputIn__row__textfield}
@@ -101,7 +103,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
               type='text'
               label='Zip'
               variant="outlined"
-              size='medium'
+              size='small'
               value={editingAddress.zip}
               onChange={(e) => setEditingAddress({ ...editingAddress, zip: e.target.value })}
               className={styles.InpputIn__row__textfield}
@@ -112,7 +114,7 @@ export default function ProductDetailsPopup({ editingAddress, setEditingAddress 
             type='text'
             label='Street'
             variant="outlined"
-            size='medium'
+            size='small'
             value={editingAddress.streetAddress}
             onChange={(e) => setEditingAddress({ ...editingAddress, streetAddress: e.target.value })}
             className={styles.InpputIn__row__textfield}
