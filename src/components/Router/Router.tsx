@@ -14,6 +14,7 @@ import Login from "../../pages/Login";
 import OrderDetails from "../../pages/OrderDetails";
 import { ReduxStore } from "../../redux/store";
 import BottomNav from "../BottomNav";
+import OptionsDrawer from "../OptionsDrawer";
 
 export default function Router() {
   const location = useLocation();
@@ -75,6 +76,7 @@ export default function Router() {
         <Route path="*" element={<h1>Ooops! it's a dead end!</h1>} />
       </Routes>
       <BottomNav />
+      <OptionsDrawer />
     </>
   )
 }

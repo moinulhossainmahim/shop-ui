@@ -24,6 +24,7 @@ import { IAddressFormData } from "../Checkout/types";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { parseAddress } from "../../utils/parseAddress";
 import UpdateAdressPopup from "../../components/UpdateAdressPopup";
+import Cart from "../../components/Cart";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -164,6 +165,7 @@ export default function Profile() {
           ) : null}
         </Box>
       </div>
+      <Cart />
       <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
       <UpdateContactPopup contact={user.contact} />
       <CreateAddressPopup formData={formData} setFormData={setFormData} />
