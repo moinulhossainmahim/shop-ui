@@ -32,6 +32,7 @@ import { ProductToggleType } from "../../components/Cart/types.d";
 import { AddressType, IBillingAddress, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types.d";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 import { SagaActions } from "../../redux/sagas/actions";
+import Cart from "../../components/Cart";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -326,6 +327,7 @@ export default function Checkout() {
           </Stack>
         </Box>
       </Box>
+      <Cart />
       <UpdateContactPopup contact={user.contact} />
       <CreateAddressPopup type={openType} formData={formData} setFormData={setFormData} />
       <UpdateAdressPopup editingAddress={editingAddress} setEditingAddress={setEditingAddress} />
