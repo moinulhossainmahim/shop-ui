@@ -140,6 +140,7 @@ export default function Checkout() {
                     return (
                     <Box
                       key={addr.id}
+                      sx={{ width: { xs: '100%', sm: '220px' } }}
                       className={classNames(styles.Address, {
                         [styles.Address__active]: activeBillingAddress?.id === addr.id
                       })}
@@ -197,6 +198,7 @@ export default function Checkout() {
                     return (
                     <Box
                       key={addr.id}
+                      sx={{ width: { xs: '100%', sm: '220px' } }}
                       className={classNames(styles.Address, {
                         [styles.Address__active]: activeShippingAddress?.id === addr.id
                       })}
