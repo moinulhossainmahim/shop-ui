@@ -72,7 +72,7 @@ export default function Profile() {
     <>
       <div className={styles.ProfilePage}>
         <ProfileSidebar />
-        <div className={styles.ProfileInfo__container}>
+        <Box className={styles.ProfileInfo__container} sx={{ width: { xs: '100%', md: 'calc(100% - 320px)' } }}>
           {isLoading ? (
             <div className={styles.Loading__container}>
               <Skeleton variant="rectangular" width="100%" height={200} />
@@ -88,7 +88,7 @@ export default function Profile() {
                   <div className={styles.Details__text}>
                     <Typography variant="h6">Customer details</Typography>
                   </div>
-                  <div className={styles.Profile__details}>
+                  <Box className={styles.Profile__details} sx={{ flexDirection: { xs: 'column-reverse', sm: 'row'}, gap: { xs: '30px', sm: '0px' }}}>
                     <div>
                       <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Full Name:</b> {user.fullName}</Typography>
                       <Typography variant="subtitle1" className={styles.ProfileDetails__text}><b>Email:</b> {user.email}</Typography>
@@ -99,7 +99,7 @@ export default function Profile() {
                         <img className={styles.Profile__img} src={user.avatar} alt="profile-img" />
                         ) : <Typography variant="subtitle1">Empty profile image</Typography>}
                     </div>
-                  </div>
+                  </Box>
                   <div className={styles.EditButton__box}>
                     <Button className={styles.Profile__btn} size="large" variant="contained" onClick={() => dispatch(setModal({ key: ModalKey.ProfileEditPopup, value: true }))}>Edit Profile</Button>
                   </div>
@@ -131,7 +131,7 @@ export default function Profile() {
                 </Box>
                 <Stack className={styles.Address__container} direction='row'>
                   {user.address.map((addr) => (
-                    <Box className={styles.Address} key={addr.id}>
+                    <Box className={styles.Address} key={addr.id} sx={{ width: { xs: '100%', sm: '250px' }}}>
                       <Box className={styles.Address__top}>
                         <Typography variant="subtitle2" fontWeight="bold">{addr.title}</Typography>
                         <Box className={styles.Btn__container}>
@@ -162,7 +162,7 @@ export default function Profile() {
               </Box>
             </>
           ) : null}
-        </div>
+        </Box>
       </div>
       <UpdateProfilePopup profileFormData={profileFormData} setProfileFormData={setProfileFormData} />
       <UpdateContactPopup contact={user.contact} />
