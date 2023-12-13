@@ -50,7 +50,7 @@ export default function Orders() {
   }, [activeOrder.id])
 
   return (
-    <Box className={styles.OrdersPage} sx={{ flexDirection: { xs: 'column', md: 'row' }}}>
+    <Box className={styles.OrdersPage} sx={{ flexDirection: { xs: 'column', md: 'row' }, height: { xs: '100%', md: 'calc(100vh - 64px)' }}}>
       <ProfileSidebar />
       {isLoading ? (
         <div className={styles.Loading__container}>
@@ -110,7 +110,7 @@ export default function Orders() {
                       </div>
                     </div>
                     {activeOrder.id !== '' && order.id === activeOrder.id ? (
-                      <Box className={styles.OrderDetails} sx={{ width: { xs: '96%', md: '56%', lg: '45%' }, display: { xs: 'block', md: 'none' }}}>
+                      <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '56%', lg: '45%' }, display: { xs: 'block', md: 'none' }}}>
                         <div>
                           <div className={styles.Order__top}>
                             <Typography variant='h6' sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }}}>Order Details - {activeOrder.tracking_no || ''}</Typography>
@@ -211,7 +211,7 @@ export default function Orders() {
               </div>
             </Stack>
           </Box>
-          <Box className={styles.OrderDetails} sx={{ width: { xs: '96%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
+          <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
             <div>
               <div className={styles.Order__top}>
                 <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
