@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
@@ -15,6 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import { AiOutlineEye } from 'react-icons/ai';
 
 import styles from './Orders.module.scss';
@@ -43,27 +43,27 @@ export default function Orders() {
   }, [orders.length])
 
   return (
-    <>
-      <div className={styles.OrdersPage}>
-        <ProfileSidebar />
-        {isLoading ? (
-          <div className={styles.Loading__container}>
-            <div className={styles.Skeleton__top}>
-              <Skeleton variant="circular" width='5%' height={50} />
-              <Skeleton variant="rectangular" width="95%" height={30} />
-            </div>
-            <Skeleton variant="rectangular" width="100%" height={200} />
-            <Skeleton variant="rectangular" width="100%" height={60} />
-            <Skeleton variant="rectangular" width="80%" height={30} />
+    <Box className={styles.OrdersPage} sx={{ flexDirection: { xs: 'column', md: 'row' }}}>
+      <ProfileSidebar />
+      {isLoading ? (
+        <div className={styles.Loading__container}>
+          <div className={styles.Skeleton__top}>
+            <Skeleton variant="circular" width='5%' height={50} />
+            <Skeleton variant="rectangular" width="95%" height={30} />
           </div>
-        ) : null}
-        {orders.length && !isLoading ? (
-          <>
-            <div className={styles.Orders}>
-              <Typography p={1} variant='h6' fontWeight='bold'>My Orders</Typography>
-              <Stack className={styles.Order__container}>
-                <div className={styles.Order__container__orders}>
-                  {orders?.map((order) => (
+          <Skeleton variant="rectangular" width="100%" height={200} />
+          <Skeleton variant="rectangular" width="100%" height={60} />
+          <Skeleton variant="rectangular" width="80%" height={30} />
+        </div>
+      ) : null}
+      {orders.length && !isLoading ? (
+        <>
+          <Box className={styles.Orders} sx={{ width: { xs: '96%', md: '40%', lg: '35%' }}}>
+            <Typography p={1} variant='h6' fontWeight='bold'>My Orders</Typography>
+            <Stack className={styles.Order__container}>
+              <div className={styles.Order__container__orders}>
+                {orders?.map((order) => (
+                  <>
                     <div
                     key={order.id}
                     className={classNames(styles.Order, {
@@ -102,112 +102,212 @@ export default function Orders() {
                         </Typography>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </Stack>
-            </div>
-            <div className={styles.OrderDetails}>
-              <div>
-                <div className={styles.Order__top}>
-                  <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
-                  <Link to={`/orders/${activeOrder.id}`}>
-                    <Button
-                      className={styles.Details__btn}
-                      variant='text'
-                      startIcon={<AiOutlineEye />}
-                      >
-                      Details
-                    </Button>
-                  </Link>
-                </div>
-                <div className={styles.Order__status}>
-                  <Typography variant='subtitle1' fontWeight="bold">
+                    {order.id === activeOrder.id ? (
+                      <Box className={styles.OrderDetails} sx={{ width: { xs: '96%', md: '56%', lg: '45%' }, display: { xs: 'block', md: 'none' }}}>
+                        <div>
+                          <div className={styles.Order__top}>
+                            <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
+                            <Link to={`/orders/${activeOrder.id}`}>
+                              <Button
+                                className={styles.Details__btn}
+                                variant='text'
+                                startIcon={<AiOutlineEye />}
+                                >
+                                Details
+                              </Button>
+                            </Link>
+                          </div>
+                          <div className={styles.Order__status}>
+                            <Typography variant='subtitle1' fontWeight="bold">
+                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
+                                <span className={styles.Order__status__title}>Order Status: </span>
+                                <OrderStatusChip type={activeOrder.order_status} />
+                              </Box>
+                            </Typography>
+                            <Typography variant='subtitle1' fontWeight="bold">
+                              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
+                                <span className={styles.Order__status__title}>Payment Status: </span>
+                                <PaymentStatusChip type={activeOrder.payment_status} />
+                              </Box>
+                            </Typography>
+                          </div>
+                          <Box className={styles.Address__payment} sx={{ flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '40px', sm: '20px'}}}>
+                            <Box className={styles.Address__container} sx={{ width: { xs: '100%' }, flexDirection: { xs: 'column', sm: 'row' }}}>
+                              <div className={styles.Address}>
+                                <Typography variant='subtitle1' fontWeight="bold">Shipping Address</Typography>
+                                <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.shippingAddress)}</Typography>
+                              </div>
+                              <div className={styles.Address}>
+                                <Typography variant='subtitle1' fontWeight="bold">Billing Address</Typography>
+                                <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.billingAddress)}</Typography>
+                              </div>
+                            </Box>
+                            <Box className={styles.Payment} sx={{ paddingLeft: { xs: '0px', sm: '20px' }, width: { xs: '100%' }}}>
+                              <Typography variant='subtitle1' className={styles.Payment__item}>
+                                <span>Sub Total</span>
+                                <span>${activeOrder.amount}</span>
+                              </Typography>
+                              <Typography variant='subtitle1' className={styles.Payment__item}>
+                                <span>Discount</span>
+                                <span>$0.00</span>
+                              </Typography>
+                              <Typography variant='subtitle1' className={styles.Payment__item}>
+                                <span>Delivery Fee</span>
+                                <span>${activeOrder.delivery_fee}</span>
+                              </Typography>
+                              <Typography variant='subtitle1' className={styles.Payment__item}>
+                                <span>Tax</span>
+                                <span>$0.00</span>
+                              </Typography>
+                              <Divider />
+                              <Typography variant='subtitle1' fontWeight="bold" className={styles.Payment__item}>
+                                <span>Total</span>
+                                <span>${activeOrder.total}</span>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </div>
+                        <TableContainer sx={{ maxHeight: 450 }} className={styles.TableContainer} component={Paper}>
+                          <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
+                            <TableHead className={styles.TableHead}>
+                              <TableRow>
+                                <TableCell>Item</TableCell>
+                                <TableCell align='center'>Quantity</TableCell>
+                                <TableCell align='center'>Price</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {activeOrder?.orderItems.map((orderItem) => (
+                                <TableRow className={styles.TableBody__row} key={orderItem.id}>
+                                  <TableCell className={styles.TableCell}>
+                                    <div className={styles.TableCell__product}>
+                                      <div>
+                                        <img  className={styles.TableCell__product__img} src={String(orderItem.product.featuredImg)} alt={orderItem.product.name} />
+                                      </div>
+                                      <div className={styles.TableCell__product__details}>
+                                        <span>{orderItem.product.name}</span>
+                                        <span className={styles.TableCell__product__details__price}>${orderItem.product.salePrice}</span>
+                                      </div>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell align='center'>{orderItem.quantity}</TableCell>
+                                  <TableCell align='center'>${(Number(orderItem.quantity) * Number(orderItem.product.salePrice)).toFixed(2)}</TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Box>
+                    ) : null}
+                  </>
+                ))}
+              </div>
+            </Stack>
+          </Box>
+          <Box className={styles.OrderDetails} sx={{ width: { xs: '96%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
+            <div>
+              <div className={styles.Order__top}>
+                <Typography variant='h6'>Order Details - {activeOrder.tracking_no || ''}</Typography>
+                <Link to={`/orders/${activeOrder.id}`}>
+                  <Button
+                    className={styles.Details__btn}
+                    variant='text'
+                    startIcon={<AiOutlineEye />}
+                    >
+                    Details
+                  </Button>
+                </Link>
+              </div>
+              <div className={styles.Order__status}>
+                <Typography variant='subtitle1' fontWeight="bold">
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
                     <span className={styles.Order__status__title}>Order Status: </span>
                     <OrderStatusChip type={activeOrder.order_status} />
-                  </Typography>
-                  <Typography variant='subtitle1' fontWeight="bold">
+                  </Box>
+                </Typography>
+                <Typography variant='subtitle1' fontWeight="bold">
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }}}>
                     <span className={styles.Order__status__title}>Payment Status: </span>
                     <PaymentStatusChip type={activeOrder.payment_status} />
-                  </Typography>
-                </div>
-                <div className={styles.Address__payment}>
-                  <div className={styles.Address__container}>
-                    <div className={styles.Address}>
-                      <Typography variant='subtitle1' fontWeight="bold">Shipping Address</Typography>
-                      <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.shippingAddress)}</Typography>
-                    </div>
-                    <div className={styles.Address}>
-                      <Typography variant='subtitle1' fontWeight="bold">Billing Address</Typography>
-                      <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.billingAddress)}</Typography>
-                    </div>
-                  </div>
-                  <div className={styles.Payment}>
-                    <Typography variant='subtitle1' className={styles.Payment__item}>
-                      <span>Sub Total</span>
-                      <span>${activeOrder.amount}</span>
-                    </Typography>
-                    <Typography variant='subtitle1' className={styles.Payment__item}>
-                      <span>Discount</span>
-                      <span>$0.00</span>
-                    </Typography>
-                    <Typography variant='subtitle1' className={styles.Payment__item}>
-                      <span>Delivery Fee</span>
-                      <span>${activeOrder.delivery_fee}</span>
-                    </Typography>
-                    <Typography variant='subtitle1' className={styles.Payment__item}>
-                      <span>Tax</span>
-                      <span>$0.00</span>
-                    </Typography>
-                    <Divider />
-                    <Typography variant='subtitle1' fontWeight="bold" className={styles.Payment__item}>
-                      <span>Total</span>
-                      <span>${activeOrder.total}</span>
-                    </Typography>
-                  </div>
-                </div>
+                  </Box>
+                </Typography>
               </div>
-              <TableContainer sx={{ maxHeight: 450 }} className={styles.TableContainer} component={Paper}>
-                <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
-                  <TableHead className={styles.TableHead}>
-                    <TableRow>
-                      <TableCell>Item</TableCell>
-                      <TableCell align='center'>Quantity</TableCell>
-                      <TableCell align='center'>Price</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {activeOrder?.orderItems.map((orderItem) => (
-                      <TableRow className={styles.TableBody__row} key={orderItem.id}>
-                        <TableCell className={styles.TableCell}>
-                          <div className={styles.TableCell__product}>
-                            <div>
-                              <img  className={styles.TableCell__product__img} src={String(orderItem.product.featuredImg)} alt={orderItem.product.name} />
-                            </div>
-                            <div className={styles.TableCell__product__details}>
-                              <span>{orderItem.product.name}</span>
-                              <span className={styles.TableCell__product__details__price}>${orderItem.product.salePrice}</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell align='center'>{orderItem.quantity}</TableCell>
-                        <TableCell align='center'>${(Number(orderItem.quantity) * Number(orderItem.product.salePrice)).toFixed(2)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Box className={styles.Address__payment} sx={{ flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '40px', sm: '20px'}}}>
+                <Box className={styles.Address__container} sx={{ width: { xs: '100%' }, flexDirection: { xs: 'column', sm: 'row' }}}>
+                  <div className={styles.Address}>
+                    <Typography variant='subtitle1' fontWeight="bold">Shipping Address</Typography>
+                    <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.shippingAddress)}</Typography>
+                  </div>
+                  <div className={styles.Address}>
+                    <Typography variant='subtitle1' fontWeight="bold">Billing Address</Typography>
+                    <Typography variant='body1' className={styles.Address__title}>{parseAddress(activeOrder.billingAddress)}</Typography>
+                  </div>
+                </Box>
+                <Box className={styles.Payment} sx={{ paddingLeft: { xs: '0px', sm: '20px' }, width: { xs: '100%' }}}>
+                  <Typography variant='subtitle1' className={styles.Payment__item}>
+                    <span>Sub Total</span>
+                    <span>${activeOrder.amount}</span>
+                  </Typography>
+                  <Typography variant='subtitle1' className={styles.Payment__item}>
+                    <span>Discount</span>
+                    <span>$0.00</span>
+                  </Typography>
+                  <Typography variant='subtitle1' className={styles.Payment__item}>
+                    <span>Delivery Fee</span>
+                    <span>${activeOrder.delivery_fee}</span>
+                  </Typography>
+                  <Typography variant='subtitle1' className={styles.Payment__item}>
+                    <span>Tax</span>
+                    <span>$0.00</span>
+                  </Typography>
+                  <Divider />
+                  <Typography variant='subtitle1' fontWeight="bold" className={styles.Payment__item}>
+                    <span>Total</span>
+                    <span>${activeOrder.total}</span>
+                  </Typography>
+                </Box>
+              </Box>
             </div>
-          </>
-        ) : null}
-        {!isLoading && !(orders.length) ? (
-          <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
-            <Typography variant='h6'>Empty order list</Typography>
-            <Typography variant='subtitle1'>Make order to see order item</Typography>
-            <Button className={styles.Back__btn} variant='contained' onClick={() => navigate('/')}>Back to Products</Button>
-          </Stack>
-        ) : null}
-      </div>
-      <Cart />
-    </>
+            <TableContainer sx={{ maxHeight: 450 }} className={styles.TableContainer} component={Paper}>
+              <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead className={styles.TableHead}>
+                  <TableRow>
+                    <TableCell>Item</TableCell>
+                    <TableCell align='center'>Quantity</TableCell>
+                    <TableCell align='center'>Price</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {activeOrder?.orderItems.map((orderItem) => (
+                    <TableRow className={styles.TableBody__row} key={orderItem.id}>
+                      <TableCell className={styles.TableCell}>
+                        <div className={styles.TableCell__product}>
+                          <div>
+                            <img  className={styles.TableCell__product__img} src={String(orderItem.product.featuredImg)} alt={orderItem.product.name} />
+                          </div>
+                          <div className={styles.TableCell__product__details}>
+                            <span>{orderItem.product.name}</span>
+                            <span className={styles.TableCell__product__details__price}>${orderItem.product.salePrice}</span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell align='center'>{orderItem.quantity}</TableCell>
+                      <TableCell align='center'>${(Number(orderItem.quantity) * Number(orderItem.product.salePrice)).toFixed(2)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </>
+      ) : null}
+      {!isLoading && !(orders.length) ? (
+        <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
+          <Typography variant='h6'>Empty order list</Typography>
+          <Typography variant='subtitle1'>Make order to see order item</Typography>
+          <Button className={styles.Back__btn} variant='contained' onClick={() => navigate('/')}>Back to Products</Button>
+        </Stack>
+      ) : null}
+    </Box>
   )
 }

@@ -4,13 +4,12 @@
   width: 100vw;
   min-height: calc(100vh - 64px);
   display: flex;
-  padding: 4rem 10rem;
+  padding: 2%;
   gap: 30px;
   background-color: variables.$color-dark-bg;
 }
 
 .Orders {
-  width: 30%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
@@ -18,7 +17,6 @@
 
 .OrderDetails {
   padding: 2%;
-  width: 50%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
