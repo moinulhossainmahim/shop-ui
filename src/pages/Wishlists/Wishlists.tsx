@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack';
+import Skeleton from "@mui/material/Skeleton";
+import Box from "@mui/material/Box";
 
 import styles from './Wishlists.module.scss';
 
@@ -13,7 +15,6 @@ import { SagaActions } from "../../redux/sagas/actions";
 import { ReduxStore } from "../../redux/store";
 import { isInCart } from "../../utils/isInCart";
 import { addProduct, removeProduct } from "../../redux/reducers/cart";
-import Skeleton from "@mui/material/Skeleton";
 
 export default function Wishlists() {
   const dispatch = useDispatch();
@@ -34,9 +35,9 @@ export default function Wishlists() {
 
   return (
     <>
-      <div className={styles.Wishlists__page}>
+      <Box className={styles.Wishlists__page}>
         <ProfileSidebar />
-        <div className={styles.Wishlists}>
+        <Box className={styles.Wishlists} sx={{ width: { xs: '100%', md: 'calc(100vw - 460px)'}}}>
           {!wishlist.length && !isLoading ? (
             <Stack className={styles.EmptyOrder__box} direction='column' gap={1}>
               <Typography variant='h6'>Empty wishlist</Typography>
@@ -96,8 +97,8 @@ export default function Wishlists() {
               <Skeleton variant="rectangular" width="100%" height={50} />
             </div>
           ) : null}
-        </div>
-      </div>
+        </Box>
+      </Box>
       <Cart />
     </>
   )
