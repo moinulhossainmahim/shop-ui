@@ -32,7 +32,7 @@ import { UserStatusType } from '../../pages/Login/types.d';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
-function Header({ scrolled } : { scrolled: boolean }) {
+function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
     <AppBar
       className={
         classNames(styles.AppBar,{
-          [styles.AppBar__scrolled]: scrolled
+          [styles.AppBar__scrolled]: true,
       })}
       position={location.pathname !== '/' ? 'static' : 'fixed'}
     >
@@ -80,7 +80,7 @@ function Header({ scrolled } : { scrolled: boolean }) {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'} sx={{ display: { xs: 'none', lg: 'flex' }}}>
+          <Stack direction="row" width="33.3333%" alignItems="center" sx={{ display: { xs: 'none', lg: 'flex' }}}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"

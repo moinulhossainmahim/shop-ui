@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,7 +16,6 @@ import { ReduxStore } from "../../redux/store";
 import BottomNav from "../BottomNav";
 
 export default function Router() {
-  const [scrolled, setIsScrolled] = useState(false)
   const location = useLocation();
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
 
@@ -28,27 +26,12 @@ export default function Router() {
     return <Navigate to="/login" />
   }
 
-  useEffect(() => {
-    function handleScroll() {
-      if(window.scrollY > window.innerHeight * 0.5) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false);
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-
-    return() => {
-      window.removeEventListener('scroll', handleScroll);
-    }
-  },[])
-
   return (
     <>
       <CssBaseline />
       {location.pathname === '/login' || location.pathname === '/register' ? (
         null
-      ) : <Header scrolled={scrolled} />}
+      ) : <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/checkout" element={
