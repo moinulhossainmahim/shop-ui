@@ -109,7 +109,7 @@ export default function Checkout() {
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
                   <Box className={styles.Number}>1</Box>
-                  <Typography variant="h5">Contact Number</Typography>
+                  <Typography variant="h5" sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' }}}>Contact Number</Typography>
                 </Box>
                 <Button className={styles.UpdateBtn} onClick={() => dispatch(setModal({ key: ModalKey.UpdateContactPopup, value: true }))}>+ Update</Button>
               </Box>
@@ -126,7 +126,7 @@ export default function Checkout() {
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
                   <Box className={styles.Number}>2</Box>
-                  <Typography variant="h5">Billing Address</Typography>
+                  <Typography variant="h5" sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' }}}>Billing Address</Typography>
                 </Box>
                 <Button className={styles.UpdateBtn} onClick={() => {
                   setOpenType('billing')
@@ -184,7 +184,7 @@ export default function Checkout() {
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
                   <Box className={styles.Number}>3</Box>
-                  <Typography variant="h5">Shipping Address</Typography>
+                  <Typography variant="h5" sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' }}}>Shipping Address</Typography>
                 </Box>
                 <Button className={styles.UpdateBtn} onClick={() => {
                   setOpenType('shipping')
@@ -242,7 +242,7 @@ export default function Checkout() {
               <Box className={styles.Contact__container__top}>
                 <Box className={styles.Contact__top__left}>
                   <Box className={styles.Number}>4</Box>
-                  <Typography variant="h5">Order Note</Typography>
+                  <Typography variant="h5" sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' }}}>Order Note</Typography>
                 </Box>
               </Box>
               <Stack className={styles.Address__container}>
@@ -291,7 +291,7 @@ export default function Checkout() {
                 ) : (
                   <Stack className={styles.Empty__cart}>
                     <BsBagXFill className={styles.Empty__bag} />
-                    <Typography variant="h5">No products found</Typography>
+                    <Typography variant="h5" sx={{ fontSize: { xs: '1.3rem', md: '1.5rem' }}}>No products found</Typography>
                     <Typography variant="subtitle1">Add products to cart</Typography>
                   </Stack>
                 )}
