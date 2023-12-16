@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -55,6 +55,13 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchValue !== '') {
+      dispatch({ type: SagaActions.FetchProducts, payload: { search: searchValue }});
+    }
+  }, [dispatch, searchValue])
+
   return (
     <AppBar
       className={
@@ -68,7 +75,7 @@ function Header() {
             <Link to='/'>
               <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => dispatch({ type: SagaActions.FetchProducts, payload: {}})}/>
             </Link>
-            <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' } }} size="small">
+            <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' }}} size="small">
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
@@ -82,61 +89,63 @@ function Header() {
             </FormControl>
           </Stack >
           <Stack direction="row" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, width: { xs: '70%', md: '33.3333%' }}}>
-            <TextField
-              className={styles.Search__input}
-              id="input-with-sx"
-              variant="outlined"
-              label="Search products"
-              size="small"
-              fullWidth
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: 'transparent!important',
+            <form className={styles.Search__form} onSubmit={(e) => handleSubmit(e)}>
+              <TextField
+                className={styles.Search__input}
+                id="input-with-sx"
+                variant="outlined"
+                label="Search products"
+                size="small"
+                fullWidth
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'transparent!important',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgb(31,41,55)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgb(31,41,55)',
+                    },
                   },
-                  '&:hover fieldset': {
-                    borderColor: 'rgb(31,41,55)',
+                  '& .MuiOutlinedInput-input': {
+                    color: 'rgb(31,41,55)',
+                    fontSize: '16px',
                   },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'rgb(31,41,55)',
+                  '& label, label.Mui-focused': {
+                    color: 'rgb(31,41,55);',
                   },
-                },
-                '& .MuiOutlinedInput-input': {
-                  color: 'rgb(31,41,55)',
-                  fontSize: '16px',
-                },
-                '& label, label.Mui-focused': {
-                  color: 'rgb(31,41,55);',
-                },
-                '& .MuiInput-underline:after': {
-                  borderBottomColor: 'rgb(31,41,55)',
-                },
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    {searchValue && (
-                      <MdClose
-                        className={styles.Clear__searchValue}
-                        size={25}
+                  '& .MuiInput-underline:after': {
+                    borderBottomColor: 'rgb(31,41,55)',
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      {searchValue && (
+                        <MdClose
+                          className={styles.Clear__searchValue}
+                          size={25}
+                          color="rgb(31,41,55)"
+                          onClick={() => {
+                            setSearchValue('');
+                          }}
+                          title="Clear"
+                          />
+                      )}
+                      <IoMdSearch
+                        className={styles.SearchIcon}
                         color="rgb(31,41,55)"
-                        onClick={() => {
-                          setSearchValue('');
-                        }}
-                        title="Clear"
-                        />
-                    )}
-                    <IoMdSearch
-                      className={styles.SearchIcon}
-                      color="rgb(31,41,55)"
-                      size={30}
-                    />
-                  </InputAdornment>
-                ),
-              }}
-            />
+                        size={30}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </form>
           </Stack>
           <Stack direction="row" sx={{ width: { md: '66.666%', lg: '33.3333%' }}} alignItems="center" justifyContent="flex-end" gap={3}>
             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
