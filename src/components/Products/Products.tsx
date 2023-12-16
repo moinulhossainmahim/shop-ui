@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -9,7 +9,6 @@ import Product from './Product/Product';
 import { IProductTemp } from './types.d';
 import ProductDetailsPopup from '../ProductDetailsPopup/ProductDetailsPopup';
 import { SagaActions } from '../../redux/sagas/actions';
-import { useSelector } from 'react-redux';
 import { ReduxStore } from '../../redux/store';
 import ProductsLoader from '../ProductsLoader';
 
@@ -51,7 +50,7 @@ export default function Products() {
       dispatch({ type: SagaActions.FetchWishlist })
     }
     if(!products.length) {
-      dispatch({ type: SagaActions.FetchProducts });
+      dispatch({ type: SagaActions.FetchProducts, payload: {}});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, products.length])

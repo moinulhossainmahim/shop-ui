@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,9 +29,20 @@ export default function Sidebar() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open] = React.useState(true);
   const dispatch = useDispatch()
+  const location = useLocation();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState<string>('panel1');
   const categoriesData = useSelector((state: ReduxStore) => state.categories.categoryResponse.content);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchCategories);
+
+  const handleCategoryAdd = useCallback((key: 'category' | 'subCategory', value: string) => {
+    const searchParams = new URLSearchParams(location.search);
+    if (location.search !== `?${key}=${value}`) {
+      searchParams.set(key, value);
+      navigate(`/?${key}=${value}`)
+      dispatch({ type: SagaActions.FetchProducts, payload: { [key]: value }});
+    }
+  }, [dispatch, location, navigate])
 
   useEffect(() => {
     if(!categoriesData.length) {
@@ -92,18 +105,19 @@ export default function Sidebar() {
                       }
                     }}
                   >
-                    <ListItemButton className={styles.ListItem__button}>
+                    <ListItemButton className={styles.ListItem__button} onClick={() => handleCategoryAdd('category', sidebar.slug)}>
                       <ListItemIcon className={styles.ListItem__icon}>
                         <img src={sidebar.icon} alt={sidebar.name} height={25} width={25} />
                       </ListItemIcon>
                       <ListItemText primary={
-                        <span className={styles.ListItem__text}>{sidebar.name}</span>
-                      } />
+                          <span className={styles.ListItem__text}>{sidebar.name}</span>
+                        }
+                      />
                     </ListItemButton>
                   </AccordionSummary>
                   <AccordionDetails className={styles.Accordian__details}>
                     {sidebar.subCategories?.map((child) => (
-                      <Link component="button" className={styles.Sidebar__child} key={child.id}>{child.name}</Link>
+                      <Link component="button" className={styles.Sidebar__child} key={child.id} onClick={() => handleCategoryAdd('subCategory', child.slug)}>{child.name}</Link>
                     ))}
                   </AccordionDetails>
                 </Accordion>

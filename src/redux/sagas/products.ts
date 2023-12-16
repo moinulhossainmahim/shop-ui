@@ -4,14 +4,27 @@ import { API_BASE_URL, USE_AUTH } from "../../constants";
 import { IProductsResponse } from "../../components/Products/types";
 import { setProducts } from "../reducers/products";
 import { LoaderKey, setLoader } from "../reducers/loader";
+import { SagaActions } from "./actions";
 
-export function* fetchProducts(): any {
+interface FetchProductsAction {
+  type: SagaActions.FetchProducts;
+  payload: {
+    page?: number;
+    category?: string;
+    subCategory?: string;
+    search?: string;
+  }
+}
+
+export function* fetchProducts(action: FetchProductsAction): any {
+  console.log(action.payload);
+  const { payload: { page, category, subCategory }} = action;
   const token = yield select((state: ReduxStore) => state.auth.token);
   yield put(setLoader({ key: LoaderKey.FetchProducts, value: true }));
   try {
     const result = yield call(
       fetch,
-      `${API_BASE_URL}/products`,
+      `${API_BASE_URL}/products/?${page ? `page=${page}` : `page=1`}${category ? `&category=${category}` : ''}${subCategory ? `&subCategory=${subCategory}` : ''}`,
       {
         method: 'GET',
         headers: new Headers({

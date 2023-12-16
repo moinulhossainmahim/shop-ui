@@ -29,6 +29,7 @@ import Logo from '../../assets/logo2.png';
 import { ReduxStore } from '../../redux/store';
 import { registerUser, setAuthData, setUserProfile } from '../../redux/reducers/auth';
 import { UserStatusType } from '../../pages/Login/types.d';
+import { SagaActions } from '../../redux/sagas/actions';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
@@ -62,10 +63,10 @@ function Header() {
       })}
       position={location.pathname !== '/' ? 'static' : 'fixed'}
     >
-        <Toolbar className={styles.Toolbar}>
-          <Stack direction="row" width="33.3333%" alignItems="center">
+        <Toolbar className={styles.Toolbar} sx={{ gap: { xs: '20px', md: '0px' }}}>
+          <Stack direction="row" alignItems="center" sx={{ width: { xs: '50%', sm: '20%', md: '33.3333%' }}}>
             <Link to='/'>
-              <img className={styles.Logo} src={Logo} alt="shop-logo" />
+              <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => dispatch({ type: SagaActions.FetchProducts, payload: {}})}/>
             </Link>
             <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' } }} size="small">
               <Select
@@ -80,7 +81,7 @@ function Header() {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center" sx={{ display: { xs: 'none', lg: 'flex' }}}>
+          <Stack direction="row" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, width: { xs: '70%', md: '33.3333%' }}}>
             <TextField
               className={styles.Search__input}
               id="input-with-sx"
@@ -137,8 +138,8 @@ function Header() {
               }}
             />
           </Stack>
-          <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end" gap={3}>
-            <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+          <Stack direction="row" sx={{ width: { md: '66.666%', lg: '33.3333%' }}} alignItems="center" justifyContent="flex-end" gap={3}>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
               {navItems.map((item) => (
                 <Button key={item} className={styles.NavItems}>
                   {item}
