@@ -53,7 +53,7 @@ export default function Products() {
       dispatch({ type: SagaActions.FetchProducts, payload: {}});
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, products.length])
+  }, [isAuthenticated])
 
   const itemListRef = useRef(null);
   const showRef = useRef(null);

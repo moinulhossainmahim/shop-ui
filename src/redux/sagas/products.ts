@@ -17,14 +17,19 @@ interface FetchProductsAction {
 }
 
 export function* fetchProducts(action: FetchProductsAction): any {
-  console.log(action.payload);
-  const { payload: { page, category, subCategory }} = action;
+  const { payload: { page, category, subCategory, search }} = action;
   const token = yield select((state: ReduxStore) => state.auth.token);
   yield put(setLoader({ key: LoaderKey.FetchProducts, value: true }));
   try {
     const result = yield call(
       fetch,
-      `${API_BASE_URL}/products/?${page ? `page=${page}` : `page=1`}${category ? `&category=${category}` : ''}${subCategory ? `&subCategory=${subCategory}` : ''}`,
+      `
+        ${API_BASE_URL}/products/?
+        ${page ? `page=${page}` : `page=1`}
+        ${category ? `&category=${category}` : ''}
+        ${subCategory ? `&subCategory=${subCategory}` : ''}
+        ${search ? `&search=${search}` : ''}
+      `,
       {
         method: 'GET',
         headers: new Headers({
