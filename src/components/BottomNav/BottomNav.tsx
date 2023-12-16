@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Paper from "@mui/material/Paper";
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -11,6 +12,7 @@ import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
 
 const BottomNav = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [value, setValue] = useState(1);
 
   const handleChange = (newValue: any) => {
@@ -44,7 +46,9 @@ const BottomNav = () => {
           }}
         >
           <BottomNavigationAction icon={<CgMenuLeft size={25} />} />
-          <BottomNavigationAction icon={<AiOutlineHome size={25} />} />
+          <BottomNavigationAction icon={<AiOutlineHome size={25} />} onClick={() => {
+            navigate('/')
+          }}/>
           <BottomNavigationAction icon={<IoBagHandleOutline size={25} />} />
         </BottomNavigation>
       </Paper>

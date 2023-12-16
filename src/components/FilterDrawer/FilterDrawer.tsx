@@ -17,8 +17,10 @@ import { ReduxStore } from "../../redux/store";
 import { SagaActions } from "../../redux/sagas/actions";
 import BaseDrawer from "../BaseDrawer";
 import { DrawerKey, setDrawer } from "../../redux/reducers/drawer";
+import useCategoryFilter from "../../hooks/useCategoryFilter";
 
 const FilterDrawer = () => {
+  const filter = useCategoryFilter();
   const dispatch = useDispatch();
   const isOpen = useSelector((state: ReduxStore) => state.drawers.FilterCategory);
   const [expanded, setExpanded] = useState<string>('panel1');
@@ -65,7 +67,10 @@ const FilterDrawer = () => {
                 }
               }}
             >
-              <ListItemButton className={styles.ListItem__button}>
+              <ListItemButton className={styles.ListItem__button} onClick={() => {
+                  filter('category', sidebar.slug)
+                  onClose()
+                }}>
                 <ListItemIcon className={styles.ListItem__icon}>
                   <img src={sidebar.icon} alt={sidebar.name} height={25} width={25} />
                 </ListItemIcon>
@@ -76,7 +81,10 @@ const FilterDrawer = () => {
             </AccordionSummary>
             <AccordionDetails className={styles.Accordian__details}>
               {sidebar.subCategories?.map((child) => (
-                <div className={styles.Sidebar__child} key={child.id}>{child.name}</div>
+                <div className={styles.Sidebar__child} key={child.id}  onClick={() => {
+                  filter('subCategory', child.slug)
+                  onClose()
+                }}>{child.name}</div>
               ))}
             </AccordionDetails>
           </Accordion>
