@@ -33,6 +33,7 @@ export default function Orders() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
+  const { hasNextPage } = useSelector((state: ReduxStore) => state.orders.orderResponse.meta);
   const [activeOrder, setActiveOrder] = useState(orders[0]);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchOrders);
 
@@ -50,6 +51,10 @@ export default function Orders() {
       setActiveOrder(order);
     }
   }, [activeOrder.id])
+
+  const handleLoadMoreClick = () => {
+    console.log('clicked');
+  }
 
   return (
     <>
@@ -212,11 +217,11 @@ export default function Orders() {
                     </>
                   ))}
                 </div>
-                {/* {hasNextPage ? (
+                {hasNextPage ? (
                   <Box width='100%' textAlign='center' mt={2}>
                     <Button variant='contained' className={styles.LoadMore__btn} onClick={handleLoadMoreClick}>Load More</Button>
                   </Box>
-                ) : null} */}
+                ) : null}
               </Stack>
             </Box>
             <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
