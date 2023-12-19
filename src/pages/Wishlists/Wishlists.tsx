@@ -19,7 +19,7 @@ import { addProduct, removeProduct } from "../../redux/reducers/cart";
 export default function Wishlists() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
+  const { content: wishlist, meta: { hasNextPage } } = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchWishlist);
 
@@ -86,6 +86,13 @@ export default function Wishlists() {
                   </div>
                 </div>
                 ))}
+                {hasNextPage ? (
+                  <Box width='100%' textAlign='center'>
+                    <Button variant="contained" className={styles.LoadMore__btn}>
+                      Load More
+                    </Button>
+                  </Box>
+                ) : null}
               </Stack>
             </>
           ) : null}
