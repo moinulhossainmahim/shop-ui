@@ -212,6 +212,11 @@ export default function Orders() {
                     </>
                   ))}
                 </div>
+                {/* {hasNextPage ? (
+                  <Box width='100%' textAlign='center' mt={2}>
+                    <Button variant='contained' className={styles.LoadMore__btn} onClick={handleLoadMoreClick}>Load More</Button>
+                  </Box>
+                ) : null} */}
               </Stack>
             </Box>
             <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
