@@ -80,7 +80,7 @@ export default function Orders() {
               <Stack className={styles.Order__container}>
                 <div className={styles.Order__container__orders}>
                   {orders?.map((order) => (
-                    <>
+                    <div key={order.id}>
                       <div
                       key={order.id}
                       className={classNames(styles.Order, {
@@ -216,7 +216,7 @@ export default function Orders() {
                           </TableContainer>
                         </Box>
                       ) : null}
-                    </>
+                    </div>
                   ))}
                 </div>
                 {hasNextPage ? (
