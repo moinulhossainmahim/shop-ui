@@ -17,6 +17,13 @@ interface FetchOrderAction {
   }
 }
 
+interface FetchOrdersAction {
+  type: SagaActions.FetchOrders;
+  payload: {
+    page?: number,
+  }
+}
+
 interface CreateOrderAction {
   type: SagaActions.CreateOrder;
   payload: {
@@ -25,13 +32,15 @@ interface CreateOrderAction {
   }
 }
 
-export function* fetchOrders(): any {
+export function* fetchOrders(action?: FetchOrdersAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  const orders: INewOrder[] = yield select((state: ReduxStore) => state.orders.orderResponse.content)
+  const page = action?.payload?.page ?? 1;
   yield put(setLoader({ key: LoaderKey.FetchOrders, value: true }));
   try {
     const result = yield call(
       fetch,
-      `${API_BASE_URL}/orders`,
+      `${API_BASE_URL}/orders?page=${page}`,
       {
         method: 'GET',
         headers: new Headers({
@@ -42,12 +51,26 @@ export function* fetchOrders(): any {
     )
     const response: IOrderResponse = yield result.json();
     if(response.success) {
-      yield put(setOrders({
-        content: response.content as INewOrder[],
-        message: response.message,
-        success: response.success,
-        meta: response.meta,
-      }));
+      if (response.meta.page > 1) {
+        orders.map((item) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          response.content.push(item);
+        })
+        yield put(setOrders({
+          content: response.content as INewOrder[],
+          message: response.message,
+          success: response.success,
+          meta: response.meta,
+        }));
+      } else {
+        yield put(setOrders({
+          content: response.content as INewOrder[],
+          message: response.message,
+          success: response.success,
+          meta: response.meta,
+        }));
+      }
     }
     yield put(setLoader({ key: LoaderKey.FetchOrders, value: false }));
   } catch (error) {
@@ -117,12 +140,6 @@ export function* createOrder(action: CreateOrderAction): any {
       setTimeout(() => {
         action.payload.navigation(`/orders/${order.id}`);
       }, 2000)
-      // yield call(fetchOrder, {
-      //   type: SagaActions.FetchOrder,
-      //   payload: {
-      //     id: order.id,
-      //   }
-      // });
     }
     yield put(setLoader({ key: LoaderKey.CreateOrder, value: false }));
   } catch (error) {
