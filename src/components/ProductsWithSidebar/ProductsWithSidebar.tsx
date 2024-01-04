@@ -45,7 +45,7 @@ export default function Sidebar() {
     };
 
   return (
-    <Box sx={{ display: 'flex', borderTop: '1px solid rgb(243,244,246)' }}>
+    <Box sx={{ display: 'flex', borderTop: '1px solid rgb(243,244,246)', height: 'calc(100vh - 150px'}}>
       <Drawer
         sx={{
           display: { xs: 'none', lg: 'flex' },

@@ -1,9 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import gsap from 'gsap';
+
+import styles from './Products.module.scss';
 
 import Product from './Product/Product';
 import { IProductTemp } from './types.d';
@@ -39,9 +42,11 @@ export default function Products() {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   const cartRef = window.cartRef;
+  const itemListRef = useRef(null);
+  const showRef = useRef(null);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const [activeProduct, setActiveProduct] = useState<IProductTemp | null>(null);
-  const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
+  const { content: products, meta: { hasNextPage, page } } = useSelector((state: ReduxStore) => state.products.productsResponse);
   const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchProducts);
 
@@ -54,9 +59,6 @@ export default function Products() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
-
-  const itemListRef = useRef(null);
-  const showRef = useRef(null);
 
   const handleButtonClick = (event: any) => {
     const item = event.target.closest(".item");
@@ -100,6 +102,12 @@ export default function Products() {
     });
   };
 
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage) {
+      dispatch({ type: SagaActions.FetchProducts, payload: { page: page + 1 }});
+    }
+  }, [dispatch, hasNextPage, page])
+
   return (
     <>
       <Main open={true}>
@@ -130,6 +138,13 @@ export default function Products() {
           ) : null}
           </Grid>
         </Box>
+        {hasNextPage ? (
+          <Box className={styles.LoadMoreBtn__container}>
+            <Button variant='contained' className={styles.LoadMoreBtn} disabled={!hasNextPage} onClick={handleLoadMore}>
+              Load More
+            </Button>
+          </Box>
+        ) : null}
       </Main>
       {/* <div className="container position-relative" ref={itemListRef}>
         <div id="show" className="position-absolute fly-cart" ref={showRef}>

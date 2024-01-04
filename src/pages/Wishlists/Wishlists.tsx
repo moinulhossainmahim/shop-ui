@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import ProfileSidebar from "../../components/ProfileSidebar/ProfileSidebar";
@@ -19,7 +19,7 @@ import { addProduct, removeProduct } from "../../redux/reducers/cart";
 export default function Wishlists() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const wishlist = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse.content);
+  const { content: wishlist, meta: { hasNextPage, page } } = useSelector((state: ReduxStore) => state.wishlist.wishlistResponse);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchWishlist);
 
@@ -32,6 +32,12 @@ export default function Wishlists() {
   function handleWishlistRemove(id: string) {
     dispatch({ type: SagaActions.RemoveFromWishlist, payload: { id }});
   }
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage) {
+      dispatch({ type: SagaActions.FetchWishlist, payload: { page: page + 1 }});
+    }
+  }, [dispatch, hasNextPage, page])
 
   return (
     <>
@@ -86,6 +92,13 @@ export default function Wishlists() {
                   </div>
                 </div>
                 ))}
+                {hasNextPage ? (
+                  <Box width='100%' textAlign='center'>
+                    <Button variant="contained" className={styles.LoadMore__btn} onClick={handleLoadMore}>
+                      Load More
+                    </Button>
+                  </Box>
+                ) : null}
               </Stack>
             </>
           ) : null}

@@ -33,6 +33,7 @@ export default function Orders() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orders = useSelector((state: ReduxStore) => state.orders.orderResponse.content) as INewOrder[];
+  const { hasNextPage, page } = useSelector((state: ReduxStore) => state.orders.orderResponse.meta);
   const [activeOrder, setActiveOrder] = useState(orders[0]);
   const isLoading = useSelector((state: ReduxStore) => state.loader.FetchOrders);
 
@@ -50,6 +51,12 @@ export default function Orders() {
       setActiveOrder(order);
     }
   }, [activeOrder.id])
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage) {
+      dispatch({ type: SagaActions.FetchOrders, payload: { page: page + 1 }});
+    }
+  }, [dispatch, hasNextPage, page])
 
   return (
     <>
@@ -73,7 +80,7 @@ export default function Orders() {
               <Stack className={styles.Order__container}>
                 <div className={styles.Order__container__orders}>
                   {orders?.map((order) => (
-                    <>
+                    <div key={order.id}>
                       <div
                       key={order.id}
                       className={classNames(styles.Order, {
@@ -209,9 +216,14 @@ export default function Orders() {
                           </TableContainer>
                         </Box>
                       ) : null}
-                    </>
+                    </div>
                   ))}
                 </div>
+                {hasNextPage ? (
+                  <Box width='100%' textAlign='center' mt={2}>
+                    <Button variant='contained' className={styles.LoadMore__btn} onClick={handleLoadMore}>Load More</Button>
+                  </Box>
+                ) : null}
               </Stack>
             </Box>
             <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '56%', lg: '45%' }, display: { xs: 'none', md: 'block' }}}>
