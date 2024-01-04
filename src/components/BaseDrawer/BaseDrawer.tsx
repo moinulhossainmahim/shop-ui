@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { RxCross2 } from 'react-icons/rx';
 import styles from './BaseDrawer.module.scss';
 
 import Logo from '../../assets/logo2.png';
+import { SagaActions } from '../../redux/sagas/actions';
 
 interface BaseDrawerProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ interface BaseDrawerProps {
 }
 
 export default function BaseDrawer({ isOpen, onClose, bodyContent } : BaseDrawerProps) {
+  const dispatch = useDispatch();
   return (
     <>
       <Drawer
@@ -26,7 +29,10 @@ export default function BaseDrawer({ isOpen, onClose, bodyContent } : BaseDrawer
         <section className={styles.Drawer__section}>
           <Box className={styles.Drawer__header}>
             <Link to='/'>
-              <img className={styles.Logo} src={Logo} alt="shop-logo" />
+              <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => {
+                dispatch({ type: SagaActions.FetchProducts, payload: {}});
+                onClose();
+              }} />
             </Link>
             <Button className={styles.Drawer__cancel} onClick={onClose}>
               <RxCross2 size={15}/>

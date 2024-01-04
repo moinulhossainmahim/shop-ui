@@ -73,7 +73,7 @@ function Header() {
         <Toolbar className={styles.Toolbar} sx={{ gap: { xs: '20px', md: '0px' }}}>
           <Stack direction="row" alignItems="center" sx={{ width: { xs: '50%', sm: '20%', md: '33.3333%' }}}>
             <Link to='/'>
-              <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => dispatch({ type: SagaActions.FetchProducts, payload: {}})}/>
+              <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => dispatch({ type: SagaActions.FetchProducts, payload: {}})} />
             </Link>
             <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' }}} size="small">
               <Select
