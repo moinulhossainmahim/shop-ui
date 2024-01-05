@@ -44,10 +44,16 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const open = useSelector((state: ReduxStore) => state.modal.ProductDetails);
-  const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
+  const relatedProducts = useSelector((state: ReduxStore) => state.relatedProducts.relatedProductsResponse.content);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const isInWishlist = useIsInWishlist(product?.id || '');
   const activeProductWishlistId = useCurrentWishlist(product?.id || '');
+
+  useEffect(() => {
+    if (relatedProducts[0]?.categories[0]?.slug !== product?.categories[0]?.slug) {
+      dispatch({ type: SagaActions.FetchRelatedProducts, payload: { category: product?.categories[0].slug } })
+    }
+  }, [dispatch, product?.categories, relatedProducts])
 
   useEffect(() => {
     const isFound = cartItems.some(cartProduct => cartProduct.id === product?.id);
@@ -304,7 +310,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
           <Typography className={styles.Related__products__text} variant='h5'>Related Products</Typography>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              {products.map((product) => (
+              {relatedProducts.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                   <Product product={product}  setActiveProduct={setActiveProduct} />
                 </Grid>

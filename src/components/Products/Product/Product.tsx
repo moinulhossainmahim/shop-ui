@@ -20,10 +20,9 @@ import { ProductToggleType } from "../../Cart/types.d";
 interface Props {
   product: IProductTemp;
   setActiveProduct: React.Dispatch<React.SetStateAction<IProductTemp | null>>;
-  handleButtonClick?: (event: any) => void;
 }
 
-export default function Product({ product, setActiveProduct, handleButtonClick } : Props) {
+export default function Product({ product, setActiveProduct } : Props) {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
@@ -102,9 +101,8 @@ export default function Product({ product, setActiveProduct, handleButtonClick }
                   [styles.Add__btn]: true,
                 })}
                 startIcon={<BsFillBagPlusFill />}
-                onClick={(event) => {
+                onClick={() => {
                   dispatch(addProduct(product))
-                  if (handleButtonClick) handleButtonClick(event)
                 }}
               >
                 Cart

@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import gsap from 'gsap';
 
 import styles from './Products.module.scss';
 
@@ -39,9 +38,6 @@ const Main = styled('div', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 export default function Products() {
   const dispatch = useDispatch();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const cartRef = window.cartRef;
   const itemListRef = useRef(null);
   const showRef = useRef(null);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
@@ -59,48 +55,6 @@ export default function Products() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
-
-  const handleButtonClick = (event: any) => {
-    const item = event.target.closest(".item");
-    const img = item.querySelector("img").src;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const itemListLeft = itemListRef.current?.getBoundingClientRect().left;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const cartPosLeft = cartRef.current?.getBoundingClientRect().left;
-
-    console.log('itemListLeft', itemListLeft);
-    console.log('cartPosLeft', cartPosLeft);
-    const itemX = item.getBoundingClientRect().left - itemListLeft;
-    const itemY = item.getBoundingClientRect().top - 200;
-    console.log('itemX', itemX);
-    console.log('itemY', itemY);
-    gsap.killTweensOf(showRef.current);
-
-    gsap.set(showRef.current, {
-      left: `${itemX}px`,
-      top: `${itemY}px`,
-      width: '200px',
-      opacity: 1
-    });
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    showRef.current.querySelector('img').src = img;
-
-    gsap.to(showRef.current, {
-      duration: 0.8,
-      left: cartPosLeft - itemListLeft,
-      top: 10,
-      width: 20
-    });
-
-    gsap.to(showRef.current, {
-      duration: 0.3,
-      opacity: 0,
-      delay: 0.5
-    });
-  };
 
   const handleLoadMore = useCallback(() => {
     if (hasNextPage) {
@@ -130,7 +84,7 @@ export default function Products() {
               {products?.map((product) => {
                 return (
                   <Grid item xs={12} sm={4} md={3} lg={3} xl={2} key={product.id}>
-                    <Product product={product} setActiveProduct={setActiveProduct} handleButtonClick={handleButtonClick} />
+                    <Product product={product} setActiveProduct={setActiveProduct} />
                   </Grid>
                 )
               })}
@@ -146,34 +100,6 @@ export default function Products() {
           </Box>
         ) : null}
       </Main>
-      {/* <div className="container position-relative" ref={itemListRef}>
-        <div id="show" className="position-absolute fly-cart" ref={showRef}>
-          <img className="img-fluid" src="" alt="" />
-        </div>
-        <div className="d-flex justify-content-end pt-3 pb-5">
-          <i id="cart" className="fas fa-shopping-cart" ref={cartRef}></i>
-        </div>
-        <div className="row mb-4">
-          <div className="col-3 item">
-            <img className="img-fluid" src="https://pokemon.wingzero.tw/assets/pokemon/387.png" alt="" />
-            <div>
-              <button className="btn btn-info" onClick={handleButtonClick}><i className="fas fa-cart-plus"></i></button>
-            </div>
-          </div>
-          <div className="col-3 item">
-            <img className="img-fluid" src="https://pokemon.wingzero.tw/assets/pokemon/388.png" alt="" />
-            <div>
-              <button className="btn btn-info" onClick={handleButtonClick}><i className="fas fa-cart-plus"></i></button>
-            </div>
-          </div>
-          <div className="col-3 item">
-            <img className="img-fluid" src="https://pokemon.wingzero.tw/assets/pokemon/389.png" alt="" />
-            <div>
-              <button className="btn btn-info" onClick={handleButtonClick}><i className="fas fa-cart-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <ProductDetailsPopup product={activeProduct} setActiveProduct={setActiveProduct} />
     </>
   )
