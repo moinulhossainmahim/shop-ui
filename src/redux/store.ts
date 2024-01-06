@@ -9,6 +9,7 @@ import categoriesReducer, { CategoryStore } from './reducers/category';
 import productsReducer, { ProductsStore } from './reducers/products';
 import wishlistReducer, { WishlistStore } from './reducers/wishlist';
 import ordersReducer, { OrdersStore } from './reducers/orders';
+import paymentReducer, { PaymentStore } from './reducers/payment';
 
 export interface ReduxStore {
   cart: CartStore;
@@ -19,6 +20,7 @@ export interface ReduxStore {
   products: ProductsStore;
   wishlist: WishlistStore;
   orders: OrdersStore;
+  payment: PaymentStore;
 }
 
 const sagaMiddleware = createSagaMiddleware();
@@ -33,6 +35,7 @@ const store = configureStore({
     products: productsReducer,
     wishlist: wishlistReducer,
     orders: ordersReducer,
+    payment: paymentReducer,
   },
   middleware: [sagaMiddleware],
 })

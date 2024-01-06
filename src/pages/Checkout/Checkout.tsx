@@ -65,6 +65,7 @@ export default function Checkout() {
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const isAvailable = useSelector((state: ReduxStore) => state.orders.orderResponse.isAvailable);
   const isLoading = useSelector((state: ReduxStore) => state.loader.CheckOrderAvailability);
+  const clientSecret = useSelector((state: ReduxStore) => state.payment.clientSecret);
 
   function togglePaymentMethod(method: string) {
     setActivePaymentMethod(method);
@@ -92,6 +93,31 @@ export default function Checkout() {
         orderItems,
       }
       dispatch({ type: SagaActions.CreateOrder, payload: { orderData, navigation: navigate }})
+    }
+  }
+
+  function handleClickToPay() {
+    const orderItems: ICreateOrderItem[] = cartItems.map((cartItem) => {
+      return {
+        productId: cartItem.id,
+        quantity: cartItem.amount,
+        subtotal: Number((cartItem.amount * Number(cartItem.salePrice)).toFixed(2)),
+        unit_price: Number(cartItem.salePrice),
+      }
+    })
+    if (activeBillingAddress && activeShippingAddress && cartItems.length) {
+      const orderData: IOrderData = {
+        order_status: StatusType.Pending,
+        delivery_fee: 0,
+        amount: totalPrice,
+        total: totalPrice,
+        payment_method: PaymentMethod.Online,
+        payment_status: PaymentStatus.Pending,
+        shippingAddress: activeShippingAddress,
+        billingAddress: activeBillingAddress,
+        orderItems,
+      }
+      dispatch({ type: SagaActions.FetchClientSecret, payload: { orderData }})
     }
   }
 
@@ -359,6 +385,7 @@ export default function Checkout() {
                   variant="contained"
                   size="large"
                   className={styles.Order__btn}
+                  onClick={handleClickToPay}
                 >Click to pay</Button>
               ) : null}
               {!isLoading && !isAvailable ? (
