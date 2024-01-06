@@ -93,6 +93,16 @@ export default function Checkout() {
     }
   }
 
+  const handleCheckAvailabilityClick = () => {
+    const items = cartItems.map((item) => {
+      return {
+        productId: item.id,
+        quantity: item.amount,
+      }
+    })
+    console.log(items);
+  }
+
   useEffect(() => {
     const foundBillingAddress = user.address.find((addr) => addr.addressType === AddressType.Billing) as IBillingAddress || null;
     const foundShippingAddress = user.address.find((addr) => addr.addressType === AddressType.Shipping) as IShippingAddress || null;
@@ -334,7 +344,13 @@ export default function Checkout() {
                   <Typography variant="body1">Please click Place order to make order and payment</Typography>
                 </Stack>
               </div>
-              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress} onClick={handleCreateOrder}>Place Order</Button>
+              <Button
+                variant="contained"
+                size="large"
+                className={styles.Order__btn}
+                disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                onClick={handleCheckAvailabilityClick}
+              >Check Availability</Button>
               {!activeBillingAddress || !activeShippingAddress || !user.contact && (
                 <Typography variant="body2" color='red'>Add contact no, shipping and billing address to make an order</Typography>
               )}
