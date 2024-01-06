@@ -19,4 +19,5 @@ export enum SagaActions {
   FetchOrders = 'FETCH_ORDERS',
   FetchOrder = 'FETCH_ORDER',
   CreateOrder = 'CREATE_ORDER',
+  CheckOrderAvailability = 'CHECK_ORDER_AVAILABILITY',
 }

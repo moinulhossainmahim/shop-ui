@@ -2,13 +2,18 @@ import { call, put, select } from "redux-saga/effects";
 import { ReduxStore } from "../store";
 import { API_BASE_URL, USE_AUTH } from "../../constants";
 import { INewOrder, IOrderResponse } from "../../pages/Orders/types.d";
-import { setOrder, setOrders } from "../reducers/orders";
+import { setOrder, setOrders, checkAvailability } from "../reducers/orders";
 import { SagaActions } from "./actions";
 import { IOrderData } from "../../pages/Checkout/types.d";
 import { resetCart } from "../reducers/cart";
 import { toast } from "react-toastify";
 import { NavigateFunction } from "react-router-dom";
 import { LoaderKey, setLoader } from "../reducers/loader";
+
+type CheckOrderAvailabilityData = {
+  productIds: string;
+  quantity: number;
+};
 
 interface FetchOrderAction {
   type: SagaActions.FetchOrder;
@@ -23,6 +28,13 @@ interface CreateOrderAction {
     orderData: IOrderData;
     navigation: NavigateFunction;
   }
+}
+
+interface CheckOrderAvailabilityAction {
+  type: SagaActions.CheckOrderAvailability;
+  payload: {
+    items: CheckOrderAvailabilityData[],
+  };
 }
 
 export function* fetchOrders(): any {
@@ -128,5 +140,34 @@ export function* createOrder(action: CreateOrderAction): any {
   } catch (error) {
     console.log(error);
     yield put(setLoader({ key: LoaderKey.CreateOrder, value: false }));
+  }
+}
+
+export function* checkOrderAvailability(action: CheckOrderAvailabilityAction): any {
+  const token = yield select((state: ReduxStore) => state.auth.token);
+  console.log(action.payload);
+  yield put(setLoader({ key: LoaderKey.CheckOrderAvailability, value: true }));
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/orders/check-availability`,
+      {
+        method: 'POST',
+        headers: new Headers({
+          ...(USE_AUTH ? { 'Authorization': `Bearer ${token}` } : {}),
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify(action.payload),
+      },
+    )
+    const response: IOrderResponse = yield result.json();
+    if(response.success) {
+      yield put(checkAvailability({ isAvailable: response.success }))
+    }
+    yield put(setLoader({ key: LoaderKey.CheckOrderAvailability, value: false }));
+  } catch (error) {
+    console.log(error);
+    yield put(setLoader({ key: LoaderKey.CheckOrderAvailability, value: false }));
   }
 }

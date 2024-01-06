@@ -79,4 +79,5 @@ export interface IOrderResponse {
 	orderMessage: string;
 	orderSuccess: boolean;
   meta?: IMeta;
+	isAvailable?: boolean
 }
