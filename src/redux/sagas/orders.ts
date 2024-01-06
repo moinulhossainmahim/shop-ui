@@ -123,12 +123,12 @@ export function* createOrder(action: CreateOrderAction): any {
         orderSuccess: response.success,
       }))
       const order = response.content as INewOrder;
-      yield put(resetCart())
-      toast.success(response.message, { autoClose: 1500 });
       yield call(fetchOrders);
       setTimeout(() => {
         action.payload.navigation(`/orders/${order.id}`);
+        toast.success(response.message, { autoClose: 1500 });
       }, 2000)
+      yield put(resetCart())
       // yield call(fetchOrder, {
       //   type: SagaActions.FetchOrder,
       //   payload: {

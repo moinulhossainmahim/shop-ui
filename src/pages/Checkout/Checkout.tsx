@@ -33,7 +33,6 @@ import { ProductToggleType } from "../../components/Cart/types.d";
 import { AddressType, IBillingAddress, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types.d";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 import { SagaActions } from "../../redux/sagas/actions";
-import PaymentForm from "../../components/PaymentForm";
 
 export default function Checkout() {
   const dispatch = useDispatch();
