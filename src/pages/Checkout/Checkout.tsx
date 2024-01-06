@@ -33,6 +33,7 @@ import { ProductToggleType } from "../../components/Cart/types.d";
 import { AddressType, IBillingAddress, IShippingAddress, PaymentMethod, PaymentStatus } from "../Orders/types.d";
 import { StatusType } from "../../components/OrderStatusChip/OrderStatusChip";
 import { SagaActions } from "../../redux/sagas/actions";
+import PaymentForm from "../../components/PaymentForm";
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -63,6 +64,8 @@ export default function Checkout() {
   })
   const user = useSelector((state: ReduxStore) => state.auth.user);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+  const isAvailable = useSelector((state: ReduxStore) => state.orders.orderResponse.isAvailable);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.CheckOrderAvailability);
 
   function togglePaymentMethod(method: string) {
     setActivePaymentMethod(method);
@@ -341,16 +344,40 @@ export default function Checkout() {
                       <FaStripe size={30} className={styles.Stripe__icon} />
                     </Box>
                   </Box>
-                  <Typography variant="body1">Please click Place order to make order and payment</Typography>
                 </Stack>
               </div>
-              <Button
+              {!isLoading && isAvailable && activePaymentMethod === 'cashon' ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                  disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                  onClick={handleCreateOrder}
+                >Place Order</Button>
+              ) : null}
+              {!isLoading && isAvailable && activePaymentMethod === 'stripe' ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                >Click to pay</Button>
+              ) : null}
+              {!isLoading && !isAvailable ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                  disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                  onClick={handleCheckAvailabilityClick}
+                >Check Availability</Button>
+              ): null}
+              {/* <Button
                 variant="contained"
                 size="large"
                 className={styles.Order__btn}
                 disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
                 onClick={handleCheckAvailabilityClick}
-              >Check Availability</Button>
+              >Check Availability</Button> */}
               {!activeBillingAddress || !activeShippingAddress || !user.contact && (
                 <Typography variant="body2" color='red'>Add contact no, shipping and billing address to make an order</Typography>
               )}
