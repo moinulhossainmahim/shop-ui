@@ -13,6 +13,7 @@ const initialState: OrdersStore = {
     message: "",
     orderMessage: '',
     orderSuccess: false,
+    isAvailable: false,
   },
 };
 
@@ -30,10 +31,13 @@ const ordersSlice = createSlice({
       state.orderResponse.order = action.payload.order;
       state.orderResponse.orderMessage = action.payload.orderMessage;
       state.orderResponse.orderSuccess = action.payload.orderSuccess;
+    },
+    checkAvailability: (state, action: PayloadAction<{ isAvailable: boolean }>) => {
+      state.orderResponse.isAvailable = action.payload.isAvailable;
     }
   }
 })
 
-export const { setOrders, setOrder } = ordersSlice.actions;
+export const { setOrders, setOrder, checkAvailability } = ordersSlice.actions;
 
 export default ordersSlice.reducer;
