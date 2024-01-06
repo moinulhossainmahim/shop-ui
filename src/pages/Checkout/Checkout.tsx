@@ -100,7 +100,7 @@ export default function Checkout() {
         quantity: item.amount,
       }
     })
-    console.log(items);
+    dispatch({ type: SagaActions.CheckOrderAvailability, payload: { items }});
   }
 
   useEffect(() => {

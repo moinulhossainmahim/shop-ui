@@ -17,6 +17,7 @@ export enum LoaderKey {
   FetchOrders = 'FetchOrders',
   FetchOrder = 'FetchOrder',
   CreateOrder = 'CreateOrder',
+  CheckOrderAvailability = 'CheckOrderAvailability',
 }
 
 interface ILoaderAction {
@@ -42,6 +43,7 @@ const initialState: LoaderStore = {
   [LoaderKey.FetchOrders]: false,
   [LoaderKey.FetchOrder]: false,
   [LoaderKey.CreateOrder]: false,
+  [LoaderKey.CheckOrderAvailability]: false,
 }
 
 const loaderSlice = createSlice({
