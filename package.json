@@ -15,6 +15,8 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@stripe/react-stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^2.2.2",
     "classnames": "^2.3.2",
     "gsap": "^3.12.2",
     "react": "^18.2.0",

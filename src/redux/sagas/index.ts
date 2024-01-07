@@ -5,8 +5,8 @@ import { createAddress, deleteAddress, editAddress } from './address';
 import { fetchCategories } from './category';
 import { fetchProducts } from './products';
 import { addToWishlist, fetchWishlist, removeFromWishlist } from './wishlist';
-import { createOrder, fetchOrder, fetchOrders } from './orders';
-import { fetchRelatedProducts } from './relatedProducts';
+import { checkOrderAvailability, createOrder, fetchOrder, fetchOrders } from './orders';
+import { fetchCheckoutSession } from './payment';
 
 export default function* sagas() {
   yield all([
@@ -26,6 +26,7 @@ export default function* sagas() {
     takeEvery(SagaActions.FetchOrders, fetchOrders),
     takeEvery(SagaActions.FetchOrder, fetchOrder),
     takeEvery(SagaActions.CreateOrder, createOrder),
-    takeEvery(SagaActions.FetchRelatedProducts, fetchRelatedProducts),
+    takeEvery(SagaActions.CheckOrderAvailability, checkOrderAvailability),
+    takeEvery(SagaActions.FetchCheckoutSession, fetchCheckoutSession),
   ])
 }

@@ -221,13 +221,26 @@
   margin-bottom: 20px;
 }
 
-.Active__payment {
-  border: 1px solid variables.$color-accent;
+.Payment__methods {
+  display: flex;
+  gap: 20px;
+}
+
+.Stripe__icon {
+  color: purple;
+}
+
+.Payment__method {
+  border: 1px solid transparent;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
+  cursor: pointer;
   width: 120px;
   padding: 1rem 1rem;
   text-align: center;
+  &__active {
+    border: 1px solid variables.$color-accent;
+  }
 }
 
 .BackToHome__div {

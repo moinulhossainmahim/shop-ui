@@ -15,6 +15,7 @@ import { BsBagXFill } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
 import { TextareaAutosize } from "@mui/material";
 import { HiMinusSm, HiPlusSm } from "react-icons/hi";
+import { FaStripe } from "react-icons/fa";
 
 import styles from './Checkout.module.scss';
 
@@ -42,6 +43,7 @@ export default function Checkout() {
   const [activeBillingAddress, setActiveBillingAddress] = useState<IBillingAddress | null>();
   const [activeShippingAddress, setActiveShippingAddress] = useState<IShippingAddress | null>();
   const [activeAddressID, setActiveAddressID] = useState('');
+  const [activePaymentMethod, setActivePaymentMethod] = useState('cashon')
   const [editingAddress, setEditingAddress] = useState<IAddressFormData>({
     addressType: '',
     title: '',
@@ -62,6 +64,14 @@ export default function Checkout() {
   })
   const user = useSelector((state: ReduxStore) => state.auth.user);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
+  const isAvailable = useSelector((state: ReduxStore) => state.orders.orderResponse.isAvailable);
+  const isLoading = useSelector((state: ReduxStore) => state.loader.CheckOrderAvailability);
+  const isCheckoutSessionLoading = useSelector((state: ReduxStore) => state.loader.FetchCheckoutSession);
+  const url = useSelector((state: ReduxStore) => state.payment.checkoutSessionUrl);
+
+  function togglePaymentMethod(method: string) {
+    setActivePaymentMethod(method);
+  }
 
   function handleCreateOrder() {
     const orderItems: ICreateOrderItem[] = cartItems.map((cartItem) => {
@@ -88,12 +98,38 @@ export default function Checkout() {
     }
   }
 
+  function handleClickToPay() {
+    const items = cartItems.map((item) => {
+      return {
+        productId: item.id,
+        quantity: item.amount,
+      }
+    })
+    dispatch({ type: SagaActions.FetchCheckoutSession, payload: { items }});
+  }
+
+  const handleCheckAvailabilityClick = () => {
+    const items = cartItems.map((item) => {
+      return {
+        productId: item.id,
+        quantity: item.amount,
+      }
+    })
+    dispatch({ type: SagaActions.CheckOrderAvailability, payload: { items }});
+  }
+
   useEffect(() => {
     const foundBillingAddress = user.address.find((addr) => addr.addressType === AddressType.Billing) as IBillingAddress || null;
     const foundShippingAddress = user.address.find((addr) => addr.addressType === AddressType.Shipping) as IShippingAddress || null;
     setActiveBillingAddress(foundBillingAddress);
     setActiveShippingAddress(foundShippingAddress);
   }, [])
+
+  useEffect(() => {
+    if (!isCheckoutSessionLoading && url && isAvailable) {
+      window.location.replace(url);
+    }
+  }, [url, isCheckoutSessionLoading, isAvailable])
 
   return (
     <>
@@ -311,15 +347,57 @@ export default function Checkout() {
                 </Typography>
                 <Stack direction='column' gap={3} mt={2}>
                   <Typography variant="subtitle1" fontWeight='bold'>Choose Payment Method</Typography>
-                  <Box>
-                    <Box className={styles.Active__payment}>
+                  <Box className={styles.Payment__methods}>
+                    <Box
+                      className={classNames(styles.Payment__method, {
+                        [styles.Payment__method__active]: activePaymentMethod === 'cashon',
+                      })}
+                      onClick={() => togglePaymentMethod('cashon')}>
                       <Typography variant="subtitle1" fontSize='small' fontWeight='bold'>Cash On Delivery</Typography>
                     </Box>
+                    <Box
+                      className={classNames(styles.Payment__method, {
+                        [styles.Payment__method__active]: activePaymentMethod === 'stripe',
+                      })}
+                      onClick={() => togglePaymentMethod('stripe')}>
+                      <FaStripe size={30} className={styles.Stripe__icon} />
+                    </Box>
                   </Box>
-                  <Typography variant="body1">Please click Place order to make order and payment</Typography>
                 </Stack>
               </div>
-              <Button variant="contained" size="large" className={styles.Order__btn} disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress} onClick={handleCreateOrder}>Place Order</Button>
+              {!isLoading && isAvailable && activePaymentMethod === 'cashon' ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                  disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                  onClick={handleCreateOrder}
+                >Place Order</Button>
+              ) : null}
+              {!isLoading && isAvailable && activePaymentMethod === 'stripe' ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                  onClick={handleClickToPay}
+                >Click to pay</Button>
+              ) : null}
+              {!isLoading && !isAvailable ? (
+                <Button
+                  variant="contained"
+                  size="large"
+                  className={styles.Order__btn}
+                  disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                  onClick={handleCheckAvailabilityClick}
+                >Check Availability</Button>
+              ): null}
+              {/* <Button
+                variant="contained"
+                size="large"
+                className={styles.Order__btn}
+                disabled={!cartItems.length || !activeBillingAddress || !activeShippingAddress}
+                onClick={handleCheckAvailabilityClick}
+              >Check Availability</Button> */}
               {!activeBillingAddress || !activeShippingAddress || !user.contact && (
                 <Typography variant="body2" color='red'>Add contact no, shipping and billing address to make an order</Typography>
               )}
