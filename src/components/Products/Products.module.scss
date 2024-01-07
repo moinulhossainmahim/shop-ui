@@ -1,0 +1,11 @@
+@use './../../utils/variables';
+
+.LoadMoreBtn__container {
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.LoadMoreBtn {
+  background-color: variables.$color-accent !important;
+}

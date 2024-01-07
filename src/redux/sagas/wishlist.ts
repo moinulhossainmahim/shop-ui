@@ -1,7 +1,7 @@
 import { call, put, select } from "redux-saga/effects";
 import { ReduxStore } from "../store";
 import { API_BASE_URL, USE_AUTH } from "../../constants";
-import { IWishlistResponse } from "../../pages/Wishlists/types";
+import { IWishlistItem, IWishlistResponse } from "../../pages/Wishlists/types";
 import { setWishlist } from "../reducers/wishlist";
 import { SagaActions } from "./actions";
 import { toast } from "react-toastify";
@@ -21,13 +21,22 @@ interface RemoveFromWishlistAction {
   };
 }
 
-export function* fetchWishlist(): any {
+interface FetchWishlistAction {
+  type: SagaActions.FetchWishlist;
+  payload: {
+    page?: number,
+  };
+}
+
+export function* fetchWishlist(action?: FetchWishlistAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
+  const page = action?.payload?.page ?? 1;
   yield put(setLoader({ key: LoaderKey.FetchWishlist, value: true }));
+  const wishlist: IWishlistItem[] = yield select((state: ReduxStore) => state.wishlist.wishlistResponse.content);
   try {
     const result = yield call(
       fetch,
-      `${API_BASE_URL}/wishlists`,
+      `${API_BASE_URL}/wishlists?page=${page}`,
       {
         method: 'GET',
         headers: new Headers({
@@ -39,7 +48,14 @@ export function* fetchWishlist(): any {
     if(result.ok) {
       const response: IWishlistResponse = yield result.json();
       if(response.success) {
-        yield put(setWishlist(response));
+        if (response.meta.page > 1) {
+          wishlist.map((item) => {
+            response.content.push(item);
+          })
+          yield put(setWishlist(response));
+        } else {
+          yield put(setWishlist(response));
+        }
       }
     }
     yield put(setLoader({ key: LoaderKey.FetchWishlist, value: false }));

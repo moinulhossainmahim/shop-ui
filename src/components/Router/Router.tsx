@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import CssBaseline from "@mui/material/CssBaseline";
+
 import Home from '../../pages/Home';
 import Checkout from "../../pages/Checkout";
-import CssBaseline from "@mui/material/CssBaseline";
 import Header from "../Header";
 import Profile from "../../pages/Profile/Profile";
 import ChangePassword from "../../pages/ChangePassword/ChangePassword";
@@ -11,11 +12,11 @@ import Orders from "../../pages/Orders/Orders";
 import Register from "../../pages/Register/Register";
 import Login from "../../pages/Login";
 import OrderDetails from "../../pages/OrderDetails";
-import { useSelector } from "react-redux";
 import { ReduxStore } from "../../redux/store";
+import BottomNav from "../BottomNav";
+import OptionsDrawer from "../OptionsDrawer";
 
 export default function Router() {
-  const [scrolled, setIsScrolled] = useState(false)
   const location = useLocation();
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
 
@@ -26,27 +27,12 @@ export default function Router() {
     return <Navigate to="/login" />
   }
 
-  useEffect(() => {
-    function handleScroll() {
-      if(window.scrollY > window.innerHeight * 0.5) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false);
-      }
-    }
-    window.addEventListener('scroll', handleScroll)
-
-    return() => {
-      window.removeEventListener('scroll', handleScroll);
-    }
-  },[])
-
   return (
     <>
       <CssBaseline />
       {location.pathname === '/login' || location.pathname === '/register' ? (
         null
-      ) : <Header scrolled={scrolled} />}
+      ) : <Header />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/checkout" element={
@@ -89,6 +75,8 @@ export default function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<h1>Ooops! it's a dead end!</h1>} />
       </Routes>
+      <BottomNav />
+      <OptionsDrawer />
     </>
   )
 }

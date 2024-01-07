@@ -44,10 +44,16 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const open = useSelector((state: ReduxStore) => state.modal.ProductDetails);
-  const products = useSelector((state: ReduxStore) => state.products.productsResponse.content);
+  const relatedProducts = useSelector((state: ReduxStore) => state.relatedProducts.relatedProductsResponse.content);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const isInWishlist = useIsInWishlist(product?.id || '');
   const activeProductWishlistId = useCurrentWishlist(product?.id || '');
+
+  useEffect(() => {
+    if (relatedProducts[0]?.categories[0]?.slug !== product?.categories[0]?.slug) {
+      dispatch({ type: SagaActions.FetchRelatedProducts, payload: { category: product?.categories[0].slug } })
+    }
+  }, [dispatch, product?.categories, relatedProducts])
 
   useEffect(() => {
     const isFound = cartItems.some(cartProduct => cartProduct.id === product?.id);
@@ -85,16 +91,18 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
       onClose={() => dispatch(setModal({ key: ModalKey.ProductDetails, value: false }))}
     >
       <Box>
-        <Box className={styles.ProductDetailsTop__container}>
-          <Box className={styles.ProductSlide__wrapper}>
-            <Stack p={3} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
-              <Button
-                disabled={swiperSlideStatus.isBeginning}
-                className={styles.Button}
-                onClick={() => activeSwiper?.slidePrev()}
-              >
-                <GrFormPrevious size={30} />
-              </Button>
+        <Box className={styles.ProductDetailsTop__container} sx={{ flexDirection: { xs: 'column', md: 'row' }, alignItems: { xs: 'center', md: 'normal' }}}>
+          <Box className={styles.ProductSlide__wrapper} sx={{ width: { xs: '80%', md: '50%' }}}>
+            <Stack p={2} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
+              {product?.galleryImg.length ? (
+                <Button
+                  disabled={swiperSlideStatus.isBeginning}
+                  className={styles.Button}
+                  onClick={() => activeSwiper?.slidePrev()}
+                >
+                  <GrFormPrevious size={30} />
+                </Button>
+              ) : null}
               <Swiper
                 onReachBeginning={() => {
                   setSwiperSlideStatus({ isEnd: false, isBeginning: true })
@@ -118,43 +126,72 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                   </SwiperSlide>
                 ))}
               </Swiper>
-              <Button
-                disabled={swiperSlideStatus.isEnd}
-                className={styles.Button}
-                onClick={() => activeSwiper?.slideNext()}
-              >
-                <GrFormNext size={30} />
-              </Button>
+              {product?.galleryImg.length ? (
+                <Button
+                  disabled={swiperSlideStatus.isEnd}
+                  className={styles.Button}
+                  onClick={() => activeSwiper?.slideNext()}
+                >
+                  <GrFormNext size={30} />
+                </Button>
+              ) : null}
             </Stack>
-            <Stack p={3} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
-              <Swiper
-                spaceBetween={5}
-                slidesPerView={4}
-              >
-                <SwiperSlide>
-                  <img
-                    src={String(product?.featuredImg)}
-                    className={classNames(styles.SlidePreview__image, {
-                      [styles.Active__slide]: activeIndex === 0,
-                    })}
-                    alt="details-one"
-                    onClick={() => handlePreviewClick(0)}
-                  />
-                </SwiperSlide>
-                {product?.galleryImg.map((img, index) => (
-                  <SwiperSlide key={String(img)}>
+            {product?.galleryImg.length ? (
+              <Stack p={3} direction='row' className={styles.CouponSlider} justifyContent="center" alignItems="center">
+                <Swiper
+                  breakpoints={{
+                    0: {
+                      slidesPerView: 1,
+                    },
+                    400:{
+                      slidesPerView:2,
+                    },
+                    639: {
+                      slidesPerView: 3,
+                    },
+                    865:{
+                      slidesPerView:4
+                    },
+                    1000:{
+                      slidesPerView:4
+                    },
+                    1200:{
+                      slidesPerView:4
+                    },
+                    1500:{
+                      slidesPerView:4
+                    },
+                    2000:{
+                      slidesPerView:4
+                    },
+                  }}
+                  spaceBetween={5}
+                >
+                  <SwiperSlide>
                     <img
-                      src={String(img)}
-                      alt="details-two"
-                      onClick={() => handlePreviewClick(index+1)}
+                      src={String(product?.featuredImg)}
                       className={classNames(styles.SlidePreview__image, {
-                        [styles.Active__slide]: activeIndex === index+1,
+                        [styles.Active__slide]: activeIndex === 0,
                       })}
+                      alt="details-one"
+                      onClick={() => handlePreviewClick(0)}
                     />
                   </SwiperSlide>
-                ))}
-              </Swiper>
-            </Stack>
+                  {product?.galleryImg.map((img, index) => (
+                    <SwiperSlide key={String(img)}>
+                      <img
+                        src={String(img)}
+                        alt="details-two"
+                        onClick={() => handlePreviewClick(index+1)}
+                        className={classNames(styles.SlidePreview__image, {
+                          [styles.Active__slide]: activeIndex === index+1,
+                        })}
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </Stack>
+            ) : null}
           </Box>
           <Box className={styles.ProductDetails__content}>
             <Box className={classNames(styles.ProductName, styles.Row)}>
@@ -217,7 +254,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                 <span className={styles.Regular__price}>${product.price}</span>
               ) : null}
             </Box>
-            <Box className={styles.Product__add}>
+            <Box className={styles.Product__add} sx={{ flexDirection: { xs: 'column', md: 'row' }}}>
             {isAddedToCart ? (
               <div className={classNames({
                 [styles.Product__amount__two]: true,
@@ -273,7 +310,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
           <Typography className={styles.Related__products__text} variant='h5'>Related Products</Typography>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              {products.map((product) => (
+              {relatedProducts.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                   <Product product={product}  setActiveProduct={setActiveProduct} />
                 </Grid>

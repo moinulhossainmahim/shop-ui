@@ -2,15 +2,13 @@
 
 .OrdersPage {
   width: 100vw;
-  min-height: calc(100vh - 64px);
   display: flex;
-  padding: 4rem 10rem;
+  padding: 2%;
   gap: 30px;
   background-color: variables.$color-dark-bg;
 }
 
 .Orders {
-  width: 30%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
@@ -18,7 +16,6 @@
 
 .OrderDetails {
   padding: 2%;
-  width: 50%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
@@ -85,6 +82,7 @@
   border-radius: 5px;
   &__title {
     margin-right: 10px;
+    font-size: 1rem;
   }
 }
 
@@ -154,6 +152,7 @@
   display: flex;
   justify-content: space-between;
   margin: 2rem 0;
+  align-items: center;
 }
 
 .EmptyOrder__box {
@@ -188,4 +187,8 @@
   display: flex;
   gap: 20px;
   align-items: center;
+}
+
+.LoadMore__btn {
+  background-color: variables.$color-accent !important;
 }

@@ -1,3 +1,5 @@
+@use '../../utils/variables';
+
 .ListItem {
   padding-bottom: 0px !important;
 }
@@ -40,4 +42,8 @@
 
 .Skeleton__container {
   margin-top: 40px;
+}
+
+.LoadMore__btn {
+  background-color: variables.$color-accent !important;
 }

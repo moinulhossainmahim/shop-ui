@@ -4,14 +4,17 @@
   width: 100vw;
   height: calc(100vh - 64px);
   display: flex;
-  padding: 4rem 10rem;
+  padding: 4% 5%;
   gap: 30px;
   background-color: variables.$color-dark-bg;
 }
 
+.LoadMore__btn {
+  background-color: variables.$color-accent !important;
+}
+
 .Wishlists {
   padding: 2%;
-  width: 80%;
   background-color: white;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;

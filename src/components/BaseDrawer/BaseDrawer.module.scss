@@ -1,0 +1,29 @@
+@use '../../utils/variables';
+
+.Logo {
+  height: 30px;
+}
+
+.Drawer__section {
+  width: 400px;
+  height: 100vh;
+}
+
+.Drawer__cancel {
+  background-color: #f1f1f1 !important;
+  min-width: 20px !important;
+  border-radius: 10000px !important;
+  padding: 4px !important;
+  &:hover {
+    background-color: green !important;
+    color: white;
+  }
+}
+
+.Drawer__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid variables.$color-border-white;
+}

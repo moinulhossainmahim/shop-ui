@@ -1,3 +1,5 @@
+@use '../../utils/variables';
+
 .Button {
   min-width: 35px !important;
   height: 35px;
@@ -16,4 +18,5 @@ img {
 
 .CouponSlider {
   background-color: white;
+  border-bottom: 1px solid rgb(211 212 214);
 }

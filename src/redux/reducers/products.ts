@@ -11,6 +11,14 @@ const initialState: ProductsStore = {
     content: [],
     message: '',
     success: false,
+    meta: {
+      take: 0,
+      hasNextPage: false,
+      hasPreviousPage: false,
+      page: 0,
+      itemCount: 0,
+      pageCount: 0,
+    },
   },
 };
 

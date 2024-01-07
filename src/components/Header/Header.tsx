@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -22,17 +22,18 @@ import TextField from '@mui/material/TextField';
 import { MdClose } from 'react-icons/md';
 import { IoMdSearch } from 'react-icons/io';
 
-import styles from './Header.module.scss'
+import styles from './Header.module.scss';
 
 import { pageOptions } from './test-data';
 import Logo from '../../assets/logo2.png';
 import { ReduxStore } from '../../redux/store';
 import { registerUser, setAuthData, setUserProfile } from '../../redux/reducers/auth';
 import { UserStatusType } from '../../pages/Login/types.d';
+import { SagaActions } from '../../redux/sagas/actions';
 
 const navItems = ['Shops', 'Offers', 'FAQ', 'Contact'];
 
-function Header({ scrolled } : { scrolled: boolean }) {
+function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,20 +55,27 @@ function Header({ scrolled } : { scrolled: boolean }) {
     setAnchorElUser(null);
   };
 
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (searchValue !== '') {
+      dispatch({ type: SagaActions.FetchProducts, payload: { search: searchValue }});
+    }
+  }, [dispatch, searchValue])
+
   return (
     <AppBar
       className={
         classNames(styles.AppBar,{
-          [styles.AppBar__scrolled]: scrolled
+          [styles.AppBar__scrolled]: true,
       })}
       position={location.pathname !== '/' ? 'static' : 'fixed'}
     >
-        <Toolbar className={styles.Toolbar}>
-          <Stack direction="row" width="33.3333%" alignItems="center">
+        <Toolbar className={styles.Toolbar} sx={{ gap: { xs: '20px', md: '0px' }}}>
+          <Stack direction="row" alignItems="center" sx={{ width: { xs: '50%', sm: '20%', md: '33.3333%' }}}>
             <Link to='/'>
-              <img className={styles.Logo} src={Logo} alt="shop-logo" />
+              <img className={styles.Logo} src={Logo} alt="shop-logo" onClick={() => dispatch({ type: SagaActions.FetchProducts, payload: {}})}/>
             </Link>
-            <FormControl sx={{ ml: 3, minWidth: 120 }} size="small">
+            <FormControl sx={{ ml: 3, minWidth: 120, display: { xs: 'none', md: 'flex' }}} size="small">
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
@@ -80,65 +88,67 @@ function Header({ scrolled } : { scrolled: boolean }) {
               </Select>
             </FormControl>
           </Stack >
-          <Stack direction="row" width="33.3333%" alignItems="center" display={scrolled ? 'flex' : 'none'}>
-            <TextField
-              className={styles.Search__input}
-              id="input-with-sx"
-              variant="outlined"
-              label="Search products"
-              size="small"
-              fullWidth
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: 'transparent!important',
+          <Stack direction="row" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex', md: 'none' }, width: { xs: '70%', md: '33.3333%' }}}>
+            <form className={styles.Search__form} onSubmit={(e) => handleSubmit(e)}>
+              <TextField
+                className={styles.Search__input}
+                id="input-with-sx"
+                variant="outlined"
+                label="Search products"
+                size="small"
+                fullWidth
+                value={searchValue}
+                onChange={(event) => setSearchValue(event.target.value)}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'transparent!important',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgb(31,41,55)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'rgb(31,41,55)',
+                    },
                   },
-                  '&:hover fieldset': {
-                    borderColor: 'rgb(31,41,55)',
+                  '& .MuiOutlinedInput-input': {
+                    color: 'rgb(31,41,55)',
+                    fontSize: '16px',
                   },
-                  '&.Mui-focused fieldset': {
-                    borderColor: 'rgb(31,41,55)',
+                  '& label, label.Mui-focused': {
+                    color: 'rgb(31,41,55);',
                   },
-                },
-                '& .MuiOutlinedInput-input': {
-                  color: 'rgb(31,41,55)',
-                  fontSize: '16px',
-                },
-                '& label, label.Mui-focused': {
-                  color: 'rgb(31,41,55);',
-                },
-                '& .MuiInput-underline:after': {
-                  borderBottomColor: 'rgb(31,41,55)',
-                },
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">
-                    {searchValue && (
-                      <MdClose
-                        className={styles.Clear__searchValue}
-                        size={25}
+                  '& .MuiInput-underline:after': {
+                    borderBottomColor: 'rgb(31,41,55)',
+                  },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="start">
+                      {searchValue && (
+                        <MdClose
+                          className={styles.Clear__searchValue}
+                          size={25}
+                          color="rgb(31,41,55)"
+                          onClick={() => {
+                            setSearchValue('');
+                          }}
+                          title="Clear"
+                          />
+                      )}
+                      <IoMdSearch
+                        className={styles.SearchIcon}
                         color="rgb(31,41,55)"
-                        onClick={() => {
-                          setSearchValue('');
-                        }}
-                        title="Clear"
-                        />
-                    )}
-                    <IoMdSearch
-                      className={styles.SearchIcon}
-                      color="rgb(31,41,55)"
-                      size={30}
-                    />
-                  </InputAdornment>
-                ),
-              }}
-            />
+                        size={30}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </form>
           </Stack>
-          <Stack direction="row" width="33.3333%" alignItems="center" justifyContent="flex-end" gap={3}>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Stack direction="row" sx={{ width: { md: '66.666%', lg: '33.3333%' }}} alignItems="center" justifyContent="flex-end" gap={3}>
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
               {navItems.map((item) => (
                 <Button key={item} className={styles.NavItems}>
                   {item}

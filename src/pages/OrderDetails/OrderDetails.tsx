@@ -14,15 +14,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import Box from '@mui/material/Box';
+import Grid from "@mui/material/Grid";
 
 import styles from './OrderDetails.module.scss';
 
 import OrderStatusChip from "../../components/OrderStatusChip";
 import OrderStatusStepper from "../../components/OrderStatusStepper";
 import { ReduxStore } from "../../redux/store";
-import { parseDate } from "../../utils/parseDate";
 import PaymentStatusChip from "../../components/PaymentStatusChip";
-import { PaymentMethod } from "../Orders/types.d";
 import { SagaActions } from "../../redux/sagas/actions";
 
 export default function OrderDetails() {
@@ -43,12 +42,12 @@ export default function OrderDetails() {
 
   return (
     <div className={styles.OrderDetails__page}>
-      <div className={styles.BackToHome__div}>
+      <Box className={styles.BackToHome__div} sx={{ width: { xs: '100%', md: '85%', lg: '75%' }}}>
         <Button className={styles.BackToHome__btn} variant="text" startIcon={<AiOutlineHome />} onClick={() => navigate('/')}>
           Back to Home
         </Button>
-      </div>
-      <div className={styles.OrderDetails}>
+      </Box>
+      <Box className={styles.OrderDetails} sx={{ width: { xs: '100%', md: '85%', lg: '75%' }}}>
         {isLoading ? (
           <div className={styles.Loading__container}>
             <CircularProgress color='info' />
@@ -56,7 +55,7 @@ export default function OrderDetails() {
         ) : null}
         {!isLoading && order ? (
           <>
-            <div className={styles.Order__status}>
+            <Box className={styles.Order__status} sx={{ flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '20px', sm: '0px' }}}>
               <Typography variant='subtitle1' fontWeight="bold">
                 <span className={styles.Order__status__title}>Order Status: </span>
                 <OrderStatusChip type={order.order_status} />
@@ -65,14 +64,34 @@ export default function OrderDetails() {
                 <span className={styles.Order__status__title}>Payment Status: </span>
                 <PaymentStatusChip type={order.payment_status} />
               </Typography>
-            </div>
+            </Box>
             <div className={styles.OrderDetails__bottom}>
-              <Box className={styles.Order__cards}>
-                <Box className={styles.Card}>
-                  <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
-                  <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
-                </Box>
-                <Box className={styles.Card}>
+              <Grid className={styles.Order__cards} container spacing={1}>
+                <Grid item xs={12} sm={6} md={4} xl={3}>
+                  <Box className={styles.Card}>
+                    <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
+                    <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} xl={3}>
+                  <Box className={styles.Card}>
+                    <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
+                    <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} xl={3}>
+                  <Box className={styles.Card}>
+                    <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
+                    <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} xl={3}>
+                  <Box className={styles.Card}>
+                    <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Order Number</Typography>
+                    <Typography variant="subtitle2" className={styles.Card__value}>{order.tracking_no}</Typography>
+                  </Box>
+                </Grid>
+                {/* <Box className={styles.Card}>
                   <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Date</Typography>
                   {order.order_date ? (
                     <Typography variant="subtitle2" className={styles.Card__value}>{parseDate(order.order_date || Date.now().toString())}</Typography>
@@ -85,14 +104,14 @@ export default function OrderDetails() {
                 <Box className={styles.Card}>
                   <Typography variant="subtitle1" fontWeight="bold" className={styles.Card__heading}>Payment Method</Typography>
                   <Typography variant="subtitle2" className={styles.Card__value}>{order.payment_method === PaymentMethod.Cashon ? 'Cash on' : 'Online'}</Typography>
-                </Box>
-              </Box>
+                </Box> */}
+              </Grid>
               <Box>
                 <OrderStatusStepper activeStatus={order.order_status} />
               </Box>
-              <div className={styles.Address__payment}>
-                <div className={styles.Payment}>
-                  <Typography variant="h5" fontWeight="bold" mb={2}>Total Amount</Typography>
+              <Box className={styles.Address__payment} sx={{ flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: '20px', sm: '0px' }}}>
+                <Box className={styles.Payment} sx={{ paddingLeft: { xs: '0px', sm: '20px' }, width: { xs: '100%', sm: '50%' }}}>
+                  <Typography variant="h5" fontWeight="bold" sx={{ fontSize: { xs: '1.1rem', md: '1.5rem' }}}>Total Amount</Typography>
                   <div>
                     <p className={styles.Payment__paragraph}>
                       <strong className={styles.Payment__paragraph__title}>Sub Total</strong>
@@ -124,9 +143,9 @@ export default function OrderDetails() {
                       <span className={styles.Payment__paragraph__value}>${order.total}</span>
                     </p>
                   </div>
-                </div>
-                <div className={styles.Address}>
-                  <Typography variant="h5" fontWeight="bold" mb={4}>Order Details</Typography>
+                </Box>
+                <Box className={styles.Address} sx={{ width: { xs: '100%', sm: '50%' } }}>
+                  <Typography variant="h5" fontWeight="bold" mb={2} sx={{ fontSize: { xs: '1.1rem', md: '1.5rem' }}}>Order Details</Typography>
                   <div>
                     <p className={styles.Payment__paragraph}>
                       <strong className={styles.Payment__paragraph__title}>Name</strong>
@@ -140,8 +159,8 @@ export default function OrderDetails() {
                       <span className={styles.Payment__paragraph__value}>{order.orderItems.length} Item</span>
                     </p>
                   </div>
-                </div>
-              </div>
+                </Box>
+              </Box>
             </div>
             <TableContainer sx={{ maxHeight: 450, boxShadow: 'none' }} className={styles.TableContainer} component={Paper}>
               <Table stickyHeader sx={{ minWidth: 700 }} aria-label="customized table">
@@ -153,7 +172,7 @@ export default function OrderDetails() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {order.orderItems.map((orderItem) => (
+                  {order?.orderItems.map((orderItem) => (
                     <TableRow className={styles.TableBody__row} key={orderItem.id}>
                       <TableCell className={styles.TableCell}>
                         <div className={styles.TableCell__product}>
@@ -175,7 +194,7 @@ export default function OrderDetails() {
             </TableContainer>
           </>
         ) : null}
-      </div>
+      </Box>
     </div>
   )
 }

@@ -15,7 +15,7 @@ export default function ProfileSidebar() {
   const dispatch = useDispatch();
 
   return(
-    <Box className={styles.Sidebar__container}>
+    <Box className={styles.Sidebar__container} display={{ xs: 'none', md: location.pathname === '/orders' ? 'none' : 'flex', lg: 'flex' }}>
       <Link
         component='button'
         className={classNames(styles.Sidebar__item, {

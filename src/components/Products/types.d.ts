@@ -40,4 +40,5 @@ export interface IProductsResponse {
   content: IProductTemp[];
   success: boolean;
   message: string;
+  meta: IMeta;
 }

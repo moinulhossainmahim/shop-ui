@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import Dialog from "@mui/material/Dialog";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 import styles from './CreateAddressPopup.module.scss';
 
@@ -47,6 +48,8 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
 
   return (
     <Dialog
+      maxWidth='xs'
+      fullWidth
       open={isOpen}
       onClose={() => dispatch(setModal({ key: ModalKey.CreateAddressPopup, value: false }))}
     >
@@ -57,7 +60,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='Title'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           />
@@ -78,7 +81,7 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='Country'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.country}
             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
           />
@@ -86,35 +89,37 @@ export default function ProductDetailsPopup({ type, setFormData, formData } : Pr
             type='text'
             label='City'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
           />
-          <div className={styles.InpputIn__row}>
+          <Box className={styles.InpputIn__row} sx={{ flexDirection: { xs: 'column', sm: 'row' }}}>
             <TextField
               type='text'
               label='State'
               variant="outlined"
-              size='medium'
+              size='small'
               value={formData.state}
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
               className={styles.InpputIn__row__textfield}
+              sx={{ width: { xs: '100%', sm: '50%' }}}
             />
             <TextField
               type='text'
               label='Zip'
               variant="outlined"
-              size='medium'
+              size='small'
               value={formData.zip}
               onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
               className={styles.InpputIn__row__textfield}
+              sx={{ width: { xs: '100%', sm: '50%' }}}
             />
-          </div>
+          </Box>
           <TextField
             type='text'
             label='Street'
             variant="outlined"
-            size='medium'
+            size='small'
             value={formData.streetAddress}
             onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
             className={styles.InpputIn__row__textfield}

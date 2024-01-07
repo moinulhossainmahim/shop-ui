@@ -12,6 +12,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
 
 import styles from './ChangePassword.module.scss';
 import { UInputField } from "./types.d";
@@ -75,11 +76,11 @@ export default function ChangePassword() {
   return (
     <div className={styles.ChangePasswordPage}>
       <ProfileSidebar />
-      <div className={styles.ChangePassword}>
+      <Box className={styles.ChangePassword} sx={{ width: { xs: '100%', lg: '80%' }, height: { xs: '80%', md: '100%' }}}>
         <Typography variant="h6" fontWeight='bold' mb={2}>Change Password</Typography>
         <div className={styles.Form__container}>
           {inputFields.map((inputField) => (
-            <FormControl variant="outlined" key={inputField.name}>
+            <FormControl variant="outlined" key={inputField.name} size="small">
               <InputLabel htmlFor={inputField.name}>{inputField.label}</InputLabel>
               <OutlinedInput
                 id={inputField.name}
@@ -106,7 +107,7 @@ export default function ChangePassword() {
         <div className={styles.SubmitBtn__box}>
           <Button variant="contained" className={styles.SubmitBtn__box__btn} onClick={handleChangePassword} disabled={isLoading}>Submit</Button>
         </div>
-      </div>
+      </Box>
     </div>
   )
 }
