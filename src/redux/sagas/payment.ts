@@ -1,25 +1,25 @@
 import { call, put, select } from "redux-saga/effects";
-import { IOrderData } from "../../pages/Checkout/types";
 import { LoaderKey, setLoader } from "../reducers/loader";
 import { ReduxStore } from "../store";
 import { SagaActions } from "./actions";
 import { API_BASE_URL, USE_AUTH } from "../../constants";
-import { setClientSecret } from "../reducers/payment";
+import { setCheckoutSessionUrl } from "../reducers/payment";
+import { CheckOrderAvailabilityData } from "./orders";
 
-interface FetchClientSecretAction {
-  type: SagaActions.FetchClientSecret;
+interface FetchCheckoutSessionAction {
+  type: SagaActions.FetchCheckoutSession;
   payload: {
-    orderData: IOrderData;
-  }
+    items: CheckOrderAvailabilityData[],
+  };
 }
 
-export function* fetchClientSecret(action: FetchClientSecretAction): any {
+export function* fetchCheckoutSession(action: FetchCheckoutSessionAction): any {
   const token = yield select((state: ReduxStore) => state.auth.token);
-  yield put(setLoader({ key: LoaderKey.FetchClientSecret, value: true }));
+  yield put(setLoader({ key: LoaderKey.FetchCheckoutSession, value: true }));
   try {
     const result = yield call(
       fetch,
-      `${API_BASE_URL}/orders`,
+      `${API_BASE_URL}/payment/checkout-session`,
       {
         method: 'POST',
         headers: new Headers({
@@ -27,18 +27,14 @@ export function* fetchClientSecret(action: FetchClientSecretAction): any {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         }),
-        body: JSON.stringify(action.payload.orderData),
+        body: JSON.stringify(action.payload),
       },
     )
     const response = yield result.json();
-    if (response.success) {
-      yield put(setClientSecret({ clientSecret: response.clientSecret }));
-    } else {
-      console.log('something went wrong', response);
-    }
-    yield put(setLoader({ key: LoaderKey.FetchClientSecret, value: false }));
+    yield put(setCheckoutSessionUrl({ checkoutSessionUrl: response.url, payment_status: response.payment_status }));
+    yield put(setLoader({ key: LoaderKey.FetchCheckoutSession, value: false }));
   } catch (error) {
     console.log(error);
-    yield put(setLoader({ key: LoaderKey.FetchClientSecret, value: false }));
+    yield put(setLoader({ key: LoaderKey.FetchCheckoutSession, value: false }));
   }
 }

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { NavigateFunction } from "react-router-dom";
 import { LoaderKey, setLoader } from "../reducers/loader";
 
-type CheckOrderAvailabilityData = {
+export type CheckOrderAvailabilityData = {
   productIds: string;
   quantity: number;
 };

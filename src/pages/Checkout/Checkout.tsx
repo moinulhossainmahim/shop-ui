@@ -65,7 +65,8 @@ export default function Checkout() {
   const cartItems = useSelector((state: ReduxStore) => state.cart.cartProducts);
   const isAvailable = useSelector((state: ReduxStore) => state.orders.orderResponse.isAvailable);
   const isLoading = useSelector((state: ReduxStore) => state.loader.CheckOrderAvailability);
-  const clientSecret = useSelector((state: ReduxStore) => state.payment.clientSecret);
+  const isCheckoutSessionLoading = useSelector((state: ReduxStore) => state.loader.FetchCheckoutSession);
+  const url = useSelector((state: ReduxStore) => state.payment.checkoutSessionUrl);
 
   function togglePaymentMethod(method: string) {
     setActivePaymentMethod(method);
@@ -97,28 +98,13 @@ export default function Checkout() {
   }
 
   function handleClickToPay() {
-    const orderItems: ICreateOrderItem[] = cartItems.map((cartItem) => {
+    const items = cartItems.map((item) => {
       return {
-        productId: cartItem.id,
-        quantity: cartItem.amount,
-        subtotal: Number((cartItem.amount * Number(cartItem.salePrice)).toFixed(2)),
-        unit_price: Number(cartItem.salePrice),
+        productId: item.id,
+        quantity: item.amount,
       }
     })
-    if (activeBillingAddress && activeShippingAddress && cartItems.length) {
-      const orderData: IOrderData = {
-        order_status: StatusType.Pending,
-        delivery_fee: 0,
-        amount: totalPrice,
-        total: totalPrice,
-        payment_method: PaymentMethod.Online,
-        payment_status: PaymentStatus.Pending,
-        shippingAddress: activeShippingAddress,
-        billingAddress: activeBillingAddress,
-        orderItems,
-      }
-      dispatch({ type: SagaActions.FetchClientSecret, payload: { orderData }})
-    }
+    dispatch({ type: SagaActions.FetchCheckoutSession, payload: { items }});
   }
 
   const handleCheckAvailabilityClick = () => {
@@ -137,6 +123,12 @@ export default function Checkout() {
     setActiveBillingAddress(foundBillingAddress);
     setActiveShippingAddress(foundShippingAddress);
   }, [])
+
+  useEffect(() => {
+    if (!isCheckoutSessionLoading && url && isAvailable) {
+      window.location.replace(url);
+    }
+  }, [url, isCheckoutSessionLoading, isAvailable])
 
   return (
     <>

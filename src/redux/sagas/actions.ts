@@ -21,5 +21,5 @@ export enum SagaActions {
   CreateOrder = 'CREATE_ORDER',
   CheckOrderAvailability = 'CHECK_ORDER_AVAILABILITY',
 
-  FetchClientSecret = 'FETCH_CLIENT_SECRET',
+  FetchCheckoutSession = 'FETCH_CHECKOUT_SESSION',
 }

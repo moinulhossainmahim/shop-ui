@@ -6,7 +6,7 @@ import { fetchCategories } from './category';
 import { fetchProducts } from './products';
 import { addToWishlist, fetchWishlist, removeFromWishlist } from './wishlist';
 import { checkOrderAvailability, createOrder, fetchOrder, fetchOrders } from './orders';
-import { fetchClientSecret } from './payment';
+import { fetchCheckoutSession } from './payment';
 
 export default function* sagas() {
   yield all([
@@ -27,6 +27,6 @@ export default function* sagas() {
     takeEvery(SagaActions.FetchOrder, fetchOrder),
     takeEvery(SagaActions.CreateOrder, createOrder),
     takeEvery(SagaActions.CheckOrderAvailability, checkOrderAvailability),
-    takeEvery(SagaActions.FetchClientSecret, fetchClientSecret),
+    takeEvery(SagaActions.FetchCheckoutSession, fetchCheckoutSession),
   ])
 }

@@ -1,26 +1,30 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface PaymentStore {
-  clientSecret: string;
+  checkoutSessionUrl: string;
+  payment_status: string;
 }
 
 const initialState: PaymentStore = {
-  clientSecret: '',
+  checkoutSessionUrl: '',
+  payment_status: '',
 }
 
 const payment = createSlice({
   name: 'payment',
   initialState,
   reducers: {
-    setClientSecret: (state, action: PayloadAction<PaymentStore>) => {
-      state.clientSecret = action.payload.clientSecret;
+    setCheckoutSessionUrl: (state, action: PayloadAction<PaymentStore>) => {
+      state.checkoutSessionUrl = action.payload.checkoutSessionUrl;
+      state.payment_status = action.payload.payment_status;
     },
-    resetClientSecret: (state) => {
-      state.clientSecret = '';
+    resetCheckoutSessionUrl: (state) => {
+      state.checkoutSessionUrl = '';
+      state.payment_status = '';
     }
   },
 })
 
-export const { setClientSecret, resetClientSecret } = payment.actions;
+export const { setCheckoutSessionUrl, resetCheckoutSessionUrl } = payment.actions;
 
 export default payment.reducer;
