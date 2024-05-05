@@ -11,6 +11,7 @@ export enum SagaActions {
   ChangePassword = 'CHANGE_PASSWORD',
   FetchProducts = 'FETCH_PRODUCTS',
   FetchCategories = 'FETCH_CATEGORIES',
+  FetchRelatedProducts = 'FETCH_RELATED_PRODUCTS',
 
   FetchWishlist = 'FETCH_WISHLIST',
   AddToWishlist = 'ADD_TO_WISHLIST',

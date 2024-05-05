@@ -53,7 +53,7 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
     if (relatedProducts[0]?.categories[0]?.slug !== product?.categories[0]?.slug) {
       dispatch({ type: SagaActions.FetchRelatedProducts, payload: { category: product?.categories[0].slug } })
     }
-  }, [dispatch, product?.categories, relatedProducts])
+  }, [dispatch, product?.categories, relatedProducts, relatedProducts.length])
 
   useEffect(() => {
     const isFound = cartItems.some(cartProduct => cartProduct.id === product?.id);
@@ -203,7 +203,6 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                     <span>
                       <button className={styles.All__unset} disabled={!isAuthenticated}>
                         <AiTwotoneHeart
-                          disabled={!isAuthenticated}
                           size={30}
                           className={
                             classNames(styles.Heart__icon, {
@@ -220,7 +219,6 @@ export default function ProductDetailsPopup({ product, setActiveProduct } : Prop
                     <span>
                       <button className={styles.All__unset} disabled={!isAuthenticated}>
                         <AiOutlineHeart
-                          disabled={!isAuthenticated}
                           className={
                             classNames(styles.Heart__icon, {
                               [styles.Heart__icon__active]: isInWishlist,
