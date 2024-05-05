@@ -40,6 +40,13 @@ interface LoginAction {
   payload: Omit<IRegisterForm, 'fullName'>;
 }
 
+interface GoogleLoginAction {
+  type: SagaActions.GoogleLogin;
+  payload: {
+    code: string;
+  };
+}
+
 export interface UpdateProfileAction {
   type: SagaActions.UpdateProfile,
   payload: {
@@ -129,6 +136,44 @@ export function* register(action: RegisterAction): any {
   } catch (error) {
     console.log(error);
     yield put(setLoader({ key: LoaderKey.Register, value: false }));
+  }
+}
+
+export function* googleLogin(action: GoogleLoginAction): any {
+  yield put(setLoader({ key: LoaderKey.GoogleLogin, value: true }));
+  try {
+    const result = yield call(
+      fetch,
+      `${API_BASE_URL}/auth/google/signin`,
+      {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }),
+        body: JSON.stringify(action.payload),
+      }
+    )
+    if(result.ok) {
+      const response: LoginResponse = yield result.json();
+      console.log('googleLoginResponse', response);
+      if(response.success) {
+        toast.success(response.message, { autoClose: 1500 });
+        yield put(setAuthData({
+          token: response.content.accessToken,
+          message: response.message,
+          isAuthenticated: response.success,
+        }))
+        yield call(fetchProfile);
+        yield call(fetchOrders);
+      } else {
+        toast.error(response.message, { autoClose: 1500 });
+      }
+    }
+    yield put(setLoader({ key: LoaderKey.GoogleLogin, value: false }));
+  } catch (error) {
+    console.log(error);
+    yield put(setLoader({ key: LoaderKey.GoogleLogin, value: false }));
   }
 }
 
