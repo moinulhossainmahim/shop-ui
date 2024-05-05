@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export enum LoaderKey {
   Login = 'Login',
+  GoogleLogin = 'GoogleLogin',
   Register = 'Register',
   FetchProfile = 'FetchProfile',
   UpdateProfile = 'UpdateProfile',
@@ -48,6 +49,7 @@ const initialState: LoaderStore = {
   [LoaderKey.CheckOrderAvailability]: false,
   [LoaderKey.FetchCheckoutSession]: false,
   [LoaderKey.FetchRelatedProducts]: false,
+  [LoaderKey.GoogleLogin]: false,
 }
 
 const loaderSlice = createSlice({
