@@ -37,7 +37,7 @@ export default function Register() {
   const handleGoogleLogin = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async tokenResponse => {
-      console.log(tokenResponse);
+      dispatch({ type: SagaActions.GoogleLogin, payload: { code: tokenResponse.code } });
     },
   });
 
