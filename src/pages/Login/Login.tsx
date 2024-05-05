@@ -15,6 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
+import { useGoogleLogin } from "@react-oauth/google";
 
 import styles from './Login.module.scss';
 
@@ -32,6 +33,13 @@ export default function Register() {
     email: '',
     password: '',
   })
+
+  const handleGoogleLogin = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async tokenResponse => {
+      console.log(tokenResponse);
+    },
+  });
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword)
@@ -91,6 +99,7 @@ export default function Register() {
             />
           </FormControl>
           <Button className={styles.Login__btn} size="large" onClick={handleLogin} disabled={isLoading}>Login</Button>
+          <Button sx={{ mt: 2 }} fullWidth size="large" variant="outlined" onClick={handleGoogleLogin}>Continue With Google</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />
