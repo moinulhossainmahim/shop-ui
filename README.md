@@ -86,9 +86,8 @@
 
 ### 3. Product Management
 
-- **Products**: User can browse products, filter them by categories and search the products by name.
+- **Products**: User can browse products and see the details of each product with their related products.
 - **Categories and Sub Categories**: Organize products into categories and sub categories for easy finding.
-- **Paginating in products**: Added pagination for fetching more products.
 
 ### 4. Wishlist
 
@@ -104,4 +103,10 @@
 - **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
 
 ### 7. Validation
+
 - **Schema Validation**: Implemented **zod** schema validation with integrating **React Hook Form** in Login and Registration page.
+
+### 8. Pagination and Filtering
+
+  - **Paginating in products**: Added pagination for fetching more products.
+  - **Products Filtering**: Implmented filter products by categories and search the products by name.
