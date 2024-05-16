@@ -54,6 +54,7 @@ export default function ProfileSidebar() {
       </Link>
       <Link component='button' className={styles.Sidebar__item}
         onClick={() => {
+          localStorage.setItem('token', '');
           dispatch(setAuthData({
             token: '',
             message: '',
@@ -70,7 +71,7 @@ export default function ProfileSidebar() {
               avatar: "",
               fullName: "",
               email: "",
-              status: UserStatusType.Active,
+              status: UserStatusType.InActive,
               userType: '',
               address: [],
               contact: ""

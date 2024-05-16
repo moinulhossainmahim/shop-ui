@@ -214,6 +214,7 @@ function Header() {
                     <Typography textAlign="center">Checkout</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => {
+                  localStorage.setItem('token', '');
                   handleCloseUserMenu()
                   dispatch(setAuthData({
                     token: '',
