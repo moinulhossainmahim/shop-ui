@@ -9,6 +9,7 @@
   4. [ Features ](#feat)
   5. [ Process ](#process)
   6. [ What I have learned ](#learning)
+  7. [ How it can be improved ](#improvements)
 
 <a name="tech"></a>
 ## 📦 Technologies
@@ -187,6 +188,17 @@
   - **Update URL Params**: How to work with url params and update the url param based on the filtering.
   - **Pagination and Filtering**: Update the UI based on the pagination and filtering.
 
-## Dockerizing
+### Dockerizing
 
-   - **Docker**: Deep dive into docker images and container and dockerized the project.
+  - **Docker**: Deep dive into docker images and container and dockerized the project.
+
+<a name="improvements"></a>
+## 💭 How can it be improved?
+
+  - Add form validation in all forms
+  - Add Github sign in authentication
+  - Add more shop type options(Clothing, Bakcery, Make up etc)
+  - Make payment process more smooth and user friendly
+  - Add Fly to cart functionality
+  - Product Details page where user can put reviews of a product
+  - Add contact, FAQ, Terma and Conditions page
