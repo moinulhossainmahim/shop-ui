@@ -1,6 +1,6 @@
 # Daily Shop
 
-Daily Shop is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully responsive. You can view it from any devices.
+**Daily Shop** is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully responsive. You can view it from any devices.
 
 ## 📦 Technologies
 
@@ -43,7 +43,7 @@ Daily Shop is an user friendly eCommerce app, build with React and TypeScript. U
   ## Manually
 
   ### Install Dependencies
-  - Run `npm install` inside the main project folder to install all dependencies from NPM.
+  - Run `npm install` inside the main project folder to install all dependencies from **NPM**.
 
   ### Start the application
   - 
@@ -68,3 +68,37 @@ Daily Shop is an user friendly eCommerce app, build with React and TypeScript. U
 
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
     
+# Features
+
+### 1. User Identity and Authentication Flow
+
+- **User Registration**: Enable customers to create accounts.
+- **User Authentication**: Implement JWT-based authentication mechanisms to secure user sessions.
+- **Google Authentication**: Integrate google authentication using google-0auth2.
+- **User Profiles**: Enable users to view and update their profiles.
+
+### 2. Order Management
+
+- **Order Workflow Management**: User can visit products and add them to the cart and order them.
+- **Payment Gateway Integration**: Integrate with stripe payment gateway for seamless transactions.
+- **Cashon Order**: User can order the products by cashon deliveries.
+- **Order Status**: User can see his all orders and orders status in orders page.
+
+### 3. Product Management
+
+- **Products**: User can browse products, filter them by categories and search the products by name.
+- **Categories and Sub Categories**: Organize products into categories and sub categories for easy finding.
+- **Paginating in products**: Added pagination for fetching more products.
+
+### 4. Wishlist
+
+- **Wishlist management**: User can save any product to the wishlist for his next ordering.
+
+### 5. Shopping Cart and Seamless Checkout
+
+- **Shopping Cart**: Allow users to effortlessly add, remove, and update products in their carts.
+- **Checkout**: Optimize the checkout process, ensuring swift and secure transactions.
+
+### 6. Security
+
+- **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
