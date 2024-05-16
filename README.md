@@ -16,3 +16,8 @@ Daily Shop is an user friendly eCommerce app, build with React and TypeScript. U
 - `React Hook Form`
 - `SCSS`
 - `Docker`
+
+## Requirements
+
+- [Node](https://nodejs.org/en) (Version 18.18.0 or higher)
+- [NPM](https://www.npmjs.com/) (The Node.js package manager. Installed with Node.js)
