@@ -31,7 +31,7 @@
   - `Docker`
 
 <a name="req"></a>
-## Requirements
+## ✅ Requirements
 
 - [Node](https://nodejs.org/en) (Version 18.18.0 or higher)
 - [NPM](https://www.npmjs.com/) (The Node.js package manager. Installed with Node.js)
@@ -84,7 +84,7 @@
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
 
 <a name="feat"></a>
-# Features
+# ⚙️ Features
 
 ### 1. User Identity and Authentication Flow
 
@@ -128,7 +128,7 @@
   - **Products Filtering**: Implmented filter products by categories and search the products by name.
 
 <a name="process"></a>
-## The Processes I have followed for creating the project.
+## 🔄 The Processes I have followed for creating the project.
 
   1. At first, I have created a **Trello** board for managing the project. Which includes feature idea, example project links, track of what I am doing currently etc.
 
@@ -165,7 +165,7 @@
   17. Finally, Make responsive for mobiles and tablet devices.
 
 <a name="learning"></a>
-## What I have Learned
+## 📚 What I have Learned
 
   During this project I have faced many problems and overcome those for completing my ideas to the project.
 
