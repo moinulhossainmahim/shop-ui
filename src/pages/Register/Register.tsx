@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
@@ -17,34 +19,29 @@ import Button from "@mui/material/Button";
 
 import styles from './Register.module.scss';
 
-import { IRegisterForm } from "./types.d";
-import { SagaActions } from "../../redux/sagas/actions";
 import { useSelector } from "react-redux";
 import { ReduxStore } from "../../redux/store";
+import { TSignUpSchema, signUpSchema } from "../../types/schemaTypes";
+import { SagaActions } from "../../redux/sagas/actions";
 
 export default function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const isLoading = useSelector((state: ReduxStore) => state.loader.Register);
-  const [registerFormData, setRegisterFormData] = useState<IRegisterForm>({
-    fullName: '',
-    email: '',
-    password: '',
-    contact: '',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<TSignUpSchema>({
+    resolver: zodResolver(signUpSchema)
   })
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  function handleAccountRegister() {
-    dispatch({ type: SagaActions.Register, payload: registerFormData });
+  const onSubmit = (data: TSignUpSchema) => {
+    dispatch({ type: SagaActions.Register, payload: data });
     navigate('/login');
+    reset();
   }
 
   return (
@@ -54,65 +51,69 @@ export default function Register() {
           <img className={styles.PickBazar__logo} src="/PickBazar.webp" alt="pickbazar-logo" />
         </div>
         <Typography variant="h6" fontWeight={400} className={styles.Register__title}>Register new account</Typography>
-        <form noValidate>
-          <TextField
-            type="text"
-            variant="outlined"
-            label="Full Name"
-            size="small"
-            className={styles.RegisterForm__input}
-            value={registerFormData.fullName}
-            onChange={(e) => setRegisterFormData({ ...registerFormData, fullName: e.target.value })}
-          />
-          <TextField
-            type="email"
-            variant="outlined"
-            label="Email"
-            size="small"
-            className={styles.RegisterForm__input}
-            value={registerFormData.email}
-            onChange={(e) => setRegisterFormData({ ...registerFormData, email: e.target.value })}
-          />
-          <TextField
-            type="text"
-            variant="outlined"
-            label="Contact No"
-            size="small"
-            className={styles.RegisterForm__input}
-            value={registerFormData.contact}
-            onChange={(e) => setRegisterFormData({ ...registerFormData, contact: e.target.value })}
-          />
-          <FormControl variant="outlined" className={styles.RegisterForm__input} size="small">
-            <InputLabel htmlFor='password'>password</InputLabel>
-            <OutlinedInput
-              id='password'
-              type={showPassword ? 'text' : 'password'}
-              value={registerFormData.password}
-              onChange={(e) => setRegisterFormData({ ...registerFormData, password: e.target.value })}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="password"
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.Register__form}>
+          <div className={styles.RegisterForm__input}>
+            <TextField
+              {...register('fullName')}
+              type="text"
+              variant="outlined"
+              label="Full Name"
+              size="small"
+              fullWidth
             />
-          </FormControl>
-          <Button className={styles.Register__btn} size="large" onClick={handleAccountRegister} disabled={isLoading}>Register</Button>
+            {errors.fullName ? (
+              <p className={styles.Error_message}>{errors.fullName.message}</p>
+            ) : null}
+          </div>
+          <div className={styles.RegisterForm__input}>
+            <TextField
+              {...register('email')}
+              type="email"
+              variant="outlined"
+              label="Email"
+              size="small"
+              fullWidth
+            />
+            {errors.email ? (
+              <p className={styles.Error_message}>{errors.email.message}</p>
+            ) : null}
+          </div>
+          <div className={styles.RegisterForm__input}>
+            <FormControl variant="outlined" size="small">
+              <InputLabel htmlFor='password'>password</InputLabel>
+              <OutlinedInput
+                {...register('password')}
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+                fullWidth
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="password"
+              />
+            </FormControl>
+            {errors.password ? (
+              <p className={styles.Error_message}>{errors.password.message}</p>
+            ) : null}
+          </div>
+          <Button className={styles.Register__btn} size="large" type="submit" disabled={isLoading || isSubmitting}>Register</Button>
         </form>
         <div className={styles.OrTitle}>
           <div className={styles.Horizontal__line} />
           <span className={styles.OrText}>Or</span>
           <div className={styles.Horizontal__line} />
         </div>
-        <Typography variant="subtitle1" fontWeight={500} className={styles.Register__title}>
-          Already have an account?
+          <Typography variant="subtitle1" fontWeight={500} className={styles.Register__title__bottom}>
+            Already have an account?
           <Link onClick={() => navigate('/login')} className={styles.Login__link}>Login</Link>
         </Typography>
       </Stack>
