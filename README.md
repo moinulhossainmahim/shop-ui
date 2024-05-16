@@ -1,6 +1,6 @@
 # Daily Shop
 
-Daily Shop is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device.
+Daily Shop is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully responsive. You can view it from any devices.
 
 ## 📦 Technologies
 
