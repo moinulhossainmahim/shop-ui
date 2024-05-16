@@ -23,8 +23,8 @@
 }
 
 .Register__stack {
-  max-width: 420px;
-  height: 555px;
+  width: 420px;
+  height: 580px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: variables.$white-card-shadow;
@@ -33,7 +33,7 @@
 }
 
 .Register__title {
-  margin:  15px 0px 45px 0px!important;
+  margin: 15px 0px 20px 0px!important;
   font-style: italic;
   color: variables.$color-text-base;
 }
@@ -41,6 +41,8 @@
 .RegisterForm__input {
   margin-bottom: 30px !important;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .InputLabel {
@@ -49,7 +51,6 @@
     top: 0 !important;
   }
 }
-
 
 .OrTitle {
   display: flex;
@@ -77,4 +78,22 @@
     text-decoration: none !important;
     text-decoration-line: none !important;
   }
+}
+
+.Error_message {
+  color: red;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.Register__title__bottom {
+  font-style: italic;
+  color: variables.$color-text-base;
+  margin-bottom: 15px;
+}
+
+.Register__form {
+  width: 100%;
 }
