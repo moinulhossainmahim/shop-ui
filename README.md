@@ -10,6 +10,7 @@
   5. [ Process ](#process)
   6. [ What I have learned ](#learning)
   7. [ How it can be improved ](#improvements)
+  8. [ Demo Video ](#video)
 
 <a name="tech"></a>
 ## 📦 Technologies
@@ -202,3 +203,8 @@
   - Add Fly to cart functionality
   - Product Details page where user can put reviews of a product
   - Add contact, FAQ, Terma and Conditions page
+
+<a name="video"></a>
+## 🍿 Demo Video
+
+  - Will be provided soon
