@@ -2,6 +2,8 @@
 
 **Daily Shop** is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully **Responsive**. You can view it from any devices.
 
+**[Trello Board]**(https://trello.com/b/O8ocRnqS/dailyshop).
+
 ## Table of contents
   1. [ Technologies ](#tech)
   2. [ Requirements ](#req)
@@ -128,7 +130,7 @@
 <a name="process"></a>
 ## The Processes I have followed for creating the project.
 
-  1. At first, I have created a **Trello** board for managing the project. Which includes feature idea, example project links, track of what I am doing currently etc **[Trello Board]**(https://trello.com/b/O8ocRnqS/dailyshop).
+  1. At first, I have created a **Trello** board for managing the project. Which includes feature idea, example project links, track of what I am doing currently etc.
 
   2. Then Dockerize the application for running in using docker.
 
