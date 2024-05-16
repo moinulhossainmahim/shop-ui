@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
@@ -19,9 +21,9 @@ import { useGoogleLogin } from "@react-oauth/google";
 
 import styles from './Login.module.scss';
 
-import { IRegisterForm } from "../Register/types";
 import { SagaActions } from "../../redux/sagas/actions";
 import { ReduxStore } from "../../redux/store";
+import { TSignInSchema, signInSchema } from "../../types/schemaTypes";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -29,9 +31,13 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const isAuthenticated = useSelector((state: ReduxStore) => state.auth.isAuthenticated);
   const isLoading = useSelector((state: ReduxStore) => state.loader.Login);
-  const [loginFormData, setLoginFormData] = useState<Omit<IRegisterForm, 'fullName' | 'contact'>>({
-    email: '',
-    password: '',
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<TSignInSchema>({
+    resolver: zodResolver(signInSchema)
   })
 
   const handleGoogleLogin = useGoogleLogin({
@@ -41,16 +47,9 @@ export default function Register() {
     },
   });
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  function handleLogin() {
-    dispatch({ type: SagaActions.Login, payload: loginFormData });
+  const onSubmit = (data: TSignInSchema) => {
+    dispatch({ type: SagaActions.Login, payload: data });
+    reset();
   }
 
   useEffect(() => {
@@ -66,39 +65,48 @@ export default function Register() {
           <img className={styles.PickBazar__logo} src="/PickBazar.webp" alt="pickbazar-logo" />
         </div>
         <Typography variant="h6" fontWeight={400} className={styles.Login__title}>Login with your email & password</Typography>
-        <form noValidate>
-          <TextField
-            type="email"
-            variant="outlined"
-            label="Email"
-            size="small"
-            className={styles.LoginForm__input}
-            value={loginFormData.email}
-            onChange={(e) => setLoginFormData({ ...loginFormData, email: e.target.value })}
-          />
-          <FormControl size="small" variant="outlined" className={styles.LoginForm__input}>
-            <InputLabel htmlFor='password'>password</InputLabel>
-            <OutlinedInput
-              id='password'
-              type={showPassword ? 'text' : 'password'}
-              value={loginFormData.password}
-              onChange={(e) => setLoginFormData({ ...loginFormData, password: e.target.value })}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="password"
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.Login__form}>
+          <div className={styles.LoginForm__input}>
+            <TextField
+              {...register('email')}
+              type="email"
+              variant="outlined"
+              label="Email"
+              size="small"
+              fullWidth
             />
-          </FormControl>
-          <Button className={styles.Login__btn} size="large" onClick={handleLogin} disabled={isLoading}>Login</Button>
+            {errors.email ? (
+                <p className={styles.Error_message}>{errors.email.message}</p>
+            ) : null}
+          </div>
+          <div className={styles.LoginForm__input}>
+            <FormControl size="small" variant="outlined" fullWidth>
+              <InputLabel htmlFor='password'>password</InputLabel>
+              <OutlinedInput
+                fullWidth
+                {...register('password')}
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="password"
+              />
+            </FormControl>
+            {errors.password ? (
+                <p className={styles.Error_message}>{errors.password.message}</p>
+            ) : null}
+          </div>
+          <Button className={styles.Login__btn} size="large" disabled={isLoading} type="submit">Login</Button>
           <Button sx={{ mt: 2 }} fullWidth size="large" variant="outlined" onClick={handleGoogleLogin}>Continue With Google</Button>
         </form>
         <div className={styles.OrTitle}>
