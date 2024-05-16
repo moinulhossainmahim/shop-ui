@@ -122,6 +122,7 @@
   - **Paginating in products**: Added pagination for fetching more products.
   - **Products Filtering**: Implmented filter products by categories and search the products by name.
 
+<a name="process"></a>
 ## The Processes I have followed for creating the project.
 
   1. At first, I have created a **Trello** board for managing the project. Which includes feature idea, example project links, track of what I am doing currently etc **[Trello Board]**(https://trello.com/b/O8ocRnqS/dailyshop).
