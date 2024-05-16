@@ -7,6 +7,7 @@
 2. [ Requirements ](#req)
 3. [ How to run the project ](#run)
 4. [ Features ](#feat)
+5. [ Process ](#process)
 
 <a name="tech"></a>
 ## 📦 Technologies
@@ -120,3 +121,39 @@
 
   - **Paginating in products**: Added pagination for fetching more products.
   - **Products Filtering**: Implmented filter products by categories and search the products by name.
+
+## The Processes I have followed for creating the project.
+
+  1. At first, I have created a **Trello** board for managing the project. Which includes feature idea, example project links, track of what I am doing currently etc **[Trello Board]**(https://trello.com/b/O8ocRnqS/dailyshop).
+
+  2. Then Dockerize the application for running in using docker.
+
+  3. Then I had implmented React Router Dom for routing.
+    
+  4. After that I am working on home page UI with all component which includes header, hero, sidebar, cart, products, product details etc.
+
+  5. Implement all others page UI which includes profile, wishlist, orders, Register, Login etc.
+
+  6. Added order details page UI for showing order details with status of a user.
+
+  7. Added test data with data types where I needed for example for products, categories, sub categories, orders etc which help me later when I am integrating with the backend.
+
+  8. Added Redux for state management and include all the global state in Redux which includes Modals, Loader, Products, Categories, Sub Categories, Orders, User Information etc.
+
+  9. Added and setup Redux saga for handling asynchronous operations.
+
+  10. Integrated Register, Login, Logout with backend and frontend.
+
+  11. Added appropriate loader when some api call is working.
+
+  12. Integrated products, categories, profile, orders in frontend with backend.
+
+  13. Added React Hook Form and zod validation in Register and Login page.
+
+  14. Integrated Google login.
+
+  15. Added basic stripe payment integration.
+
+  16. Added Pagination and Filtering by category and sub category functionality.
+
+  17. Finally, Make responsive for mobiles and tablet devices.
