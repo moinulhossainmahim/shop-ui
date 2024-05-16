@@ -102,3 +102,6 @@
 ### 6. Security
 
 - **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
+
+### 7. Validation
+- **Schema Validation**: Implemented **zod** schema validation with integrating **React Hook Form** in Login and Registration page.
