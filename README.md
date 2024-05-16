@@ -3,9 +3,12 @@
 **Daily Shop** is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully **Responsive**. You can view it from any devices.
 
 ## Table of contents
-1. [ Description. ](#desc)
+1. [ Technologies ](#tech)
+2. [ Requirements ](#req)
+3. [ How to run the project ](#run)
+4. [ Features ](#feat)
 
-<a name="desc"></a>
+<a name="tech"></a>
 ## 📦 Technologies
 
 - `React`
@@ -21,11 +24,13 @@
 - `SCSS`
 - `Docker`
 
+<a name="req"></a>
 ## Requirements
 
 - [Node](https://nodejs.org/en) (Version 18.18.0 or higher)
 - [NPM](https://www.npmjs.com/) (The Node.js package manager. Installed with Node.js)
 
+<a name="run"></a>
 # 🚦 How to run the project
 
   ### Clone the repository
@@ -71,7 +76,8 @@
   - **If everyting setup correctly and your containers are running then you will get the application running in [localhost:3002](http://localhost:3002)**
 
   - **Update port mappings in `docker-compose.yml` file if you want to run in different port**
-    
+
+<a name="feat"></a>
 # Features
 
 ### 1. User Identity and Authentication Flow
