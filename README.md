@@ -3,28 +3,28 @@
 **Daily Shop** is an user friendly eCommerce app, build with React and TypeScript. User can explore Groceries, Bakery Goods, Clothing etc with ease order the goods. Experience seamless shopping anytime, anywhere on any device. This app is fully **Responsive**. You can view it from any devices.
 
 ## Table of contents
-1. [ Technologies ](#tech)
-2. [ Requirements ](#req)
-3. [ How to run the project ](#run)
-4. [ Features ](#feat)
-5. [ Process ](#process)
-6. [ What I have learned ](#learning)
+  1. [ Technologies ](#tech)
+  2. [ Requirements ](#req)
+  3. [ How to run the project ](#run)
+  4. [ Features ](#feat)
+  5. [ Process ](#process)
+  6. [ What I have learned ](#learning)
 
 <a name="tech"></a>
 ## 📦 Technologies
 
-- `React`
-- `TypeScript`
-- `Material UI`
-- `Redux`
-- `Redux Saga`
-- `React Toastify`
-- `Google Authentication`
-- `Stripe`
-- `Zod`
-- `React Hook Form`
-- `SCSS`
-- `Docker`
+  - `React`
+  - `TypeScript`
+  - `Material UI`
+  - `Redux`
+  - `Redux Saga`
+  - `React Toastify`
+  - `Google Authentication`
+  - `Stripe`
+  - `Zod`
+  - `React Hook Form`
+  - `SCSS`
+  - `Docker`
 
 <a name="req"></a>
 ## Requirements
@@ -84,39 +84,39 @@
 
 ### 1. User Identity and Authentication Flow
 
-- **User Registration**: Enable customers to create accounts.
-- **User Authentication**: Implement JWT-based authentication mechanisms to secure user sessions.
-- **Google Authentication**: Integrate google authentication using google-0auth2.
-- **User Profiles**: Enable users to view and update their profiles.
+  - **User Registration**: Enable customers to create accounts.
+  - **User Authentication**: Implement JWT-based authentication mechanisms to secure user sessions.
+  - **Google Authentication**: Integrate google authentication using google-0auth2.
+  - **User Profiles**: Enable users to view and update their profiles.
 
 ### 2. Order Management
 
-- **Order Workflow Management**: User can visit products and add them to the cart and order them.
-- **Payment Gateway Integration**: Integrate with stripe payment gateway for seamless transactions.
-- **Cashon Order**: User can order the products by cashon deliveries.
-- **Order Status**: User can see his all orders and orders status in orders page.
+  - **Order Workflow Management**: User can visit products and add them to the cart and order them.
+  - **Payment Gateway Integration**: Integrate with stripe payment gateway for seamless transactions.
+  - **Cashon Order**: User can order the products by cashon deliveries.
+  - **Order Status**: User can see his all orders and orders status in orders page.
 
 ### 3. Product Management
 
-- **Products**: User can browse products and see the details of each product with their related products.
-- **Categories and Sub Categories**: Organize products into categories and sub categories for easy finding.
+  - **Products**: User can browse products and see the details of each product with their related products.
+  - **Categories and Sub Categories**: Organize products into categories and sub categories for easy finding.
 
 ### 4. Wishlist
 
-- **Wishlist management**: User can save any product to the wishlist for his next ordering.
+  - **Wishlist management**: User can save any product to the wishlist for his next ordering.
 
 ### 5. Shopping Cart and Seamless Checkout
 
-- **Shopping Cart**: Allow users to effortlessly add, remove, and update products in their carts.
-- **Checkout**: Optimize the checkout process, ensuring swift and secure transactions.
+  - **Shopping Cart**: Allow users to effortlessly add, remove, and update products in their carts.
+  - **Checkout**: Optimize the checkout process, ensuring swift and secure transactions.
 
 ### 6. Security
 
-- **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
+  - **JWT Tokenization**: Implement robust JSON Web Token mechanisms to fortify authentication.
 
 ### 7. Validation
 
-- **Schema Validation**: Implemented **zod** schema validation with integrating **React Hook Form** in Login and Registration page.
+  - **Schema Validation**: Implemented **zod** schema validation with integrating **React Hook Form** in Login and Registration page.
 
 ### 8. Pagination and Filtering
 
@@ -169,18 +169,18 @@
 
   - **Seemless Integration**: Learned Redux saga for integrating both frontend and backend seemlessly.
 
-### 🎨 Discovering New Tools:
+### Discovering New Tools:
 
   - **Google 0Auth**: I have learned about google authentication for integrating with backend and also how to create app in google console. This is very interesting for me that how the whole process works.
   - **React Hook Form and Zod**: I have studied about form validation using React Hook Form and Zod and implemented the schema types.
   - **Stripe**: Learned about stripe and how to integrate this for paying.
   - **Swiper**: Explore swiper js and use it for slider in single product details and home page.
 
-### 🎨 Token Authentication:
+### Token Authentication:
 
   - **JWT**: How jwt authentication exactly works and how to use this in every request.
 
-### 🎨 Functionalities:
+### Functionalities:
 
   - **Cart**: I have no idea about cart functionality previously. I think about the whole functionalities and find soltuion of this and implement this using Redux.
   - **Local storage**: Study about local storage for storing user information for loggin in longtime and after refresh the user still logged in.
@@ -189,4 +189,4 @@
 
 ## Dockerizing
 
- - **Docker**: Deep dive into docker images and container and dockerized the project.
+   - **Docker**: Deep dive into docker images and container and dockerized the project.
