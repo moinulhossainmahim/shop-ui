@@ -8,6 +8,7 @@
 3. [ How to run the project ](#run)
 4. [ Features ](#feat)
 5. [ Process ](#process)
+6. [ What I have learned ](#learning)
 
 <a name="tech"></a>
 ## 📦 Technologies
@@ -158,3 +159,34 @@
   16. Added Pagination and Filtering by category and sub category functionality.
 
   17. Finally, Make responsive for mobiles and tablet devices.
+
+<a name="learning"></a>
+## What I have Learned
+
+  During this project I have faced many problems and overcome those for completing my ideas to the project.
+
+### Integation:
+
+  - **Seemless Integration**: Learned Redux saga for integrating both frontend and backend seemlessly.
+
+### 🎨 Discovering New Tools:
+
+  - **Google 0Auth**: I have learned about google authentication for integrating with backend and also how to create app in google console. This is very interesting for me that how the whole process works.
+  - **React Hook Form and Zod**: I have studied about form validation using React Hook Form and Zod and implemented the schema types.
+  - **Stripe**: Learned about stripe and how to integrate this for paying.
+  - **Swiper**: Explore swiper js and use it for slider in single product details and home page.
+
+### 🎨 Token Authentication:
+
+  - **JWT**: How jwt authentication exactly works and how to use this in every request.
+
+### 🎨 Functionalities:
+
+  - **Cart**: I have no idea about cart functionality previously. I think about the whole functionalities and find soltuion of this and implement this using Redux.
+  - **Local storage**: Study about local storage for storing user information for loggin in longtime and after refresh the user still logged in.
+  - **Update URL Params**: How to work with url params and update the url param based on the filtering.
+  - **Pagination and Filtering**: Update the UI based on the pagination and filtering.
+
+## Dockerizing
+
+ - **Docker**: Deep dive into docker images and container and dockerized the project.
