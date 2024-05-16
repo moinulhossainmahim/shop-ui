@@ -159,6 +159,7 @@ export function* googleLogin(action: GoogleLoginAction): any {
       console.log('googleLoginResponse', response);
       if(response.success) {
         toast.success(response.message, { autoClose: 1500 });
+        localStorage.setItem('token', response.content.accessToken);
         yield put(setAuthData({
           token: response.content.accessToken,
           message: response.message,
@@ -196,6 +197,7 @@ export function* login(action: LoginAction): any {
       const response: LoginResponse = yield result.json();
       if(response.success) {
         toast.success(response.message, { autoClose: 1500 });
+        localStorage.setItem('token', response.content.accessToken);
         yield put(setAuthData({
           token: response.content.accessToken,
           message: response.message,
