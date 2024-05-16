@@ -13,4 +13,6 @@ Daily Shop is an user friendly eCommerce app, build with React and TypeScript. U
 - `Google Authentication`
 - `Stripe`
 - `Zod`
+- `React Hook Form`
+- `SCSS`
 - `Docker`
